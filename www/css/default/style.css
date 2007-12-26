@@ -1,0 +1,252 @@
+@charset "utf-8";
+
+body{
+  font-family:Arial,"MS Gothic",Osaka,sans-serif;
+  font-size:13px;
+  line-height:1.5;
+}
+select,input,textarea{
+  font-family:"Andale Mono","MS Gothic","Osaka-",monospace;
+  font-size:100%;
+}
+input[type="button"]{
+  font-family:Arial,"",Osaka,sans-serif;
+}
+body, input, select, textarea{
+  color:#444;
+}
+a:link,a:visited,a:active{
+  color: #2064AE;
+}
+a:hover {
+  color:#2064AE;
+  border-bottom:1px dotted #6699CC;
+}
+h2{
+  font-size:150%;
+}
+strong{
+  font-weight:bold;
+}
+/*header*/
+/*--------------------------------------------------------------------------------------------------*/
+div#header #header_title{float:left;}
+
+/*menu tab*/
+/*--------------------------------------------------------------------------------------------------*/
+ul#action_container_ul{
+  height:38px;
+  background:url(../../images/default/background/seatab_foot.gif) repeat-x bottom;
+  margin:8px 9px 0 9px;
+  float:left;
+}
+ul#action_container_ul li, ul#action_container_ul li a{
+  display:block;
+  float:left;
+  width:115px;
+  height:38px;
+  border:none;
+  overflow:hidden;
+}
+ul#action_container_ul li, ul#action_container_ul li a{
+  line-height:38px;
+  background:none;
+  margin-right:1px;
+  text-align:center;
+  font-size:16px;
+  font-weight:bold;
+  color:#BDD5DF;
+}
+ul#action_container_ul li:hover{background:none;}
+ul#action_container_ul li:hover a{color:#fff;}
+ul#action_container_ul li#sel{background:url(../../images/default/tab/seatab_sel.gif) no-repeat;}
+ul#action_container_ul li#sel a{color:#666;}
+
+/*menuBar*/
+/*--------------------------------------------------------------------------------------------------*/
+ul#menuBar_ul{
+  background:#eee;
+  border-bottom:#ccc solid 1px;
+  height:25px;
+  padding-left:5px;
+  clear:left;
+  display:block;
+}
+ul#menuBar_ul li{
+  float:left;
+  height:25px;
+  line-height:25px;
+  text-align:left;
+  margin-right:10px;
+  overflow:hidden;
+}
+ul#menuBar_ul li a{
+  padding-left:20px;
+  display:block;
+  border:none;
+  color:#666;
+}
+ul#menuBar_ul li a:hover{
+  text-decoration:underline;
+}
+
+ul#menuBar_ul li p{
+  padding-top:8px;
+  padding-left:20px;
+  display:block;
+  border:none;
+  color:#ccc;
+  font-weight:bold;
+}
+
+/*content*/
+/*--------------------------------------------------------------------------------------------------*/
+.guide {
+  margin:0 10px 20px 10px;
+}
+.guide h2{
+  line-height:2;
+  clear:left;
+}
+.guide h3{
+  line-height:2;
+  clear:left;
+  font-weight:bold;
+  margin-top:1em;
+  margin-left:20px;
+}
+.guide h4{
+  line-height:2;
+  clear:left;
+  margin-left:30px;
+}
+.guide p{
+  line-height:1.5;
+  margin-left:20px;
+}
+.guide ol{
+  list-style-position:inside;
+  margin-left:40px;
+}
+.guide ol li{
+  line-height:1.5;
+}
+ol.toc{
+  margin-left:0;
+  margin-bottom:1em;
+  padding:1em;
+  border:#ddd solid 1px;
+}
+.infoList{
+  margin-left:20px;
+}
+.noticeList{
+  margin-left:40px;
+}
+.infoList dt, .noticeList dt{
+  float:left;
+}
+.infoList dd, .noticeList dd{
+  padding-left:5px;
+  margin-left:6.5em;
+  border:#fff solid 1px;
+}
+.downloadList{
+  margin-left:30px;
+}
+.downloadList dt{
+  float:left;
+}
+.downloadList dd{
+  padding-left:5px;
+  margin-left:6.5em;
+  border:#fff solid 1px;
+}
+
+.thumbnails{
+  margin-left:20px;
+}
+.thumbnails dl{
+  float:left;
+  border:#ccc solid 1px;
+  margin-right:5px;
+  margin-bottom:5px;
+  padding:10px;
+  width:152px;
+  background:#efefef;
+}
+.thumbnails dt{
+  width:150px;
+  height:150px;
+  float:left;
+  clear:both;
+  background:#ccc;
+  border:#999 solid 1px;
+}
+.thumbnails dd{
+  clear:left;
+  height:1em;
+  line-height:1.5;
+}
+
+.thumbnails2{
+  margin-left:20px;
+}
+.thumbnails2 dl{
+  float:left;
+  border:#ccc solid 1px;
+  margin-right:5px;
+  margin-bottom:5px;
+  padding:10px;
+  width:202px;
+  background:#efefef;
+}
+.thumbnails2 dt{
+  width:200px;
+  height:200px;
+  float:left;
+  clear:both;
+  background:#ccc;
+  border:#999 solid 1px;
+}
+.thumbnails2 dd{
+  clear:left;
+  height:1em;
+  line-height:1.5;
+}
+
+
+.manual{
+  margin-left:20px;
+}
+.manual dt{
+  float:left;
+  width:300px;
+  padding:0.5em;
+}
+.manual dd{
+  margin-left:300px;
+  padding:0.5em;
+}
+br.clear{ 
+  clear:both;
+  line-height:0px;
+}
+.manual ol{
+  margin-left:1em;
+}
+.gotop{
+  text-align:right;
+}
+p.lower{
+  margin-left:40px;
+}
+/*footer*/
+/*--------------------------------------------------------------------------------------------------*/
+div#footer p{
+  text-align:center;
+  font-weight:normal;
+  line-height:20px;
+  font-size:14px;
+  margin:0 9px;
+}

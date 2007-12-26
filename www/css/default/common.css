@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+/* style resset */
+
+*{
+	padding:0;
+	margin:0;
+}
+
+h1, h2, h3, h4, h5, h6, p, address{
+	font-size: 100%;
+	font-weight: normal;
+	font-style: normal;
+	line-height: 100%;
+}
+
+img{
+	border:none;
+	vertical-align:middle;
+}
+
+a{
+	text-decoration:none;
+}
+
+ul{
+	list-style-type:none;
+}
+
+.clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.clearfix {display: inline-table;}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */

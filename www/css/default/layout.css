@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+html.onecolumn {
+  overflow:hidden;
+}
+
+div#navigation_bar_container{
+  top:0;
+  max-width:100%;
+  min-width:960px;
+  z-Index:1;
+}
+
+div#container{
+  width:960px;
+  position:relative;
+  margin-left:auto;
+  margin-right:auto;
+  background:url(../../images/default/background/bg_container.jpg) repeat-y;
+}
+div#header{
+  background:url(../../images/default/background/header2.jpg) no-repeat;
+  margin:0 8px;
+  height:70px;
+}
+div#content{
+  float:left;
+  margin-left:0;
+}
+body.onecolumn div#content{
+  width:928px;
+  padding:8px 16px 0 16px;
+  overflow:hidden;
+}
+body.subwindow div#content{
+  width:768px;
+  padding:5px 16px 7px 16px;
+}
+div#footer{
+  height:20px;
+  clear:both;
+  margin:0 8px;
+  background:#eee;
+  border-top:#ccc solid 1px;
+  border-bottom:#aaa solid 1px;
+}
+body.subwindow div#footer{
+  background:url(../../images/default/background/bg_footer_title_800.jpg) no-repeat left bottom;
+}

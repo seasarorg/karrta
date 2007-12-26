@@ -1,84 +1,106 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<meta http-equiv="Content-Language" content="ja" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<meta name="keywords" content="karrta, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Framework" />
-<meta name="description" content="karrta" />
-<title>karrta</title>
-<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
-<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
-</head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Karrta - Web Collaboraiton Mind Map Application</title>
+    <link href="favicon.ico" rel="shortcut icon" />
+    <link rel="stylesheet" href="css/default/import.css?version=20071225" type="text/css" media="all" />
+    <script src="js/prototype.js"                  type="text/javascript"></script>
+    <script src="js/scriptaculous.js?load=effects" type="text/javascript"></script>
+    <script src="js/lightbox.js"                   type="text/javascript"></script>
+  </head>
+  <body class="onecolumn">
+    <!--                -->
+    <!-- Contents Body  -->
+    <!--                -->
+    <div id="contentBody">
+      <div id="container">
+        <!--             -->
+        <!-- Header      -->
+        <!--             -->
+        <div id="header">
+          <h1 id="header_title">
+            <a class="button" href="/">
+              <img src="images/default/background/header_space.gif" id="navigation_bar_logo"/>
+            </a>
+          </h1>
+          <ul id="action_container_ul">
+            <li title="Home" id="sel">
+              <a href="index.html">Home</a>
+            </li>
+            <li title="Screencast">
+              <!--<a href="screencast.html">-->Screencast<!--</a>-->
+            </li>
+            <li title="Docs">
+              <!--<a href="screencast.html">-->Docs<!--</a>-->
+            </li>
+            <li title="Downloads">
+              <!--<a href="screencast.html">-->Downloads<!--</a>-->
+            </li>
+          </ul>
+          <ul id="menuBar_ul">
+            <li title="Information">
+              <a href="#Information">Information</a>
+            </li>
+            <li title="Overview">
+              <a href="#overview">Overview</a>
+            </li>
+          </ul>
+        </div>
 
-<body>
+        <!--              -->
+        <!-- Content      -->
+        <!--              -->
+        <div id="content" class="guide">
+          <h2 id="Information">Information</h2>
+          <dl class="infoList">
+            <dt>2007-12-25 :</dt>
+            <dd>Start Up!<br/>
+              <div>
+                <object width="425" height="355" data="http://s3.amazonaws.com/slideshare/ssplayer.swf?id=210827&doc=karrta-start-up-1198406589388111-2" type="application/x-shockwave-flash"><param value="http://s3.amazonaws.com/slideshare/ssplayer.swf?id=210827&doc=karrta-start-up-1198406589388111-2" name="movie"/></object>
+              </div>
+            </dd>
+          </dl>
+          <h3 id="Milestones">[ Milestones ]</h3>
+          <dl class="noticeList">
+            <dt>vre 0.3.0:&nbsp;</dt>
+            <dd>2008/04/初旬 - 初版リリース予定</dd>
+          </dl>
+          
+          <h2 id="overview">Overview</h2>
+          <p><strong>Karrta</strong> (カルタ - フィンランド語:地図) は、ウェブで共有する<a href="http://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%83%B3%E3%83%89%E3%83%9E%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0" target="_blank">マインドマップ</a>・アプリケーションです.</p>
+          <h3>[ Functions ]</h3>
+            <ol>
+              <li>WEB-Base
 
-<div id="wrapper">
+                <p>Karrtaは、ウェブブラウザで動作するマインドマップ・アプリケーションです.</p>
+              </li>
+              <li>Collboration and Share
+                <p>Karrtaは、一人でも複数の人で協力しても、一つのマインドマップを作成することができます.</p>
+                <p>Karrtaで作成したマインドマップは、ウェブで公開し、不特定多数の人と共有することができます.</p>
+                <p><font color="#999">※<i>アクセス権設定によりメンバー内での共有も可能</i></font></p>
+                <p>Karrtaで作成したマインドマップは、PNG画像ファイル、XMLファイルとしてダウンロードすることができます.</p>
+              </li>
+              <li>Information HUB
+                <p>Karrtaは、テキスト情報のみならず、RSS、XML、JSON、Image、Sound、Movieを取り込み、マインドマップを作成することができます.</p>
+              </li>
+              <li>Mash Up
+                <p>Karrtaは、最初からマッシュアップ基盤が実装されてます.</p>
+                <p>Karrtaに、あらかじめ用意されているAPIを使う事で、自分独自のアプリケーションをつくることができます.</p>
+                <p>Karrtaは、最初から<a href="http://tugboat-gtd.sandbox.seasar.org" target="_blank">tugboat.GTD</a>と連携する仕組みが用意されてます。</p>
+              </li>
+            </ol>
+            <p class="gotop"><a href="#">[Top]</a></p>
+          
+        </div>
 
-<div id="header">
-
-<div class="line"><span class="hide">spacer</span></div>
-
-<div id="logo"><h2 id="h01" class="hide">The Seasar Foundation Project Site</h2><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Project" width="390" height="180" /></div>
-
-<div id="tool">
-
-<h2><a href="http://search.seasar.org/">Site Search</a></h2>
-
-<form id="search" name="search" action="http://search.seasar.org/">
-<div>
-	<input id="search_phrase" type="text" name="phrase" size="20" />
-	<input type="hidden" name="perpage" value="30" />
-	<input type="hidden" name="enc" value="UTF-8" />
-	<input id="search_go" type="submit" value="Search" />
-</div>
-</form>
-
-<h2>Seasar Banner</h2>
-
-<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
-
-</div>
-
-</div><!-- header -->
-
-
-<div id="contents_left">
-
-<h2>Menu</h2>
-
-<ul>
-	<li><a href="http://www.seasar.org/">Project Site</a></li>
-</ul>
-
-</div><!-- contents_left -->
-
-<div id="contents_center">
-
-<div id="article">
-
-<div class="section">
-
-<h2>Welcome to the "karrta" project.</h2>
-
-<p>This page is generated by admin-scripts.<br />
-This page is managed in SVN repository, URL is<br />
-<a href="https://www.seasar.org/svn/sandbox/karrta/trunk/www/index.html">https://www.seasar.org/svn/sandbox/karrta/trunk/www/index.html</a></p>
-
-</div><!-- section -->
-
-</div><!-- article -->
-
-</div><!-- contents_center -->
-
-<div id="footer">
-<address>&copy; Copyright The Seasar Foundation and the others 2006, all rights reserved.</address>
-<div class="line"><span class="hide">spacer</span></div>
-</div><!-- footer -->
-
-</div><!-- wrapper -->
-
-</body>
+        <!--        -->
+        <!-- Footer -->
+        <!--        -->
+        <div id="footer">
+          <p>&copy;&nbsp;Karrta</p>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
-
