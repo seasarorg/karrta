@@ -1,0 +1,100 @@
+/*
+ * Copyright 2004-2008 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+package org.seasar.karrta.jcr.repository;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.jcr.Repository;
+
+import org.apache.jackrabbit.api.JackrabbitRepository;
+import org.apache.jackrabbit.core.TransientRepository;
+import org.apache.jackrabbit.core.config.ConfigurationException;
+import org.apache.jackrabbit.core.config.RepositoryConfig;
+import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
+
+/**
+ * 
+ * @author yosuke
+ * 
+ */
+public class JcrRepository {
+
+    /** Default repository configuration file. */
+    private static final String DEFAULT_CONF_FILE = "repository.xml";
+    /** Default repository directory. */
+    private static final String DEFAULT_REP_DIR = ".";
+
+    public JcrRepository() {}
+
+    /** confuguration file name */
+    private String confFileName_ = "";
+    /** repository home directory */
+    private String homeDir_ = "";
+
+    /**
+     * initialize repository.
+     * 
+     * @param confFileName
+     * @param homeDir
+     */
+    public void init(String confFileName, String homeDir) {
+        this.confFileName_ = confFileName;
+        this.homeDir_ = homeDir;
+    }
+
+    /**
+     * destroy repository.
+     */
+    public void destroy() {
+        if (this.repository_ instanceof JackrabbitRepository) {
+            ((JackrabbitRepository) this.repository_).shutdown();
+        }
+    }
+
+    /** repository */
+    protected Repository repository_;
+
+    /**
+     * create repository.
+     * 
+     * @return
+     * @throws JcrRepositoryRuntimeException
+     */
+    public Repository createRepository() throws JcrRepositoryRuntimeException {
+        try {
+            if (this.repository_ == null) {
+                if (this.confFileName_ == null || "".equals(this.confFileName_)) {
+                    this.confFileName_ = DEFAULT_CONF_FILE;
+                }
+                if (this.homeDir_ == null || "".equals(this.homeDir_)) {
+                    this.homeDir_ = DEFAULT_REP_DIR;
+                }
+                RepositoryConfig repositoryConfig = RepositoryConfig.create(this.confFileName_,
+                    new File(this.homeDir_).getAbsolutePath());
+
+                this.repository_ = new TransientRepository(repositoryConfig);
+            }
+            return repository_;
+
+        } catch (ConfigurationException e) {
+            throw new JcrRepositoryRuntimeException("", e);
+        } catch (IOException e) {
+            throw new JcrRepositoryRuntimeException("", e);
+        }
+    }
+
+}
