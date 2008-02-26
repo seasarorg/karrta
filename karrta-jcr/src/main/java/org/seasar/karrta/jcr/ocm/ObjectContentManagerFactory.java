@@ -26,6 +26,7 @@ import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
 import org.apache.jackrabbit.ocm.mapper.Mapper;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.AnnotationMapperImpl;
+import org.apache.jackrabbit.ocm.query.QueryManager;
 import org.seasar.karrta.jcr.exception.JcrNotMappingClassException;
 import org.seasar.karrta.jcr.exception.JcrNotSessionException;
 
@@ -33,63 +34,71 @@ import org.seasar.karrta.jcr.exception.JcrNotSessionException;
  * object content manager factory.
  * 
  * @author yosukehara
- *
+ * 
  */
 public class ObjectContentManagerFactory {
-    /** logger */
-    private static final Log logger_ = LogFactory.getLog(ObjectContentManagerFactory.class);
-    
-    public ObjectContentManagerFactory() {}
+	/** logger */
+	private static final Log logger_ = LogFactory.getLog(ObjectContentManagerFactory.class);
 
-    /**
-     * @param session
-     */
-    public ObjectContentManagerFactory(Session session) {
+	public ObjectContentManagerFactory() {
+	}
 
-    }
+	/**
+	 * @param session
+	 */
+	public ObjectContentManagerFactory(Session session) {
 
-    /** session */
-    private Session session_;
+	}
 
-    public void setSession(Session session) {
-        this.session_ = session;
-    }
+	/** session */
+	private Session session_;
 
-    /** mapping class list */
-    List<Class> mappingClasses_;
-    
-    public void setMappingClasses(List<Class> mappingClasses) {
-        this.mappingClasses_ = mappingClasses;
-    }
+	public synchronized void setSession(Session session) {
+		this.session_ = session;
+	}
 
-    public synchronized void addMappingClasses(Class clazz) {
-        if (this.mappingClasses_ == null) {
-            this.mappingClasses_ = new ArrayList<Class>();
-        }
-        this.mappingClasses_.add(clazz);
-    }
+	/** mapping class list */
+	List<Class> mappingClasses_;
 
-    /**
-     * get object content manager(ocm).
-     * 
-     * @return
-     */
-    public ObjectContentManager getObjectContentManager()
-        throws JcrNotSessionException, JcrNotMappingClassException {
+	public synchronized void setMappingClasses(List<Class> mappingClasses) {
+		this.mappingClasses_ = mappingClasses;
+	}
 
-        if (this.session_ == null) {
-            throw new JcrNotSessionException("");
-        }
-        if (this.mappingClasses_ == null || this.mappingClasses_.size() == 0) {
-            throw new JcrNotMappingClassException("");
-        }
-        
-        logger_.debug("::: ObjectContentManagerFactory#getObjectContentManager :::");
-        
-        Mapper mapper = new AnnotationMapperImpl(this.mappingClasses_);
-        ObjectContentManager ocm = new ObjectContentManagerImpl(this.session_, mapper);
+	public synchronized void addMappingClasses(Class clazz) {
+		if (this.mappingClasses_ == null) {
+			this.mappingClasses_ = new ArrayList<Class>();
+		}
+		this.mappingClasses_.add(clazz);
+	}
 
-        return ocm;
-    }
+	/** query manager */
+	QueryManager queryManager;
+
+	public synchronized QueryManager getQueryManager() {
+		return queryManager;
+	}
+
+	/**
+	 * get object content manager(ocm).
+	 * 
+	 * @return
+	 */
+	public synchronized ObjectContentManager getObjectContentManager()
+			throws JcrNotSessionException, JcrNotMappingClassException {
+
+		if (this.session_ == null) {
+			throw new JcrNotSessionException("");
+		}
+		if (this.mappingClasses_ == null || this.mappingClasses_.size() == 0) {
+			throw new JcrNotMappingClassException("");
+		}
+		Mapper mapper = new AnnotationMapperImpl(this.mappingClasses_);
+		ObjectContentManager ocm = new ObjectContentManagerImpl(this.session_,
+				mapper);
+
+		this.queryManager = ocm.getQueryManager();
+
+		return ocm;
+	}
 
 }

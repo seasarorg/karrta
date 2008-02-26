@@ -16,11 +16,13 @@
 package org.seasar.karrta.jcr.register;
 
 import java.io.File;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 import org.seasar.framework.container.autoregister.AbstractComponentAutoRegister;
 import org.seasar.framework.container.autoregister.ClassPattern;
 import org.seasar.framework.util.ClassUtil;
@@ -111,6 +113,17 @@ public class JcrNodeComponentAutoRegister extends AbstractComponentAutoRegister 
                 
                 try {
                     Class clazz = Class.forName(ClassUtil.concatName(packageName, shortClassName));
+                    
+                    boolean hasNodeAnnotation = false;
+                    Annotation[] annotations = clazz.getAnnotations();
+                    for (Annotation a : annotations){
+                    	if (a instanceof Node) {
+                    		hasNodeAnnotation = true;
+                    		break;
+                    	}
+                    }
+                    if (! hasNodeAnnotation) continue;
+                    
                     this.jcrNodeClasses.add(clazz);
                     logger_.debug("::: jcrNodeClass:[" + clazz.getName() + "]");
                     

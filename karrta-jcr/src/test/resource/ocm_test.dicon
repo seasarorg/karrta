@@ -5,7 +5,7 @@
   <include path="jcr/jcr.dicon"/>
 
   <!-- book.ocm -->
-  <component class="org.seasar.karrta.jcr.crao.BookOcm">
+  <component class="org.seasar.karrta.jcr.ocm.BookOcm">
     <aspect>ocm_interceptor</aspect>
   </component>
 

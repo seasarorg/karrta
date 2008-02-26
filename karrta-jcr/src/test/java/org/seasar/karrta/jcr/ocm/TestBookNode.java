@@ -3,7 +3,6 @@ package org.seasar.karrta.jcr.ocm;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.karrta.jcr.crao.BookOcm;
 import org.seasar.karrta.jcr.node.BookNode;
 
 public class TestBookNode extends S2TestCase {

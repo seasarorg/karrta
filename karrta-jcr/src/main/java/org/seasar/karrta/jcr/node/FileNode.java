@@ -18,6 +18,7 @@ package org.seasar.karrta.jcr.node;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Bean;
+import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 /**
  * jcr file node.
@@ -25,6 +26,7 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Bean;
  * @author yosukehara
  * 
  */
+@Node(jcrType="nt:file")
 public class FileNode {
 
     @Bean(jcrName = "jcr:content")

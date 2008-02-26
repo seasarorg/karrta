@@ -21,6 +21,7 @@ import java.util.Calendar;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
+import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 /**
  * jcr resource node.
@@ -28,6 +29,7 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
  * @author yosukehara
  * 
  */
+@Node(jcrType="nt:resource")
 public class ResourceNode {
 
     @Field(jcrName = "jcr:mimeType")
