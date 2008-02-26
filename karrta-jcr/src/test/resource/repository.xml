@@ -48,13 +48,13 @@
     <Workspaces rootPath="${rep.home}/workspaces" defaultWorkspace="default"/>
     <Workspace name="Jackrabbit Core">
         <FileSystem class="org.apache.jackrabbit.core.fs.db.DbFileSystem">
-			<param name="driver"             value="org.postgresql.Driver"/>
+            <param name="driver"             value="org.postgresql.Driver"/>
             <param name="url"                value="jdbc:postgresql://localhost:5432/tugboat_gtd?charSet=utf8"/>
             <param name="schema"             value="postgresql"/>
             <param name="user"               value="tangerine"/>
             <param name="password"           value="dream"/>
             <param name="schemaObjectPrefix" value="jcr_ws_fs_"/>
-	    </FileSystem>
+        </FileSystem>
         
         <PersistenceManager class="org.apache.jackrabbit.core.state.db.SimpleDbPersistenceManager">
             <param name="driver"             value="org.postgresql.Driver"/>
@@ -72,18 +72,18 @@
         </SearchIndex>
         -->
         <SearchIndex class="org.apache.jackrabbit.core.query.lucene.SearchIndex">
-	      <param name="path" value="${wsp.home}/index"/>
-	      <param name="useCompoundFile"       value="true"/>
-	      <param name="minMergeDocs"          value="100"/>
-	      <param name="volatileIdleTime"      value="3"/>
-	      <param name="maxMergeDocs"          value="100000"/>
-	      <param name="mergeFactor"           value="10"/>
-	      <param name="bufferSize"            value="10"/>
-	      <param name="cacheSize"             value="1000"/>
-	      <param name="forceConsistencyCheck" value="false"/>
-	      <param name="autoRepair"            value="true"/>
-	      <param name="analyzer"              value="org.apache.lucene.analysis.ja.JapaneseAnalyzer"/>
-	    </SearchIndex>
+          <param name="path" value="${wsp.home}/index"/>
+          <param name="useCompoundFile"       value="true"/>
+          <param name="minMergeDocs"          value="100"/>
+          <param name="volatileIdleTime"      value="3"/>
+          <param name="maxMergeDocs"          value="100000"/>
+          <param name="mergeFactor"           value="10"/>
+          <param name="bufferSize"            value="10"/>
+          <param name="cacheSize"             value="1000"/>
+          <param name="forceConsistencyCheck" value="false"/>
+          <param name="autoRepair"            value="true"/>
+          <param name="analyzer"              value="org.apache.lucene.analysis.ja.JapaneseAnalyzer"/>
+        </SearchIndex>
     </Workspace>
 
     <!--
@@ -91,13 +91,13 @@
     -->
     <Versioning rootPath="${rep.home}/version">
         <FileSystem class="org.apache.jackrabbit.core.fs.db.DbFileSystem">
-			<param name="driver"             value="org.postgresql.Driver"/>
+            <param name="driver"             value="org.postgresql.Driver"/>
             <param name="url"                value="jdbc:postgresql://localhost:5432/tugboat_gtd?charSet=utf8"/>
             <param name="schema"             value="postgresql"/>
             <param name="user"               value="tangerine"/>
             <param name="password"           value="dream"/>
             <param name="schemaObjectPrefix" value="jcr_ws_ver_fs_"/>
-	    </FileSystem>
+        </FileSystem>
 
         <PersistenceManager class="org.apache.jackrabbit.core.state.db.SimpleDbPersistenceManager">
             <param name="driver"             value="org.postgresql.Driver"/>

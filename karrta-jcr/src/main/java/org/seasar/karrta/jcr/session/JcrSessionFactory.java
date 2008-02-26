@@ -18,10 +18,11 @@ package org.seasar.karrta.jcr.session;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
-import javax.jcr.Credentials;
 import javax.jcr.LoginException;
 import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Repository;
@@ -32,6 +33,8 @@ import javax.jcr.Workspace;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.nodetype.NodeTypeManager;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.core.nodetype.InvalidNodeTypeDefException;
 import org.apache.jackrabbit.core.nodetype.NodeTypeDef;
 import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
@@ -45,8 +48,15 @@ import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
  * 
  */
 public class JcrSessionFactory {
+    /** logger */
+    private static final Log logger_ = LogFactory.getLog(JcrSessionFactory.class);
+
     /** default workspace name */
     private static final String DEFAULT_WORKSPACE_NAME = "default";
+    /** default user */
+    private static final String DEFAULT_USER = "defaultuser";
+    /** default password */
+    private static final String DEFAULT_PASSWORD = "defaultpassword";
 
     public JcrSessionFactory() {}
 
@@ -55,10 +65,9 @@ public class JcrSessionFactory {
      * @param workspaceName
      * @param credentials
      */
-    public JcrSessionFactory(Repository repository, String workspaceName, Credentials credentials) {
+    public JcrSessionFactory(Repository repository, String workspaceName) {
         this.repository_ = repository;
         this.workspaceName_ = workspaceName;
-        this.credentials_ = credentials;
     }
 
     /** repository */
@@ -79,31 +88,44 @@ public class JcrSessionFactory {
         this.workspaceName_ = workspaceName;
     }
 
-    /** credentials */
-    private Credentials credentials_;
+    /** user */
+    String user_;
 
-    public Credentials getCredentials() {
-        return credentials_;
+    public String getUser() {
+        return user_;
     }
 
-    public void setCredentials(Credentials credentials) {
-        this.credentials_ = credentials;
+    public void setUser(String user) {
+        this.user_ = user;
     }
 
-    /** node type files * */
-    private String[] nodeTypeFiles_;
+    /** password */
+    String password_;
 
-    public void setNodeTypeFiles(String[] nodeTypeFiles) {
-        this.nodeTypeFiles_ = nodeTypeFiles;
+    public String getPassword() {
+        return password_;
     }
 
+    public void setPassword(String password) {
+        this.password_ = password;
+    }
+
+    /** namespaces */
     private Properties namespaces_;
 
     public void setNamespaces(Properties namespaces) {
         this.namespaces_ = namespaces;
     }
 
+    public synchronized void addNamespace(String namespace, String url) {
+        if (this.namespaces_ == null) {
+            this.namespaces_ = new Properties();
+        }
+        this.namespaces_.put(namespace, url);
+    }
+
     /**
+     * get session.
      * 
      * @return
      */
@@ -112,12 +134,20 @@ public class JcrSessionFactory {
             if (this.workspaceName_ == null || "".equals(this.workspaceName_)) {
                 this.workspaceName_ = DEFAULT_WORKSPACE_NAME;
             }
-            if (this.credentials_ == null) {
-                this.credentials_ = new SimpleCredentials("username", "password".toCharArray());
+            if (this.user_ == null || "".equals(this.user_)) {
+                this.user_ = DEFAULT_USER;
             }
-            Session session = this.repository_.login(this.credentials_, this.workspaceName_);
-            this.registerNodeType(session, this.nodeTypeFiles_);
+            if (this.password_ == null || "".equals(this.password_)) {
+                this.password_ = DEFAULT_PASSWORD;
+            }
+
+            logger_.debug("::: JcrSessionFactory#getSession :::");
+
+            Session session = this.repository_.login(new SimpleCredentials(this.user_,
+                this.password_.toCharArray()), this.workspaceName_);
+
             this.registerNamespaces(session, this.namespaces_);
+            this.registerNodeType(session);
             this.addEventListeners(session);
 
             return session;
@@ -132,6 +162,18 @@ public class JcrSessionFactory {
     }
 
     /**
+     * get node type files.
+     * 
+     * @return
+     */
+    private String[] getNodeTypeFiles() {
+        List<String> files = new ArrayList<String>();
+        files.add(this.getClass().getResource("ocm-discriminator.xml").getPath());
+
+        return files.toArray(new String[files.size()]);
+    }
+
+    /**
      * add event listeners.
      * 
      * @param session
@@ -140,6 +182,7 @@ public class JcrSessionFactory {
      */
     protected void addEventListeners(Session session) throws JcrRepositoryRuntimeException {
     // add event listener.
+    //
     }
 
     /**
@@ -147,8 +190,9 @@ public class JcrSessionFactory {
      * 
      * @throws JcrRepositoryRuntimeException
      */
-    private void registerNodeType(Session session, String[] nodeTypeFiles)
-        throws JcrRepositoryRuntimeException {
+    private void registerNodeType(Session session) throws JcrRepositoryRuntimeException {
+        String[] nodeTypeFiles = this.getNodeTypeFiles();
+
         if (nodeTypeFiles == null || nodeTypeFiles.length == 0) return;
         try {
             Workspace workspace = session.getWorkspace();
@@ -190,7 +234,7 @@ public class JcrSessionFactory {
             String[] jcrNamespaces = session.getWorkspace().getNamespaceRegistry().getPrefixes();
 
             for (Enumeration<?> e = namespaces.propertyNames(); e.hasMoreElements();) {
-                String namespace = (String)e.nextElement();
+                String namespace = (String) e.nextElement();
                 String url = namespaces.getProperty(namespace);
 
                 boolean isCreateNamespace = true;
@@ -215,16 +259,14 @@ public class JcrSessionFactory {
      * 
      * @throws JcrRepositoryRuntimeException
      */
-    protected void unregisterNodeType() throws JcrRepositoryRuntimeException {
-    }
+    protected void unregisterNodeType() throws JcrRepositoryRuntimeException {}
 
     /**
      * register namespaces.
      * 
      * @throws JcrRepositoryRuntimeException
      */
-    protected void unregisterNamespaces() throws JcrRepositoryRuntimeException {
-    }
+    protected void unregisterNamespaces() throws JcrRepositoryRuntimeException {}
 
     /**
      * destroy session factory.
@@ -237,6 +279,8 @@ public class JcrSessionFactory {
     public void destroy() throws JcrRepositoryRuntimeException {
         this.unregisterNodeType();
         this.unregisterNamespaces();
+
+        logger_.debug("::: JcrSessionFactory#destroy :::");
     }
 
 }

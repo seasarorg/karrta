@@ -2,25 +2,47 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN" 
     "http://www.seasar.org/dtd/components24.dtd">
 <components>
+  <include path="jcr/nodeRegister.dicon" />
+
   <!-- repository -->
   <component name="repository" class="org.seasar.karrta.jcr.repository.JcrRepository">
     <initMethod name="init">
-      <arg>"${repository.xml}"</arg>
-      <arg>"${home.dir}"</arg>
+      <arg>"/Users/yosukehara/dev/project/karrta-jcr/src/main/webapp/WEB-INF/classes/repository.xml"</arg>
+      <arg>"/Users/yosukehara/dev/project/jackrabbit-research-repository"</arg>
     </initMethod>
     
     <destroyMethod name="destroy"/>
   </component>
   
-  <!-- session -->
-  <component name="session_factory" class="org.seasar.karrta.jcr.session.JcrSessionFactory">
+  <!-- session factory -->
+  <component
+    name="session_factory" class="org.seasar.karrta.jcr.session.JcrSessionFactory"
+    instance="prototype">
     <property name="repository">repository.createRepository()</property>
-    <property name="workspaceName">"default"</property>
-    <property name="credentials">null</property>
-    <property name="nodeTypeFiles">null</property>
-    <property name="namespaces">null</property>
+    
+    <property name="workspaceName">null</property>
+    <property name="user">"defaultuser"</property>
+    <property name="password">"defaultpassword"</property>
+    
+    <initMethod name="addNamespace">
+      <arg>"ocm"</arg><arg>"http://jackrabbit.apache.org/ocm"</arg>
+    </initMethod>
     
     <destroyMethod name="destroy"/>
+  </component>
+  
+  <!-- ocm factory -->
+  <component
+    name="ocm_factory" class="org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory"
+    instance="prototype">
+    
+    <property name="session">session_factory.getSession()</property>
+    <property name="mappingClasses">node_register.getJcrNodeClasses()</property>
+  </component>
+
+  <!-- ocm interceptor -->
+  <component name="ocm_interceptor" class="org.seasar.karrta.jcr.interceptor.OcmInterceptor" >
+    <property name="objectContentManagerFactory">ocm_factory</property>
   </component>
 
 </components>

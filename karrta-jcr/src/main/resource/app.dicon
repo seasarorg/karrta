@@ -2,6 +2,6 @@
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
     "http://www.seasar.org/dtd/components21.dtd">
 <components>
-    <include path="creator.dicon"/>
-    <include path="jcr/jcr.dicon"/>
+  <include path="creator.dicon" />
+  <include path="jcr/jcr.dicon" />
 </components>

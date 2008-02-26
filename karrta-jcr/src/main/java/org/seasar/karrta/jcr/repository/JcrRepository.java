@@ -20,6 +20,8 @@ import java.io.IOException;
 
 import javax.jcr.Repository;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.api.JackrabbitRepository;
 import org.apache.jackrabbit.core.TransientRepository;
 import org.apache.jackrabbit.core.config.ConfigurationException;
@@ -32,7 +34,9 @@ import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
  * 
  */
 public class JcrRepository {
-
+    /** logger */
+    private static final Log logger_ = LogFactory.getLog(JcrRepository.class);
+        
     /** Default repository configuration file. */
     private static final String DEFAULT_CONF_FILE = "repository.xml";
     /** Default repository directory. */
@@ -54,12 +58,19 @@ public class JcrRepository {
     public void init(String confFileName, String homeDir) {
         this.confFileName_ = confFileName;
         this.homeDir_ = homeDir;
+        
+        logger_.debug("::: JcrRepository#init :::");
+        logger_.debug("::: confFileName:[" + confFileName + "] :::");
+        logger_.debug(":::      homeDir:[" + homeDir      + "] :::");
+        logger_.debug("---");
     }
 
     /**
      * destroy repository.
      */
     public void destroy() {
+        logger_.debug("::: JcrRepository#destroy :::");
+        
         if (this.repository_ instanceof JackrabbitRepository) {
             ((JackrabbitRepository) this.repository_).shutdown();
         }
@@ -75,6 +86,8 @@ public class JcrRepository {
      * @throws JcrRepositoryRuntimeException
      */
     public Repository createRepository() throws JcrRepositoryRuntimeException {
+        logger_.debug("::: JcrRepository#createRepository :::");
+        
         try {
             if (this.repository_ == null) {
                 if (this.confFileName_ == null || "".equals(this.confFileName_)) {
