@@ -27,6 +27,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
 
+/**
+ * jcr utils.
+ * 
+ * @author yosukehara
+ *
+ */
 public class JcrUtils {
     /** logger */
     private static final Log logger_ = LogFactory.getLog(JcrUtils.class);

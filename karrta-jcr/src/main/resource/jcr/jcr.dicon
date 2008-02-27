@@ -7,8 +7,9 @@
   <!-- repository -->
   <component name="repository" class="org.seasar.karrta.jcr.repository.JcrRepository">
     <initMethod name="init">
-      <arg>"/Users/yosukehara/dev/project/karrta-jcr/src/main/webapp/WEB-INF/classes/repository.xml"</arg>
-      <arg>"/Users/yosukehara/dev/project/jackrabbit-research-repository"</arg>
+      <arg>@org.seasar.karrta.jcr.commons.SystemConfiguration@getValue("karrta.jcr.repository.config_xml")</arg>
+      <arg>@org.seasar.karrta.jcr.commons.SystemConfiguration@getValue("karrta.jcr.repository.home_dir")</arg>
+      <arg>@org.seasar.karrta.jcr.commons.SystemConfiguration@getValue("karrta.jcr.search.sen.home_dir")</arg>
     </initMethod>
     
     <destroyMethod name="destroy"/>

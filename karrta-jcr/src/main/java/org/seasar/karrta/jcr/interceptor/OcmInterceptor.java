@@ -18,7 +18,6 @@ package org.seasar.karrta.jcr.interceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.query.Query;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 import org.seasar.karrta.jcr.annotation.Ocm;

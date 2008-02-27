@@ -35,33 +35,38 @@ import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
  */
 public class JcrRepository {
     /** logger */
-    private static final Log logger_ = LogFactory.getLog(JcrRepository.class);
-        
+    private Log logger_ = LogFactory.getLog(JcrRepository.class);
+
+    public JcrRepository() {}
+    
     /** Default repository configuration file. */
     private static final String DEFAULT_CONF_FILE = "repository.xml";
+    
     /** Default repository directory. */
     private static final String DEFAULT_REP_DIR = ".";
 
-    public JcrRepository() {}
-
-    /** confuguration file name */
-    private String confFileName_ = "";
+    /** configuration file name */
+    private String repositoryConfigFile_ = "";
+    
     /** repository home directory */
-    private String homeDir_ = "";
-
+    private String repositoryHomeDir_ = "";
+    
     /**
      * initialize repository.
      * 
-     * @param confFileName
-     * @param homeDir
+     * @param repositoryConfigFile
+     * @param repositoryHomeDir
+     * @param senHomeDir
      */
-    public void init(String confFileName, String homeDir) {
-        this.confFileName_ = confFileName;
-        this.homeDir_ = homeDir;
+    public void init(String repositoryConfigFile, String repositoryHomeDir, String senHomeDir) {
+        this.repositoryConfigFile_ = repositoryConfigFile;
+        this.repositoryHomeDir_ = repositoryHomeDir;
+        System.setProperty("sen.home", senHomeDir);
         
         logger_.debug("::: JcrRepository#init :::");
-        logger_.debug("::: confFileName:[" + confFileName + "] :::");
-        logger_.debug(":::      homeDir:[" + homeDir      + "] :::");
+        logger_.debug("::: repositoryConfigFile:[" + repositoryConfigFile + "] :::");
+        logger_.debug(":::    repositoryHomeDir:[" + repositoryHomeDir    + "] :::");
+        logger_.debug(":::           senHomeDir:[" + senHomeDir           + "] :::");
         logger_.debug("---");
     }
 
@@ -70,7 +75,7 @@ public class JcrRepository {
      */
     public void destroy() {
         logger_.debug("::: JcrRepository#destroy :::");
-        
+
         if (this.repository_ instanceof JackrabbitRepository) {
             ((JackrabbitRepository) this.repository_).shutdown();
         }
@@ -87,17 +92,17 @@ public class JcrRepository {
      */
     public Repository createRepository() throws JcrRepositoryRuntimeException {
         logger_.debug("::: JcrRepository#createRepository :::");
-        
+
         try {
             if (this.repository_ == null) {
-                if (this.confFileName_ == null || "".equals(this.confFileName_)) {
-                    this.confFileName_ = DEFAULT_CONF_FILE;
+                if (this.repositoryConfigFile_ == null || "".equals(this.repositoryConfigFile_)) {
+                    this.repositoryConfigFile_ = DEFAULT_CONF_FILE;
                 }
-                if (this.homeDir_ == null || "".equals(this.homeDir_)) {
-                    this.homeDir_ = DEFAULT_REP_DIR;
+                if (this.repositoryHomeDir_ == null || "".equals(this.repositoryHomeDir_)) {
+                    this.repositoryHomeDir_ = DEFAULT_REP_DIR;
                 }
-                RepositoryConfig repositoryConfig = RepositoryConfig.create(this.confFileName_,
-                    new File(this.homeDir_).getAbsolutePath());
+                RepositoryConfig repositoryConfig = RepositoryConfig.create(this.repositoryConfigFile_,
+                    new File(this.repositoryHomeDir_).getAbsolutePath());
 
                 this.repository_ = new TransientRepository(repositoryConfig);
             }

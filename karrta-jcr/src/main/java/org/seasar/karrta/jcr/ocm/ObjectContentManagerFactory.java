@@ -20,8 +20,6 @@ import java.util.List;
 
 import javax.jcr.Session;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
 import org.apache.jackrabbit.ocm.mapper.Mapper;
@@ -37,8 +35,6 @@ import org.seasar.karrta.jcr.exception.JcrNotSessionException;
  * 
  */
 public class ObjectContentManagerFactory {
-	/** logger */
-	private static final Log logger_ = LogFactory.getLog(ObjectContentManagerFactory.class);
 
 	public ObjectContentManagerFactory() {
 	}
