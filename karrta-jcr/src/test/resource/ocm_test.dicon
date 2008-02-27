@@ -3,12 +3,17 @@
     "http://www.seasar.org/dtd/components21.dtd">
 <components>
   <include path="configuration.dicon" />
-  <include path="jcr/jcr.dicon"       />
+  <include path="jcr/ocm.dicon"       />
 
-  <!-- book.ocm -->
-  <component class="org.seasar.karrta.jcr.ocm.BookOcm">
-    <aspect>ocm_interceptor</aspect>
+  <!-- book ocm -->
+  <component name="book_ocm" class="org.seasar.karrta.jcr.ocm.BookOcm">
+    <aspect>ocm.interceptor</aspect>
   </component>
-
-
+  
+  <!-- book logic -->
+  <component class="org.seasar.karrta.jcr.logic.BookLogic">
+    <property name="bookOcm">book_ocm</property>
+    <property name="queryManager">ocm.factory.getQueryManager()</property>
+  </component>  
+  
 </components>

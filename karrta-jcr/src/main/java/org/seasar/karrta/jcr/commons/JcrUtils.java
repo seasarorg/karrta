@@ -58,71 +58,41 @@ public class JcrUtils {
                 if (property.getDefinition().isMultiple()) {
                     Value[] values = property.getValues();
                     for (int i = 0; i < values.length; i++) {
-                        logger_.debug(property.getPath());
-                        System.out.println(" - [" + values[i].getString() + "]");
+                        logger_.debug(property.getPath() + " - [" + values[i].getString() + "]");
                     }
                 } else {
                     logger_.debug(property.getPath());
 
                     switch (property.getType()) {
                         case PropertyType.STRING:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_STRING);
-                            logger_.debug("]");
-                            logger_.debug(" = " + property.getString());
+                            logger_.debug(":[" + PropertyType.TYPENAME_STRING    + "]" + " = " + property.getString());
                             break;
                         case PropertyType.BINARY:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_BINARY);
-                            logger_.debug("]");
+                            logger_.debug(":[" + PropertyType.TYPENAME_BINARY    + "]");
                             break;
                         case PropertyType.LONG:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_LONG);
-                            logger_.debug("]");
-                            logger_.debug(" = " + property.getString());
+                            logger_.debug(":[" + PropertyType.TYPENAME_LONG      + "]" + " = " + property.getString());
                             break;
                         case PropertyType.DOUBLE:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_DOUBLE);
-                            logger_.debug("]");
-                            logger_.debug(" = " + property.getString());
+                            logger_.debug(":[" + PropertyType.TYPENAME_DOUBLE    + "]" + " = " + property.getString());
                             break;
                         case PropertyType.DATE:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_DATE);
-                            logger_.debug("]");
-                            logger_.debug(" = " + property.getString());
+                            logger_.debug(":[" + PropertyType.TYPENAME_DATE      + "]" + " = " + property.getString());
                             break;
                         case PropertyType.BOOLEAN:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_BOOLEAN);
-                            logger_.debug("]");
-                            logger_.debug(" = " + property.getString());
+                            logger_.debug(":[" + PropertyType.TYPENAME_BOOLEAN   + "]" + " = " + property.getString());
                             break;
                         case PropertyType.NAME:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_NAME);
-                            logger_.debug("]");
-                            logger_.debug(" = " + property.getString());
+                            logger_.debug(":[" + PropertyType.TYPENAME_NAME      + "]" + " = " + property.getString());
                             break;
                         case PropertyType.PATH:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_PATH);
-                            logger_.debug("]");
-                            logger_.debug(" = " + property.getString());
+                            logger_.debug(":[" + PropertyType.TYPENAME_PATH      + "]" + " = " + property.getString());
                             break;
                         case PropertyType.REFERENCE:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_REFERENCE);
-                            logger_.debug("]");
-                            logger_.debug(" = " + property.getString());
+                            logger_.debug(":[" + PropertyType.TYPENAME_REFERENCE + "]" + " = " + property.getString());
                             break;
                         case PropertyType.UNDEFINED:
-                            logger_.debug(":[");
-                            logger_.debug(PropertyType.TYPENAME_UNDEFINED);
-                            logger_.debug("]");
-                            logger_.debug(" = " + property.getString());
+                            logger_.debug(":[" + PropertyType.TYPENAME_UNDEFINED + "]" + " = " + property.getString());
                             break;
                     }
                 }

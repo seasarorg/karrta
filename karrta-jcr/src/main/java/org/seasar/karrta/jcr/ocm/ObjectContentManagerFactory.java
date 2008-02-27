@@ -15,7 +15,6 @@
  */
 package org.seasar.karrta.jcr.ocm;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Session;
@@ -35,7 +34,7 @@ import org.seasar.karrta.jcr.exception.JcrNotSessionException;
  * 
  */
 public class ObjectContentManagerFactory {
-
+    
 	public ObjectContentManagerFactory() {
 	}
 
@@ -49,6 +48,10 @@ public class ObjectContentManagerFactory {
 	/** session */
 	private Session session_;
 
+	public Session getSession() {
+	    return session_;
+	}
+	
 	public synchronized void setSession(Session session) {
 		this.session_ = session;
 	}
@@ -60,18 +63,11 @@ public class ObjectContentManagerFactory {
 		this.mappingClasses_ = mappingClasses;
 	}
 
-	public synchronized void addMappingClasses(Class clazz) {
-		if (this.mappingClasses_ == null) {
-			this.mappingClasses_ = new ArrayList<Class>();
-		}
-		this.mappingClasses_.add(clazz);
-	}
-
 	/** query manager */
-	QueryManager queryManager;
+	QueryManager queryManager_;
 
 	public synchronized QueryManager getQueryManager() {
-		return queryManager;
+		return this.getObjectContentManager().getQueryManager();
 	}
 
 	/**
@@ -88,11 +84,9 @@ public class ObjectContentManagerFactory {
 		if (this.mappingClasses_ == null || this.mappingClasses_.size() == 0) {
 			throw new JcrNotMappingClassException("");
 		}
+		
 		Mapper mapper = new AnnotationMapperImpl(this.mappingClasses_);
-		ObjectContentManager ocm = new ObjectContentManagerImpl(this.session_,
-				mapper);
-
-		this.queryManager = ocm.getQueryManager();
+		ObjectContentManager ocm = new ObjectContentManagerImpl(this.session_, mapper);
 
 		return ocm;
 	}

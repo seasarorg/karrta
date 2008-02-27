@@ -15,24 +15,25 @@
  */
 package org.seasar.karrta.jcr.node;
 
-import java.util.Date;
-
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 /**
- * book node.
- * 
+ * author node.
  * @author yosukehara
  *
  */
 @Node(jcrMixinTypes="mix:referenceable")
-public class BookNode extends BaseNode {
+public class AuthorNode extends BaseNode {
+
+    public AuthorNode() {
+    }
+
     /** id */
     @Field(path = true)
-    protected String path = "/book";
+    protected String path = "/author";
     
     /** id */
     @Field(id = true)
@@ -57,55 +58,25 @@ public class BookNode extends BaseNode {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-
-    /** title */
-    @Field
-    private String title;
-
-    public String getTitle() {
-        return title;
+    
+    /** first name */
+    @Field String firstName;
+    public String getFirstName() {
+        return firstName;
     }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
-
-    /** description */
-    @Field
-    private String description;
-
-    public String getDescription() {
-        return description;
+    
+    /** last name */
+    @Field String lastName;
+    public String getLastName() {
+        return lastName;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
-
-    /** published date */
-    @Field
-    Date pubDate;
-
-    public Date getPubDate() {
-        return pubDate;
-    }
-
-    public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
-    }
-
-    /** isbn */
-    @Field(jcrName = "isbn")
-    String isbn13;
-
-    public String getIsbn13() {
-        return isbn13;
-    }
-
-    public void setIsbn13(String isbn13) {
-        this.isbn13 = isbn13;
-    }
-
+    
     /*
      * @see java.lang.Object#toString()
      */

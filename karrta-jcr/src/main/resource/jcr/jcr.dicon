@@ -18,7 +18,7 @@
   <!-- session factory -->
   <component
     name="session_factory" class="org.seasar.karrta.jcr.session.JcrSessionFactory"
-    instance="prototype">
+    instance="request">
     <property name="repository">repository.createRepository()</property>
     
     <property name="workspaceName">null</property>
@@ -31,19 +31,4 @@
     
     <destroyMethod name="destroy"/>
   </component>
-  
-  <!-- ocm factory -->
-  <component
-    name="ocm_factory" class="org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory"
-    instance="prototype">
-    
-    <property name="session">session_factory.getSession()</property>
-    <property name="mappingClasses">node_register.getJcrNodeClasses()</property>
-  </component>
-
-  <!-- ocm interceptor -->
-  <component name="ocm_interceptor" class="org.seasar.karrta.jcr.interceptor.OcmInterceptor" >
-    <property name="objectContentManagerFactory">ocm_factory</property>
-  </component>
-
 </components>

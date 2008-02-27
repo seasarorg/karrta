@@ -16,5 +16,5 @@ public @interface Ocm {
      * 
      * @return
      */
-    Class bean();
+    Class<?> bean();
 }

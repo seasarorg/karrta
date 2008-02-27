@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN" 
+    "http://www.seasar.org/dtd/components24.dtd">
+<components namespace="ocm">
+  <include path="jcr/jcr.dicon" />
+
+  <!-- ocm factory -->
+  <component
+    name="factory" class="org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory">
+    
+    <property name="session">session_factory.getSession()</property>
+    <property name="mappingClasses">node_register.getJcrNodeClasses()</property>
+  </component>
+
+  <!-- ocm interceptor -->
+  <component name="interceptor" class="org.seasar.karrta.jcr.interceptor.OcmInterceptor">
+    <property name="objectContentManagerFactory">factory</property>
+  </component>
+
+</components>

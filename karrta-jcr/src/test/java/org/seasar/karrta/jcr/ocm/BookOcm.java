@@ -22,38 +22,46 @@ import org.seasar.karrta.jcr.node.BookNode;
 /**
  * 
  * @author yosukehara
- *
+ * 
  */
 @Ocm(bean = BookNode.class)
 public interface BookOcm {
-    
+
     /**
      * create.
      * 
      * @param book
      */
     void create(BookNode book);
-    
+
     /**
      * update.
      * 
      * @param book
      */
     void update(BookNode book);
-    
+
     /**
      * remove.
      * 
      * @param book
      */
     void remove(BookNode book);
-    
+
     /**
      * find by id.
      * 
-     * @param id
+     * @param query
      * @return
      */
     BookNode findById(Query query);
-    
+
+    /**
+     * find by ids.
+     * 
+     * @param query
+     * @return
+     */
+    BookNode[] findByIds(Query query);
+
 }
