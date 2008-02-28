@@ -115,5 +115,14 @@ public class BookLogic {
         Query query = this.queryManager_.createQuery(filter);
         return this.bookOcm_.findByIds(query);
     }
+    
+    public BookNode[] findByKeyword(String keyword) {
+        logger_.debug("::: find by keyword :::");
+        Filter filter = queryManager_.createFilter(BookNode.class)
+                                     .addContains("title", keyword);
+        
+        Query query = this.queryManager_.createQuery(filter);
+        return this.bookOcm_.findByIds(query);
+    }
 
 }

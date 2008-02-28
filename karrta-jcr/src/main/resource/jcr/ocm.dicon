@@ -8,7 +8,7 @@
   <component
     name="factory" class="org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory">
     
-    <property name="session">session_factory.getSession()</property>
+    <property name="jcrSessionFactory">session_factory</property>
     <property name="mappingClasses">node_register.getJcrNodeClasses()</property>
   </component>
 

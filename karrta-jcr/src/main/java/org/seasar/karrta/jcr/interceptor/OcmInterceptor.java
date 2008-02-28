@@ -27,6 +27,8 @@ import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.query.Query;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 import org.seasar.karrta.jcr.annotation.Ocm;
+import org.seasar.karrta.jcr.commons.JcrUtils;
+import org.seasar.karrta.jcr.commons.SystemConfiguration;
 import org.seasar.karrta.jcr.exception.InvalidArgumentException;
 import org.seasar.karrta.jcr.exception.InvalidMethodNameException;
 import org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory;
@@ -126,9 +128,15 @@ public class OcmInterceptor extends AbstractInterceptor {
                             : collection.size() == 0  ? null : collection.get(0);
                 break;
         }
+        ocm.logout();
         end = System.currentTimeMillis();
-        logger_.debug("\n::::: processing time:[" + (end - start) + "ms] :::::\n");
-        
+
+        logger_.debug(
+              "\n::::: [" 
+            + invocation.getClass().getName() 
+            + "\n       " 
+            + "processing time:[" + (end - start) 
+            + "ms] :::::\n");        
         return result;
     }
     

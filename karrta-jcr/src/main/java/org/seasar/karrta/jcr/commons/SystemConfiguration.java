@@ -35,8 +35,11 @@ import org.apache.commons.logging.LogFactory;
  */
 public class SystemConfiguration {
     /** logger */
-    private Log logger_ = LogFactory.getLog(SystemConfiguration.class);
-    
+    private static final Log logger_ = LogFactory.getLog(SystemConfiguration.class);
+
+    private static final String PROP_MODE_KEY_NAME     = "karrta.jcr.mode";
+    private static final String PROP_MODE_DEFAULT_NAME = "default.";
+
     /** system config list. */
     static List<Map<String, String>> systemConfigList_;
 
@@ -56,33 +59,31 @@ public class SystemConfiguration {
      * initialize
      * 
      */
-    public synchronized void initialize() {
+    public synchronized void initialize() throws ConfigurationException{
         systemConfigList_ = new ArrayList<Map<String, String>>();
 
-        try {
-            Configuration config = new PropertiesConfiguration(this.configurationName_);
-            String mode = config.getString("karrta.jcr.mode") + ".";
+        Configuration config = new PropertiesConfiguration(this.configurationName_);
+        String mode = config.getString(PROP_MODE_KEY_NAME) + ".";
 
-            Iterator<?> i = config.getKeys();
-            String key, value;
+        Iterator<?> i = config.getKeys();
+        String key, value;
 
-            while (i.hasNext()) {
-                key = (String) i.next();
-                value = config.getString(key);
+        while (i.hasNext()) {
+            key = (String) i.next();
+            value = config.getString(key);
 
-                if (key.indexOf(mode) == 0 || key.indexOf("default.") == 0) {
-                    String storeKey = key.indexOf(mode) > -1 ? key.substring(mode.length()) : key;
+            if (key.indexOf(mode) == 0 
+             || key.indexOf(PROP_MODE_DEFAULT_NAME) == 0) {
 
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put(storeKey, value);
+                String storeKey = key.indexOf(mode) > -1 ? key.substring(mode.length()) : key;
 
-                    systemConfigList_.add(map);
-                    
-                    logger_.debug("::: SystemConfiguration:[" + map + "]");
-                }
+                Map<String, String> map = new HashMap<String, String>();
+                map.put(storeKey, value);
+
+                systemConfigList_.add(map);
+
+                logger_.debug("::: SystemConfiguration:[" + map + "]");
             }
-        } catch (ConfigurationException e) {
-            e.printStackTrace();
         }
     }
 

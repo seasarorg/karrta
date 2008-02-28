@@ -140,16 +140,17 @@ public class JcrSessionFactory {
             if (this.password_ == null || "".equals(this.password_)) {
                 this.password_ = DEFAULT_PASSWORD;
             }
-
-            logger_.debug("::: JcrSessionFactory#getSession :::");
-
-            Session session = this.repository_.login(new SimpleCredentials(this.user_,
-                this.password_.toCharArray()), this.workspaceName_);
+            Session session =
+                this.repository_.login(
+                    new SimpleCredentials(
+                        this.user_,this.password_.toCharArray()), this.workspaceName_);
 
             this.registerNamespaces(session, this.namespaces_);
             this.registerNodeType(session);
             this.addEventListeners(session);
 
+            logger_.debug("::: JcrSessionFactory#getSession :::[" + session + "] :::");
+            
             return session;
 
         } catch (LoginException e) {

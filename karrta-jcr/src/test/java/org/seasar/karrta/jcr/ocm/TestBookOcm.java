@@ -51,6 +51,29 @@ public class TestBookOcm extends S2TestCase {
     public void test1() {
         logger_.debug("::: create :::");
         // #1
+        BookNode bookNode1 = this.getBookNode1();
+        this.bookLogic_.create(bookNode1);
+
+        BookNode bookNodeResult = this.bookLogic_.findById(4873112710L);
+        assertEquals(bookNode1.getPath(), bookNodeResult.getPath());
+        assertEquals(bookNode1.getId(), bookNodeResult.getId());
+        assertEquals(bookNode1.getTitle(), bookNodeResult.getTitle());
+        assertEquals(bookNode1.getIsbn13(), bookNodeResult.getIsbn13());
+        assertEquals(bookNode1.getPubDate(), bookNodeResult.getPubDate());
+        assertEquals(bookNode1.getDescription(), bookNodeResult.getDescription());
+
+        logger_.debug(bookNodeResult.toString());
+        logger_.debug("---");
+        
+        //#2
+        this.bookLogic_.create(this.getBookNode2());
+        
+        // update.
+        this.bookLogic_.update(this.getBookNode1ForUpdate());
+        this.bookLogic_.update(this.getBookNode2ForUpdate());
+    }
+    
+    private BookNode getBookNode1() {
         BookNode bookNode1 = new BookNode();
         bookNode1.setPath("/books");
         bookNode1.setId(4873112710L);
@@ -64,68 +87,59 @@ public class TestBookOcm extends S2TestCase {
         desc.append("最新の脳科学を基にした解説と簡単な実験で、脳と心のはたらきを説明する新しい脳の本。");
         bookNode1.setDescription(desc.toString());
         
-        this.bookLogic_.create(bookNode1);
-        
-        BookNode bookNodeResult = this.bookLogic_.findById(4873112710L);
-        assertEquals(bookNode1.getPath(), bookNodeResult.getPath());
-        assertEquals(bookNode1.getId(), bookNodeResult.getId());
-        assertEquals(bookNode1.getTitle(), bookNodeResult.getTitle());
-        assertEquals(bookNode1.getIsbn13(), bookNodeResult.getIsbn13());
-        assertEquals(bookNode1.getPubDate(), bookNodeResult.getPubDate());
-        assertEquals(bookNode1.getDescription(), bookNodeResult.getDescription());
-        
-        logger_.debug(bookNodeResult.toString());
-        logger_.debug("---");
-        
-        //#2
+        return bookNode1;
+    }
+    
+    private BookNode getBookNode1ForUpdate() {
+        BookNode bookNode1 = this.bookLogic_.findById(4873112710L);
+        bookNode1.setTitle("Mind Hacks - 実験で知る脳と心のシステムを理解する本 - update");
+        return bookNode1;
+    }
+    
+    private BookNode getBookNode2() {
         BookNode bookNode2 = new BookNode();
         bookNode2.setPath("/books");
         bookNode2.setId(4873113539L);
         bookNode2.setTitle("RESTful Webサービス");
         bookNode2.setIsbn13("978-4873113531");
         
-        pubDate = new GregorianCalendar(2005,11,21);
+        Calendar pubDate = new GregorianCalendar(2005,11,21);
         bookNode2.setPubDate(pubDate.getTime());
         
-        desc = new StringBuilder();
+        StringBuilder desc = new StringBuilder();
         desc.append("RESTful Webサービスを深く理解できる本。");
         bookNode2.setDescription(desc.toString());
         
-        this.bookLogic_.create(bookNode2);
+        return bookNode2;
+    }
+    
+    private BookNode getBookNode2ForUpdate() {
+        BookNode bookNode2 = this.bookLogic_.findById(4873113539L);
+        bookNode2.setTitle("RESTful Webサービスを深く理解できる本 - update");
+        return bookNode2;
+    }
+    
+    public void test2() {
+        // retrieve.
+        BookNode bookNode1 = this.bookLogic_.findById(4873112710L);
+        logger_.debug(bookNode1);
         
-        BookNode[] bookNodeResults =
-            this.bookLogic_.findByIds(new String[]{"4873112710", "4873113539"});
-
-        assertEquals(2, bookNodeResults.length);
-        logger_.debug("---[" + bookNodeResults.length + "]---");
+        BookNode bookNode2 = this.bookLogic_.findById(4873113539L);
+        logger_.debug(bookNode2);
+        logger_.debug("---");
         
+        logger_.debug("--- 全文検索.start ---");
+        BookNode[] bookNodeResults = this.bookLogic_.findByKeyword("update");
         this.dump(bookNodeResults);
-        logger_.debug("---");
-        
-        // update.
-        bookNode1.setTitle("Mind Hacks - 実験で知る脳と心のシステム#2");
-        this.bookLogic_.update(bookNode1);
-        
-        bookNodeResult = this.bookLogic_.findById(4873112710L);
-        assertEquals(bookNode1.getTitle(), bookNodeResult.getTitle());
-        logger_.debug(bookNodeResult.toString());
-        logger_.debug("---");
-        
-        bookNode2.setTitle("RESTful Webサービスを深く理解できる本#2");
-        this.bookLogic_.update(bookNode2);
-        
-        bookNodeResult = this.bookLogic_.findById(4873113539L);
-        assertEquals(bookNode2.getTitle(), bookNodeResult.getTitle());
-        logger_.debug(bookNodeResult.toString());
-        logger_.debug("---");
+        logger_.debug("--- 全文検索.end ---");
         
         // remove.
-        this.bookLogic_.remove(bookNode1);
-        this.bookLogic_.remove(bookNode2);
+        this.bookLogic_.remove(this.bookLogic_.findById(4873112710L));
+        this.bookLogic_.remove(this.bookLogic_.findById(4873113539L));
         
         // retrieve.
-        bookNodeResult = this.bookLogic_.findById(4873112710L);
-        assertNull(bookNodeResult);
+        bookNode1 = this.bookLogic_.findById(4873112710L);
+        assertNull(bookNode1);
         
         bookNodeResults = this.bookLogic_.findByIds(new String[]{"4873112710", "4873113539"});
         assertEquals(0, bookNodeResults.length);

@@ -17,8 +17,7 @@
   
   <!-- session factory -->
   <component
-    name="session_factory" class="org.seasar.karrta.jcr.session.JcrSessionFactory"
-    instance="request">
+    name="session_factory" class="org.seasar.karrta.jcr.session.JcrSessionFactory">
     <property name="repository">repository.createRepository()</property>
     
     <property name="workspaceName">null</property>
