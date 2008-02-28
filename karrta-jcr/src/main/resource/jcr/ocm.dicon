@@ -17,4 +17,6 @@
     <property name="objectContentManagerFactory">factory</property>
   </component>
 
+  <!-- ocm transaction -->
+  <component name="transaction" class="org.seasar.karrta.jcr.interceptor.OcmTransactionInterceptor"></component>
 </components>

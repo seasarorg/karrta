@@ -21,7 +21,7 @@ import java.util.GregorianCalendar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.karrta.jcr.logic.BookLogic;
+import org.seasar.karrta.jcr.logic.BookLogicImpl;
 import org.seasar.karrta.jcr.node.BookNode;
 
 /**
@@ -36,7 +36,7 @@ public class TestBookOcm extends S2TestCase {
     /** logger */
     private Log logger_ = LogFactory.getLog(TestBookOcm.class);
     
-    private BookLogic bookLogic_;
+    private BookLogicImpl bookLogic_;
     
     /*
      * @see junit.framework.TestCase#setUp()
@@ -49,7 +49,7 @@ public class TestBookOcm extends S2TestCase {
      * test#1
      */
     public void test1() {
-        logger_.debug("::: create :::");
+        logger_.debug("### create.start ###");
         // #1
         BookNode bookNode1 = this.getBookNode1();
         this.bookLogic_.create(bookNode1);
@@ -63,14 +63,82 @@ public class TestBookOcm extends S2TestCase {
         assertEquals(bookNode1.getDescription(), bookNodeResult.getDescription());
 
         logger_.debug(bookNodeResult.toString());
-        logger_.debug("---");
+        logger_.debug("### create.end ###\n");
+        
         
         //#2
+        logger_.debug("### create.start ###");
         this.bookLogic_.create(this.getBookNode2());
+        logger_.debug("### create.end ###\n");
+        
         
         // update.
+        logger_.debug("### update1.start ###");
         this.bookLogic_.update(this.getBookNode1ForUpdate());
+        logger_.debug("### update1.end ###\n");
+        
+        logger_.debug("### update2.start ###");
         this.bookLogic_.update(this.getBookNode2ForUpdate());
+        logger_.debug("### update2.end ###\n");
+        
+        
+        // find by ids.
+        logger_.debug("### find by ids.start ###");
+        BookNode[] bookNodeResults =
+            this.bookLogic_.findByIds(new String[]{"4873112710", "4873113539"});
+        this.dump(bookNodeResults);
+        assertEquals(2, bookNodeResults.length);
+        logger_.debug("### find by ids.end ###\n");
+    }
+    
+    public void test2() {
+        // retrieve.
+        logger_.debug("### find by id.start ###");
+        BookNode bookNode1 = this.bookLogic_.findById(4873112710L);
+        logger_.debug(bookNode1);
+        logger_.debug("### find by id.end ###\n");
+        
+        logger_.debug("### find by id.start ###");
+        BookNode bookNode2 = this.bookLogic_.findById(4873113539L);
+        logger_.debug(bookNode2);
+        logger_.debug("---");
+        logger_.debug("### find by id.end ###\n");
+        
+        logger_.debug("### fulltext-search.start ###");
+        BookNode[] bookNodeResults = this.bookLogic_.findByKeyword("update");
+        this.dump(bookNodeResults);
+        logger_.debug("### fulltext-search.end ###\n");
+        
+        
+        // remove.
+        logger_.debug("### remove.start ###");
+        this.bookLogic_.remove(this.bookLogic_.findById(4873112710L));
+        logger_.debug("### remove.end ###\n");
+        
+        logger_.debug("### remove.start ###");
+        this.bookLogic_.remove(this.bookLogic_.findById(4873113539L));
+        logger_.debug("### remove.end ###\n");
+        
+        
+        // retrieve.
+        logger_.debug("### find by id.start ###");
+        bookNode1 = this.bookLogic_.findById(4873112710L);
+        assertNull(bookNode1);
+        logger_.debug("### find by id.end ###\n");
+        
+        logger_.debug("### find by ids.start ###");
+        bookNodeResults = this.bookLogic_.findByIds(new String[]{"4873112710", "4873113539"});
+        assertEquals(0, bookNodeResults.length);
+        logger_.debug("### find by ids.end ###\n");
+    }
+    
+    private void dump(BookNode[] bookNodeResults) {
+        if (bookNodeResults == null) return;
+        logger_.debug("::: [" + bookNodeResults.length + "] :::");
+        
+        for (BookNode book : bookNodeResults) {
+            logger_.debug(book.toString());
+        }
     }
     
     private BookNode getBookNode1() {
@@ -117,40 +185,5 @@ public class TestBookOcm extends S2TestCase {
         BookNode bookNode2 = this.bookLogic_.findById(4873113539L);
         bookNode2.setTitle("RESTful Webサービスを深く理解できる本 - update");
         return bookNode2;
-    }
-    
-    public void test2() {
-        // retrieve.
-        BookNode bookNode1 = this.bookLogic_.findById(4873112710L);
-        logger_.debug(bookNode1);
-        
-        BookNode bookNode2 = this.bookLogic_.findById(4873113539L);
-        logger_.debug(bookNode2);
-        logger_.debug("---");
-        
-        logger_.debug("--- 全文検索.start ---");
-        BookNode[] bookNodeResults = this.bookLogic_.findByKeyword("update");
-        this.dump(bookNodeResults);
-        logger_.debug("--- 全文検索.end ---");
-        
-        // remove.
-        this.bookLogic_.remove(this.bookLogic_.findById(4873112710L));
-        this.bookLogic_.remove(this.bookLogic_.findById(4873113539L));
-        
-        // retrieve.
-        bookNode1 = this.bookLogic_.findById(4873112710L);
-        assertNull(bookNode1);
-        
-        bookNodeResults = this.bookLogic_.findByIds(new String[]{"4873112710", "4873113539"});
-        assertEquals(0, bookNodeResults.length);
-    }
-    
-    private void dump(BookNode[] bookNodeResults) {
-        if (bookNodeResults == null) return;
-        logger_.debug("::: [" + bookNodeResults.length + "] :::");
-        
-        for (BookNode book : bookNodeResults) {
-            logger_.debug(book.toString());
-        }
     }
 }

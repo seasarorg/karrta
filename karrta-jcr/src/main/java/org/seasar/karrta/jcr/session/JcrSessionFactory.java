@@ -149,7 +149,7 @@ public class JcrSessionFactory {
             this.registerNodeType(session);
             this.addEventListeners(session);
 
-            logger_.debug("::: JcrSessionFactory#getSession :::[" + session + "] :::");
+            logger_.debug("::: session:[" + session + "] :::");
             
             return session;
 

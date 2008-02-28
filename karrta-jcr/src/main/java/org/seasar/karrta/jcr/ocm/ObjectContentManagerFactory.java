@@ -95,6 +95,8 @@ public class ObjectContentManagerFactory {
         Mapper mapper = new AnnotationMapperImpl(this.mappingClasses_);
         ObjectContentManager ocm =
             new ObjectContentManagerImpl(this.sessionFactory_.getSession(), mapper);
+        
+        logger_.debug(":::     ocm:[" + ocm + "] :::");
         return ocm;
     }
 

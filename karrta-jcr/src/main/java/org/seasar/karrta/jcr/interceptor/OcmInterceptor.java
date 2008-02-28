@@ -27,8 +27,6 @@ import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.query.Query;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 import org.seasar.karrta.jcr.annotation.Ocm;
-import org.seasar.karrta.jcr.commons.JcrUtils;
-import org.seasar.karrta.jcr.commons.SystemConfiguration;
 import org.seasar.karrta.jcr.exception.InvalidArgumentException;
 import org.seasar.karrta.jcr.exception.InvalidMethodNameException;
 import org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory;
@@ -41,11 +39,19 @@ import org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory;
  */
 public class OcmInterceptor extends AbstractInterceptor {
     private static final long serialVersionUID = 1L;
-
+    private static final Log logger_ = LogFactory.getLog(OcmInterceptor.class);
+    
     private static final String TYPE_CREATE = "create";
+    private static final String TYPE_INSERT = "insert";
+    private static final String TYPE_ADD    = "add";
+    
     private static final String TYPE_UPDATE = "update";
+    
     private static final String TYPE_REMOVE = "remove";
+    private static final String TYPE_DELETE = "delete";
+    
     private static final String TYPE_FIND   = "find";
+    private static final String TYPE_SELECT = "select";
     
     private static final int TYPE_ERROR_CODE  = 0;
     private static final int TYPE_CREATE_CODE = 1;
@@ -53,9 +59,6 @@ public class OcmInterceptor extends AbstractInterceptor {
     private static final int TYPE_REMOVE_CODE = 3;
     private static final int TYPE_FIND_CODE   = 4;
     
-    /** logger */
-    private static final Log logger_ = LogFactory.getLog(OcmInterceptor.class);
-
     /** ocm factory */
     private ObjectContentManagerFactory ocmFactory_;
 
@@ -149,9 +152,13 @@ public class OcmInterceptor extends AbstractInterceptor {
     private int checkMethod(String methodName) {
         int result = 
             methodName.indexOf(TYPE_CREATE) > -1 ? TYPE_CREATE_CODE :
+            methodName.indexOf(TYPE_INSERT) > -1 ? TYPE_CREATE_CODE :
+            methodName.indexOf(TYPE_ADD)    > -1 ? TYPE_CREATE_CODE :
             methodName.indexOf(TYPE_UPDATE) > -1 ? TYPE_UPDATE_CODE :
             methodName.indexOf(TYPE_REMOVE) > -1 ? TYPE_REMOVE_CODE :
+            methodName.indexOf(TYPE_DELETE) > -1 ? TYPE_REMOVE_CODE :
             methodName.indexOf(TYPE_FIND)   > -1 ? TYPE_FIND_CODE   :
+            methodName.indexOf(TYPE_SELECT) > -1 ? TYPE_FIND_CODE   :
                                                    TYPE_ERROR_CODE;
         return result;
     }

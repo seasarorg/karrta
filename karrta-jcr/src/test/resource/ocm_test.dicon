@@ -11,9 +11,11 @@
   </component>
   
   <!-- book logic -->
-  <component class="org.seasar.karrta.jcr.logic.BookLogic">
+  <component class="org.seasar.karrta.jcr.logic.BookLogicImpl">
     <property name="bookOcm">book_ocm</property>
     <property name="queryManager">ocm.factory.getQueryManager()</property>
+    
+    <aspect>ocm.transaction</aspect>
   </component>  
   
 </components>
