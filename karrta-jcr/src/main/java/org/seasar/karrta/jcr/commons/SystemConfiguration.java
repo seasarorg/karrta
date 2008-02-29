@@ -34,9 +34,7 @@ import org.apache.commons.logging.LogFactory;
  * 
  */
 public class SystemConfiguration {
-    /** logger */
     private static final Log logger_ = LogFactory.getLog(SystemConfiguration.class);
-
     private static final String PROP_MODE_KEY_NAME     = "karrta.jcr.mode";
     private static final String PROP_MODE_DEFAULT_NAME = "default.";
 

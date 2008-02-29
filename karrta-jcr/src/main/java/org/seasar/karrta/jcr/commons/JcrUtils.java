@@ -35,7 +35,6 @@ import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
  *
  */
 public class JcrUtils {
-    /** logger */
     private static final Log logger_ = LogFactory.getLog(JcrUtils.class);
 
     /**

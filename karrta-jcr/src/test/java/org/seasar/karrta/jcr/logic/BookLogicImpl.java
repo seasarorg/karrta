@@ -30,8 +30,7 @@ import org.seasar.karrta.jcr.ocm.BookOcm;
  * 
  */
 public class BookLogicImpl implements BookLogic{
-    /** logger */
-    private Log logger_ = LogFactory.getLog(BookLogicImpl.class);
+    private static final Log logger_ = LogFactory.getLog(BookLogicImpl.class);
 
     /** query manager */
     private QueryManager queryManager_;

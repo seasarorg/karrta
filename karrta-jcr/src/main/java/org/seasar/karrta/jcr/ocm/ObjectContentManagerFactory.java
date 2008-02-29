@@ -17,8 +17,6 @@ package org.seasar.karrta.jcr.ocm;
 
 import java.util.List;
 
-import javax.jcr.Session;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
@@ -28,7 +26,7 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.AnnotationMapperImpl;
 import org.apache.jackrabbit.ocm.query.QueryManager;
 import org.seasar.karrta.jcr.exception.JcrNotMappingClassException;
 import org.seasar.karrta.jcr.exception.JcrNotSessionException;
-import org.seasar.karrta.jcr.session.JcrSessionFactory;
+import org.seasar.karrta.jcr.session.JcrSessionManager;
 
 /**
  * object content manager factory.
@@ -37,30 +35,15 @@ import org.seasar.karrta.jcr.session.JcrSessionFactory;
  * 
  */
 public class ObjectContentManagerFactory {
-    /** logger */
     private static final Log logger_ = LogFactory.getLog(ObjectContentManagerFactory.class);
     
     public ObjectContentManagerFactory() {}
 
-    /**
-     * @param session
-     */
-    public ObjectContentManagerFactory(Session session) {
-
-    }
-
-    /** session */
-    private Session session_;
-
-    public Session getSession() {
-        return session_;
-    }
-
-    /** */
-    private JcrSessionFactory sessionFactory_;
-
-    public void setJcrSessionFactory(JcrSessionFactory sessionFactory) {
-        this.sessionFactory_ = sessionFactory;
+    /** session manager */
+    private JcrSessionManager sessionManager_;
+    
+    public void setJcrSessionManager(JcrSessionManager sessionManager) {
+        this.sessionManager_ = sessionManager;
     }
 
     /** mapping class list */
@@ -85,7 +68,7 @@ public class ObjectContentManagerFactory {
     public synchronized ObjectContentManager getObjectContentManager()
         throws JcrNotSessionException, JcrNotMappingClassException {
 
-        if (this.sessionFactory_ == null) {
+        if (this.sessionManager_ == null) {
             throw new JcrNotSessionException("");
         }
         if (this.mappingClasses_ == null || this.mappingClasses_.size() == 0) {
@@ -93,10 +76,12 @@ public class ObjectContentManagerFactory {
         }
 
         Mapper mapper = new AnnotationMapperImpl(this.mappingClasses_);
+        int hashCode = Thread.currentThread().hashCode();
         ObjectContentManager ocm =
-            new ObjectContentManagerImpl(this.sessionFactory_.getSession(), mapper);
+            new ObjectContentManagerImpl(this.sessionManager_.getSession(hashCode), mapper);
         
-        logger_.debug(":::     ocm:[" + ocm + "] :::");
+        logger_.debug(":::     ocm:[" + ocm      + "] :::");
+        logger_.debug(":::hashCode:[" + hashCode + "] :::");
         return ocm;
     }
 

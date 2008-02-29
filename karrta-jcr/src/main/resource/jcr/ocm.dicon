@@ -8,7 +8,7 @@
   <component
     name="factory" class="org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory">
     
-    <property name="jcrSessionFactory">session_factory</property>
+    <property name="jcrSessionManager">jcr.session_manager</property>
     <property name="mappingClasses">node_register.getJcrNodeClasses()</property>
   </component>
 
@@ -18,5 +18,8 @@
   </component>
 
   <!-- ocm transaction -->
-  <component name="transaction" class="org.seasar.karrta.jcr.interceptor.OcmTransactionInterceptor"></component>
+  <component name="transaction" class="org.seasar.karrta.jcr.interceptor.OcmTransactionInterceptor">
+    <property name="jcrSessionFactory">jcr.session_factory</property>
+    <property name="jcrSessionManager">jcr.session_manager</property>
+  </component>
 </components>

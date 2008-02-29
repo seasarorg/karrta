@@ -44,12 +44,9 @@ public class OcmInterceptor extends AbstractInterceptor {
     private static final String TYPE_CREATE = "create";
     private static final String TYPE_INSERT = "insert";
     private static final String TYPE_ADD    = "add";
-    
     private static final String TYPE_UPDATE = "update";
-    
     private static final String TYPE_REMOVE = "remove";
     private static final String TYPE_DELETE = "delete";
-    
     private static final String TYPE_FIND   = "find";
     private static final String TYPE_SELECT = "select";
     
@@ -59,7 +56,7 @@ public class OcmInterceptor extends AbstractInterceptor {
     private static final int TYPE_REMOVE_CODE = 3;
     private static final int TYPE_FIND_CODE   = 4;
     
-    /** ocm factory */
+    /** ocm factory */ 
     private ObjectContentManagerFactory ocmFactory_;
 
     public void setObjectContentManagerFactory(ObjectContentManagerFactory ocmFactory) {
@@ -70,11 +67,15 @@ public class OcmInterceptor extends AbstractInterceptor {
      * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
      */
     public Object invoke(MethodInvocation invocation) throws Throwable {
+        logger_.debug(":::ocm:[" + Thread.currentThread().hashCode() + "]");
+        
         long start, end;
         start = System.currentTimeMillis();
 
         String className = invocation.getClass().getName();
         className = className.substring(0, className.indexOf("$$"));
+        
+        logger_.debug("::: classname:[" + invocation.getThis().getClass().getName() + "]");
 
         Ocm ocmAnnotation = Class.forName(className).getAnnotation(Ocm.class);
         Class<?> bean = ocmAnnotation.bean();
@@ -99,7 +100,6 @@ public class OcmInterceptor extends AbstractInterceptor {
         if (! canInvoke) {
             throw new InvalidArgumentException("");
         }
-        
         ObjectContentManager ocm = this.ocmFactory_.getObjectContentManager();
         Object result = null;
 
@@ -131,15 +131,14 @@ public class OcmInterceptor extends AbstractInterceptor {
                             : collection.size() == 0  ? null : collection.get(0);
                 break;
         }
-        ocm.logout();
+        //ocm.logout();
         end = System.currentTimeMillis();
 
         logger_.debug(
-              "\n::::: [" 
+              "::::: [" 
             + invocation.getClass().getName() 
-            + "\n       " 
             + "processing time:[" + (end - start) 
-            + "ms] :::::\n");        
+            + "ms] :::::");        
         return result;
     }
     

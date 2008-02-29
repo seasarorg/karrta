@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN" 
     "http://www.seasar.org/dtd/components24.dtd">
-<components>
+<components namespace="jcr">
   <include path="jcr/nodeRegister.dicon" />
 
   <!-- repository -->
@@ -27,6 +27,15 @@
     <initMethod name="addNamespace">
       <arg>"ocm"</arg><arg>"http://jackrabbit.apache.org/ocm"</arg>
     </initMethod>
+    
+    <destroyMethod name="destroy"/>
+  </component>
+  
+  
+  <!-- session manager -->
+  <component
+    name="session_manager" class="org.seasar.karrta.jcr.session.JcrSessionManager">
+    <property name="jcrSessionFactory">session_factory</property>
     
     <destroyMethod name="destroy"/>
   </component>

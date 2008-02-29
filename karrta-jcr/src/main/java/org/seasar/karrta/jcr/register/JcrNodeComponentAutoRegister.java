@@ -37,7 +37,6 @@ import org.seasar.framework.util.ClassTraversal.ClassHandler;
  * 
  */
 public class JcrNodeComponentAutoRegister extends AbstractComponentAutoRegister {
-    /** logger */
     private Log logger_ = LogFactory.getLog(JcrNodeComponentAutoRegister.class);
 
     /** jcr node classes */

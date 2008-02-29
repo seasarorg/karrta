@@ -34,8 +34,7 @@ import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
  * 
  */
 public class JcrRepository {
-    /** logger */
-    private Log logger_ = LogFactory.getLog(JcrRepository.class);
+    private static final Log logger_ = LogFactory.getLog(JcrRepository.class);
 
     public JcrRepository() {}
     

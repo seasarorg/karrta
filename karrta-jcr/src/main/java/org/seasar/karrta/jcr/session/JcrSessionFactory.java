@@ -48,7 +48,6 @@ import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
  * 
  */
 public class JcrSessionFactory {
-    /** logger */
     private static final Log logger_ = LogFactory.getLog(JcrSessionFactory.class);
 
     /** default workspace name */
