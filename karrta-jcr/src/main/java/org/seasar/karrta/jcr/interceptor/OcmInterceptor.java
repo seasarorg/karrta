@@ -67,8 +67,6 @@ public class OcmInterceptor extends AbstractInterceptor {
      * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
      */
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        logger_.debug(":::ocm:[" + Thread.currentThread().hashCode() + "]");
-        
         long start, end;
         start = System.currentTimeMillis();
 
@@ -135,10 +133,7 @@ public class OcmInterceptor extends AbstractInterceptor {
         end = System.currentTimeMillis();
 
         logger_.debug(
-              "::::: [" 
-            + invocation.getClass().getName() 
-            + "processing time:[" + (end - start) 
-            + "ms] :::::");        
+              "::::: [" + "processing time:[" + (end - start) + "ms] :::::");        
         return result;
     }
     

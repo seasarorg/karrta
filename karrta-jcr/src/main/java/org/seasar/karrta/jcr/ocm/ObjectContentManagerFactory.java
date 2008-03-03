@@ -79,9 +79,6 @@ public class ObjectContentManagerFactory {
         int hashCode = Thread.currentThread().hashCode();
         ObjectContentManager ocm =
             new ObjectContentManagerImpl(this.sessionManager_.getSession(hashCode), mapper);
-        
-        logger_.debug(":::     ocm:[" + ocm      + "] :::");
-        logger_.debug(":::hashCode:[" + hashCode + "] :::");
         return ocm;
     }
 

@@ -21,8 +21,8 @@ import java.util.GregorianCalendar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.karrta.jcr.logic.BookLogicImpl;
 import org.seasar.karrta.jcr.node.BookNode;
+import org.seasar.karrta.jcr.service.BookServiceImpl;
 
 /**
  * test book ocm.
@@ -37,7 +37,7 @@ import org.seasar.karrta.jcr.node.BookNode;
 public class TestBookOcm extends S2TestCase {
     private static final Log logger_ = LogFactory.getLog(TestBookOcm.class);
 
-    private BookLogicImpl bookLogic_;
+    private BookServiceImpl bookLogic_;
 
     /*
      * @see junit.framework.TestCase#setUp()
@@ -109,8 +109,10 @@ public class TestBookOcm extends S2TestCase {
         Runnable r2 = new Runnable() {
             public void run() {
                 try {
-                    BookNode bookNodeResults = bookLogic_.findById(4873112710L);
-                    System.out.println(bookNodeResults);
+                    BookNode book = getBookNode1();
+                    book.setTitle("Mind Hacks—実験で知る脳と心のシステム - UPDATE");
+                    bookLogic_.update(book);
+
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

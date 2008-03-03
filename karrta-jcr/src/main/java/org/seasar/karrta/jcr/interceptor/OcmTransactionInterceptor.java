@@ -54,11 +54,15 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
      * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
      */
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        int hashCode = Thread.currentThread().hashCode();
-        logger_.debug("::: [Begin Transaction] ::: [" + hashCode + "] :::");
+        int currentThreadHashCode = Thread.currentThread().hashCode();
+        if (! this.sessionManager_.isExist(currentThreadHashCode)) {
+            return invocation.proceed();
+        }
+        
+        logger_.debug("::: [Begin Transaction] ::: [" + currentThreadHashCode + "] :::");
 
         XASession session = (XASession) this.sessionFactory_.getSession();
-        this.sessionManager_.addSession(hashCode, session);
+        this.sessionManager_.addSession(currentThreadHashCode, session);
 
         Xid xid = new Xid() {
             public byte[] getBranchQualifier() {
@@ -76,8 +80,6 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
         XAResource xares = session.getXAResource();
         xares.start(xid, XAResource.TMNOFLAGS);
 
-        logger_.debug(xares);
-
         Object result = null;
         try {
             result = invocation.proceed();
@@ -91,9 +93,9 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
 
         } finally {
             session.logout();
-            this.sessionManager_.removeSession(hashCode, session);
+            this.sessionManager_.removeSession(currentThreadHashCode, session);
 
-            logger_.debug("::: [End Transaction] ::: [" + hashCode + "] :::");
+            logger_.debug("::: [End Transaction] ::: [" + currentThreadHashCode + "] :::");
         }
         return result;
     }

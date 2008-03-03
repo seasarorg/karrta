@@ -40,21 +40,21 @@ public class JcrSessionManager {
     /**
      * add session.
      * 
-     * @param hashCode
+     * @param currentThreadHashCode
      * @param session
      */
-    public void addSession(int hashCode, Session session) {
-        this.sessions_.put(new Integer(hashCode), session);
+    public void addSession(int currentThreadHashCode, Session session) {
+        this.sessions_.put(new Integer(currentThreadHashCode), session);
     }
     
     /**
      * remove session.
      * 
-     * @param hashCode
+     * @param currentThreadHashCode
      * @param session
      */
-    public void removeSession(int hashCode, Session session) {
-        this.sessions_.remove(new Integer(hashCode), session);
+    public void removeSession(int currentThreadHashCode, Session session) {
+        this.sessions_.remove(new Integer(currentThreadHashCode), session);
     }
     
     /**
@@ -69,14 +69,23 @@ public class JcrSessionManager {
     /**
      * get session.
      * 
-     * @param hashCode
+     * @param currentThreadHashCode
      */
-    public Session getSession(int hashCode) {
-        Session session = this.sessions_.get(new Integer(hashCode));
+    public Session getSession(int currentThreadHashCode) {
+        Session session = this.sessions_.get(new Integer(currentThreadHashCode));
         if (session == null) {
             session = this.getSession();
         }
         return session;
+    }
+    
+    /**
+     * 
+     * @param currentThreadHashCode
+     * @return
+     */
+    public boolean isExist(int currentThreadHashCode) {
+        return (this.sessions_.get(new Integer(currentThreadHashCode)) == null);
     }
     
     /**

@@ -11,7 +11,7 @@
   </component>
   
   <!-- book logic -->
-  <component class="org.seasar.karrta.jcr.logic.BookLogicImpl">
+  <component class="org.seasar.karrta.jcr.service.BookServiceImpl">
     <property name="bookOcm">book_ocm</property>
     <property name="queryManager">ocm.factory.getQueryManager()</property>
     
