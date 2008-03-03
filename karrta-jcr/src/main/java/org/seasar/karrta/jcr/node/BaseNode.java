@@ -21,7 +21,7 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 @Node
-public class BaseNode {
+public abstract class BaseNode {
 
     /** path */
     @Field(path=true)

@@ -15,6 +15,8 @@
  */
 package org.seasar.karrta.jcr.interceptor;
 
+import java.lang.reflect.Method;
+
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
 
@@ -23,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.api.XASession;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
+import org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory;
 import org.seasar.karrta.jcr.session.JcrSessionFactory;
 import org.seasar.karrta.jcr.session.JcrSessionManager;
 
@@ -49,13 +52,20 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
     public void setJcrSessionManager(JcrSessionManager sessionManager) {
         this.sessionManager_ = sessionManager;
     }
+    
+    /** object content manager */
+    private ObjectContentManagerFactory ocmFactory;
+    
+    public void setOcmFactory(ObjectContentManagerFactory ocmFactory) {
+        this.ocmFactory = ocmFactory;
+    }
 
     /*
      * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
      */
     public Object invoke(MethodInvocation invocation) throws Throwable {
         int currentThreadHashCode = Thread.currentThread().hashCode();
-        if (! this.sessionManager_.isExist(currentThreadHashCode)) {
+        if (this.sessionManager_.isExist(currentThreadHashCode)) {
             return invocation.proceed();
         }
         
@@ -82,6 +92,12 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
 
         Object result = null;
         try {
+            for (Method m : invocation.getThis().getClass().getMethods()) {
+                if (m.getName().indexOf("setQueryManager") > -1) {
+                    m.invoke(invocation.getThis(), this.ocmFactory.getQueryManager());
+                    break;
+                }
+            }
             result = invocation.proceed();
 
             xares.end(xid, XAResource.TMSUCCESS);
@@ -89,6 +105,7 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
             xares.commit(xid, false);
 
         } catch (Exception e) {
+            e.printStackTrace();
             xares.rollback(xid);
 
         } finally {

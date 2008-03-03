@@ -5,17 +5,34 @@
   <include path="configuration.dicon" />
   <include path="jcr/ocm.dicon"       />
 
+  <!-- ============================================================ -->
+  <!--                            OCM                               -->
+  <!-- ============================================================ -->
   <!-- book ocm -->
   <component name="book_ocm" class="org.seasar.karrta.jcr.ocm.BookOcm">
     <aspect>ocm.interceptor</aspect>
   </component>
   
-  <!-- book logic -->
-  <component class="org.seasar.karrta.jcr.service.BookServiceImpl">
-    <property name="bookOcm">book_ocm</property>
-    <property name="queryManager">ocm.factory.getQueryManager()</property>
-    
-    <aspect>ocm.transaction</aspect>
-  </component>  
+  <!-- TreeOcm -->
+  <component name="tree_ocm" class="org.seasar.karrta.jcr.ocm.TreeOcm">
+    <aspect>ocm.interceptor</aspect>
+  </component>
   
+  <!-- ============================================================ -->
+  <!--                          SERVICE                             -->
+  <!-- ============================================================ -->
+  <!-- book service -->
+  <component class="org.seasar.karrta.jcr.service.impl.BookServiceImpl">
+    <property name="bookOcm">book_ocm</property>
+
+    <aspect>ocm.transaction</aspect>
+  </component>
+  
+  <!-- Tree service -->
+  <component class="org.seasar.karrta.jcr.service.impl.TreeServiceImpl">
+    <property name="treeOcm">tree_ocm</property>
+
+    <aspect>ocm.transaction</aspect>
+  </component>
+
 </components>

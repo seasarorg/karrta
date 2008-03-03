@@ -16,24 +16,46 @@
 package org.seasar.karrta.jcr.node;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.jackrabbit.ocm.manager.collectionconverter.impl.NTCollectionConverterImpl;
+import org.apache.jackrabbit.ocm.mapper.impl.annotation.Collection;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 /**
- * book node.
+ * child node.
  * 
  * @author yosukehara
- *
+ * 
  */
-@Node(jcrMixinTypes="mix:referenceable")
-public class BookNode extends BaseNode {
-    /** path */
-    @Field(path = true)
-    protected String path = "/book";
-    
+@Node(jcrMixinTypes = "mix:referenceable")
+public class ChildTreeNode {
+
+    public ChildTreeNode() {}
+
+    /**
+     * @param id
+     * @param title
+     */
+    public ChildTreeNode(long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+    /**
+     * @param id
+     * @param title
+     * @param children
+     */
+    public ChildTreeNode(long id, String title, List<ChildTreeNode> children) {
+        this.id = id;
+        this.title = title;
+        this.children = children;
+    }
+
     /** id */
     @Field(id = true)
     private long id;
@@ -70,40 +92,40 @@ public class BookNode extends BaseNode {
         this.title = title;
     }
 
-    /** description */
+    /** created at */
     @Field
-    private String description;
+    Date createdAt = new Date();
 
-    public String getDescription() {
-        return description;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    /** published date */
+    /** modified */
     @Field
-    Date pubDate;
+    Date modified = new Date();
 
-    public Date getPubDate() {
-        return pubDate;
+    public Date getModified() {
+        return modified;
     }
 
-    public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
+    public void setModified(Date modified) {
+        this.modified = modified;
     }
 
-    /** isbn */
-    @Field(jcrName = "isbn")
-    String isbn13;
+    /** children */
+    @Collection(elementClassName = ChildTreeNode.class, collectionConverter = NTCollectionConverterImpl.class)
+    List<ChildTreeNode> children = null;
 
-    public String getIsbn13() {
-        return isbn13;
+    public List<ChildTreeNode> getChildren() {
+        return children;
     }
 
-    public void setIsbn13(String isbn13) {
-        this.isbn13 = isbn13;
+    public void setChildren(List<ChildTreeNode> children) {
+        this.children = children;
     }
 
     /*

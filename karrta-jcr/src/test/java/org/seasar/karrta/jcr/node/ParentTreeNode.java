@@ -15,25 +15,29 @@
  */
 package org.seasar.karrta.jcr.node;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.jackrabbit.ocm.manager.collectionconverter.impl.NTCollectionConverterImpl;
+import org.apache.jackrabbit.ocm.mapper.impl.annotation.Collection;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 /**
- * author node.
+ * parent node.
+ * 
  * @author yosukehara
- *
+ * 
  */
-@Node(jcrMixinTypes="mix:referenceable")
-public class AuthorNode extends BaseNode {
-
-    public AuthorNode() {
-    }
+@Node(jcrMixinTypes = "mix:referenceable")
+public class ParentTreeNode extends BaseNode {
 
     /** path */
-    @Field(path = true)
-    protected String path = "/author";
+    @Field(path=true)
+    protected String path;
     
     /** id */
     @Field(id = true)
@@ -58,23 +62,60 @@ public class AuthorNode extends BaseNode {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
+    /** title */
+    @Field
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /** created at */
+    @Field
+    Date createdAt;
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /** modified */
+    @Field
+    Date modified;
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
+    }
+
+    /** children */
+    @Collection(elementClassName = ChildTreeNode.class, collectionConverter = NTCollectionConverterImpl.class)
+    List<ChildTreeNode> children = null;
+
+    public List<ChildTreeNode> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ChildTreeNode> children) {
+        this.children = children;
+    }
     
-    /** first name */
-    @Field String firstName;
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    
-    /** last name */
-    @Field String lastName;
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void addChild(ChildTreeNode child) {
+        if (this.children == null) {
+            this.children = new ArrayList<ChildTreeNode>();
+        }
+        this.children.add(child);
     }
     
     /*

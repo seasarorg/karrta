@@ -20,6 +20,9 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * jcr session manager.
  * 
@@ -27,6 +30,8 @@ import javax.jcr.Session;
  *
  */
 public class JcrSessionManager {
+    private static final Log logger_ = LogFactory.getLog(JcrSessionManager.class);
+    
     /** sessions */
     private ConcurrentMap<Integer, Session> sessions_ = new ConcurrentHashMap<Integer, Session>();
     
@@ -75,6 +80,8 @@ public class JcrSessionManager {
         Session session = this.sessions_.get(new Integer(currentThreadHashCode));
         if (session == null) {
             session = this.getSession();
+            
+            logger_.debug("::: JcrSessionManager-session:[" + session + "] :::");
         }
         return session;
     }
@@ -85,7 +92,7 @@ public class JcrSessionManager {
      * @return
      */
     public boolean isExist(int currentThreadHashCode) {
-        return (this.sessions_.get(new Integer(currentThreadHashCode)) == null);
+        return (this.sessions_.get(new Integer(currentThreadHashCode)) != null);
     }
     
     /**

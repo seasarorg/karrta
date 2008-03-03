@@ -13,15 +13,16 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.karrta.jcr.service;
+package org.seasar.karrta.jcr.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.ocm.query.Filter;
 import org.apache.jackrabbit.ocm.query.Query;
-import org.apache.jackrabbit.ocm.query.QueryManager;
 import org.seasar.karrta.jcr.node.BookNode;
 import org.seasar.karrta.jcr.ocm.BookOcm;
+import org.seasar.karrta.jcr.service.BaseService;
+import org.seasar.karrta.jcr.service.BookService;
 
 /**
  * book logic.
@@ -29,17 +30,8 @@ import org.seasar.karrta.jcr.ocm.BookOcm;
  * @author yosukehara
  * 
  */
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl extends BaseService implements BookService{
     private static final Log logger_ = LogFactory.getLog(BookServiceImpl.class);
-
-    /** query manager */
-    private QueryManager queryManager_;
-
-    public void setQueryManager(QueryManager queryManager) {
-        this.queryManager_ = queryManager;
-        
-        logger_.debug("::: queryManager:[" + queryManager + "]");
-    }
 
     /** book ocm */
     private BookOcm bookOcm_;

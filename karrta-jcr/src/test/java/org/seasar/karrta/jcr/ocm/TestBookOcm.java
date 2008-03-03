@@ -22,7 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.karrta.jcr.node.BookNode;
-import org.seasar.karrta.jcr.service.BookServiceImpl;
+import org.seasar.karrta.jcr.service.impl.BookServiceImpl;
 
 /**
  * test book ocm.
@@ -37,7 +37,7 @@ import org.seasar.karrta.jcr.service.BookServiceImpl;
 public class TestBookOcm extends S2TestCase {
     private static final Log logger_ = LogFactory.getLog(TestBookOcm.class);
 
-    private BookServiceImpl bookLogic_;
+    private BookServiceImpl bookService_;
 
     /*
      * @see junit.framework.TestCase#setUp()
@@ -53,9 +53,9 @@ public class TestBookOcm extends S2TestCase {
         logger_.debug("### create.start ###");
         // #1
         BookNode bookNode1 = this.getBookNode1();
-        this.bookLogic_.create(bookNode1);
+        this.bookService_.create(bookNode1);
 
-        BookNode bookNodeResult = this.bookLogic_.findById(4873112710L);
+        BookNode bookNodeResult = this.bookService_.findById(4873112710L);
         assertEquals(bookNode1.getPath(), bookNodeResult.getPath());
         assertEquals(bookNode1.getId(), bookNodeResult.getId());
         assertEquals(bookNode1.getTitle(), bookNodeResult.getTitle());
@@ -68,21 +68,21 @@ public class TestBookOcm extends S2TestCase {
 
         // #2
         logger_.debug("### create.start ###");
-        this.bookLogic_.create(this.getBookNode2());
+        this.bookService_.create(this.getBookNode2());
         logger_.debug("### create.end ###\n");
 
         // update.
         logger_.debug("### update1.start ###");
-        this.bookLogic_.update(this.getBookNode1ForUpdate());
+        this.bookService_.update(this.getBookNode1ForUpdate());
         logger_.debug("### update1.end ###\n");
 
         logger_.debug("### update2.start ###");
-        this.bookLogic_.update(this.getBookNode2ForUpdate());
+        this.bookService_.update(this.getBookNode2ForUpdate());
         logger_.debug("### update2.end ###\n");
 
         // find by ids.
         logger_.debug("### find by ids.start ###");
-        BookNode[] bookNodeResults = this.bookLogic_.findByIds(new String[] { "4873112710",
+        BookNode[] bookNodeResults = this.bookService_.findByIds(new String[] { "4873112710",
             "4873113539" });
         this.dump(bookNodeResults);
         assertEquals(2, bookNodeResults.length);
@@ -93,9 +93,8 @@ public class TestBookOcm extends S2TestCase {
         Runnable r1 = new Runnable() {
             public void run() {
                 try {
-                    System.out.println("##### TH-1 #####");
                     BookNode[] bookNodeResults = 
-                        bookLogic_.findByIds(new String[] { "4873112710", "4873113539" });
+                        bookService_.findByIds(new String[] { "4873112710", "4873113539" });
                     
                     dump(bookNodeResults);
                     
@@ -111,7 +110,7 @@ public class TestBookOcm extends S2TestCase {
                 try {
                     BookNode book = getBookNode1();
                     book.setTitle("Mind Hacks—実験で知る脳と心のシステム - UPDATE");
-                    bookLogic_.update(book);
+                    bookService_.update(book);
 
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -133,38 +132,38 @@ public class TestBookOcm extends S2TestCase {
     public void test3() {
         // retrieve.
         logger_.debug("### find by id.start ###");
-        BookNode bookNode1 = this.bookLogic_.findById(4873112710L);
+        BookNode bookNode1 = this.bookService_.findById(4873112710L);
         logger_.debug(bookNode1);
         logger_.debug("### find by id.end ###\n");
 
         logger_.debug("### find by id.start ###");
-        BookNode bookNode2 = this.bookLogic_.findById(4873113539L);
+        BookNode bookNode2 = this.bookService_.findById(4873113539L);
         logger_.debug(bookNode2);
         logger_.debug("---");
         logger_.debug("### find by id.end ###\n");
 
         logger_.debug("### fulltext-search.start ###");
-        BookNode[] bookNodeResults = this.bookLogic_.findByKeyword("update");
+        BookNode[] bookNodeResults = this.bookService_.findByKeyword("update");
         this.dump(bookNodeResults);
         logger_.debug("### fulltext-search.end ###\n");
 
         // remove.
         logger_.debug("### remove.start ###");
-        this.bookLogic_.remove(this.bookLogic_.findById(4873112710L));
+        this.bookService_.remove(this.bookService_.findById(4873112710L));
         logger_.debug("### remove.end ###\n");
 
         logger_.debug("### remove.start ###");
-        this.bookLogic_.remove(this.bookLogic_.findById(4873113539L));
+        this.bookService_.remove(this.bookService_.findById(4873113539L));
         logger_.debug("### remove.end ###\n");
 
         // retrieve.
         logger_.debug("### find by id.start ###");
-        bookNode1 = this.bookLogic_.findById(4873112710L);
+        bookNode1 = this.bookService_.findById(4873112710L);
         assertNull(bookNode1);
         logger_.debug("### find by id.end ###\n");
 
         logger_.debug("### find by ids.start ###");
-        bookNodeResults = this.bookLogic_.findByIds(new String[] { "4873112710", "4873113539" });
+        bookNodeResults = this.bookService_.findByIds(new String[] { "4873112710", "4873113539" });
         assertEquals(0, bookNodeResults.length);
         logger_.debug("### find by ids.end ###\n");
     }
@@ -196,7 +195,7 @@ public class TestBookOcm extends S2TestCase {
     }
 
     private BookNode getBookNode1ForUpdate() {
-        BookNode bookNode1 = this.bookLogic_.findById(4873112710L);
+        BookNode bookNode1 = this.bookService_.findById(4873112710L);
         bookNode1.setTitle("Mind Hacks - 実験で知る脳と心のシステムを理解する本 - update");
         return bookNode1;
     }
@@ -219,7 +218,7 @@ public class TestBookOcm extends S2TestCase {
     }
 
     private BookNode getBookNode2ForUpdate() {
-        BookNode bookNode2 = this.bookLogic_.findById(4873113539L);
+        BookNode bookNode2 = this.bookService_.findById(4873113539L);
         bookNode2.setTitle("RESTful Webサービスを深く理解できる本 - update");
         return bookNode2;
     }

@@ -17,8 +17,6 @@ package org.seasar.karrta.jcr.ocm;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
 import org.apache.jackrabbit.ocm.mapper.Mapper;
@@ -35,7 +33,7 @@ import org.seasar.karrta.jcr.session.JcrSessionManager;
  * 
  */
 public class ObjectContentManagerFactory {
-    private static final Log logger_ = LogFactory.getLog(ObjectContentManagerFactory.class);
+    //private static final Log logger_ = LogFactory.getLog(ObjectContentManagerFactory.class);
     
     public ObjectContentManagerFactory() {}
 

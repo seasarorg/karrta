@@ -21,5 +21,6 @@
   <component name="transaction" class="org.seasar.karrta.jcr.interceptor.OcmTransactionInterceptor">
     <property name="jcrSessionFactory">jcr.session_factory</property>
     <property name="jcrSessionManager">jcr.session_manager</property>
+    <property name="ocmFactory">factory</property>
   </component>
 </components>
