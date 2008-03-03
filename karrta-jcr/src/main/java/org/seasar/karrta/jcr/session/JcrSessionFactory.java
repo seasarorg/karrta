@@ -41,6 +41,8 @@ import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
 import org.apache.jackrabbit.core.nodetype.NodeTypeRegistry;
 import org.apache.jackrabbit.core.nodetype.xml.NodeTypeReader;
 import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
+import org.seasar.karrta.jcr.observation.EventListenerDefinition;
+import org.seasar.karrta.jcr.observation.EventManager;
 
 /**
  * 
@@ -123,6 +125,13 @@ public class JcrSessionFactory {
         this.namespaces_.put(namespace, url);
     }
 
+    /** event manager (observation) */
+    private EventManager eventManager_;
+
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager_ = eventManager;
+    }
+
     /**
      * get session.
      * 
@@ -139,17 +148,15 @@ public class JcrSessionFactory {
             if (this.password_ == null || "".equals(this.password_)) {
                 this.password_ = DEFAULT_PASSWORD;
             }
-            Session session =
-                this.repository_.login(
-                    new SimpleCredentials(
-                        this.user_,this.password_.toCharArray()), this.workspaceName_);
+            Session session = this.repository_.login(new SimpleCredentials(this.user_,
+                this.password_.toCharArray()), this.workspaceName_);
 
             this.registerNamespaces(session, this.namespaces_);
             this.registerNodeType(session);
             this.addEventListeners(session);
 
             logger_.debug("::: session:[" + session + "] :::");
-            
+
             return session;
 
         } catch (LoginException e) {
@@ -181,8 +188,21 @@ public class JcrSessionFactory {
      * @throws JcrRepositoryRuntimeException
      */
     protected void addEventListeners(Session session) throws JcrRepositoryRuntimeException {
-    // add event listener.
-    //
+        EventListenerDefinition[] eventDefinitions = this.eventManager_.getListenerDefinitions();
+
+        if (eventDefinitions == null || eventDefinitions.length == 0) return;
+        try {
+            Workspace workspace = session.getWorkspace();
+
+            for (EventListenerDefinition e : eventDefinitions) {
+                workspace.getObservationManager().addEventListener(e.getListener(),
+                    e.getEventTypes(), e.getAbsPath(), e.isDeep(), e.getUuids(),
+                    e.getNodeTypeNames(), e.getNoLocal());
+            }
+
+        } catch (RepositoryException e) {
+            throw new JcrRepositoryRuntimeException("", e);
+        }
     }
 
     /**

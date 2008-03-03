@@ -15,6 +15,9 @@
     <destroyMethod name="destroy"/>
   </component>
   
+  <!-- Event Manager for Observation. -->
+  <component name="event_manager" class="org.seasar.karrta.jcr.observation.EventManager" />
+  
   <!-- session factory -->
   <component
     name="session_factory" class="org.seasar.karrta.jcr.session.JcrSessionFactory">
@@ -23,6 +26,7 @@
     <property name="workspaceName">null</property>
     <property name="user">"defaultuser"</property>
     <property name="password">"defaultpassword"</property>
+    <property name="eventManager">event_manager</property>
     
     <initMethod name="addNamespace">
       <arg>"ocm"</arg><arg>"http://jackrabbit.apache.org/ocm"</arg>
@@ -30,7 +34,6 @@
     
     <destroyMethod name="destroy"/>
   </component>
-  
   
   <!-- session manager -->
   <component
