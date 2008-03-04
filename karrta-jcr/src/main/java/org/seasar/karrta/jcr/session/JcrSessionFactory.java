@@ -195,9 +195,11 @@ public class JcrSessionFactory {
             Workspace workspace = session.getWorkspace();
 
             for (EventListenerDefinition e : eventDefinitions) {
-                workspace.getObservationManager().addEventListener(e.getListener(),
-                    e.getEventTypes(), e.getAbsPath(), e.isDeep(), e.getUuids(),
-                    e.getNodeTypeNames(), e.getNoLocal());
+                logger_.debug("::: addEventListener ### [" + e + "] ### :::");
+                
+                workspace.getObservationManager().addEventListener(
+                    e.getListener(), e.getEventTypes(), e.getAbsPath(),
+                    e.isDeep(), e.getUuids(), e.getNodeTypeNames(), e.getNoLocal());
             }
 
         } catch (RepositoryException e) {

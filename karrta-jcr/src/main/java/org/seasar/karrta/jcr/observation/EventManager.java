@@ -18,6 +18,9 @@ package org.seasar.karrta.jcr.observation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * event manager.
  * 
@@ -25,7 +28,8 @@ import java.util.List;
  * 
  */
 public class EventManager {
-
+    private static final Log logger_ = LogFactory.getLog(EventManager.class);
+    
     /** listener definitions */
     private List<EventListenerDefinition> listenerDefinitions_ = new ArrayList<EventListenerDefinition>();
 
@@ -48,6 +52,7 @@ public class EventManager {
      * @param listener
      */
     public void addsetListenerDefinition(EventListenerDefinition listener) {
+        logger_.debug("::: EventManager#addsetListenerDefinition:[" + listener + "]");
         this.listenerDefinitions_.add(listener);
     }
 

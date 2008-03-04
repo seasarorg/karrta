@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+    "http://www.seasar.org/dtd/components21.dtd">
+<components>
+
+  <!-- event listener -->
+  <component name="book-node-added-observation" class="org.seasar.karrta.jcr.observation.BookNodeAddedEventListener" />
+
+  <!-- Event Manager for Observation. -->
+  <component name="event_manager" class="org.seasar.karrta.jcr.observation.EventManager" >
+  
+    <!-- book-node.added event. -->
+    <initMethod name="addsetListenerDefinition">
+      <arg>
+        <component name="event_manager" class="org.seasar.karrta.jcr.observation.EventListenerDefinition">
+          <property name="listener"     >book-node-added-observation</property>
+          <property name="eventTypes"   >@javax.jcr.observation.Event@NODE_ADDED</property>
+          <property name="absPath"      >"/book"</property>
+          <property name="isDeep"       >true</property>
+          <property name="uuids"        >null</property>
+          <property name="nodeTypeNames">null</property>
+          <property name="noLocal"      >false</property>
+        </component>
+      </arg>
+    </initMethod>
+  </component>
+  
+  
+  
+</components>

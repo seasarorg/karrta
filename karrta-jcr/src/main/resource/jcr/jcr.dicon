@@ -3,7 +3,8 @@
     "http://www.seasar.org/dtd/components24.dtd">
 <components namespace="jcr">
   <include path="jcr/nodeRegister.dicon" />
-
+  <include path="jcr/observation.dicon"  />
+  
   <!-- repository -->
   <component name="repository" class="org.seasar.karrta.jcr.repository.JcrRepository">
     <initMethod name="init">
@@ -14,10 +15,7 @@
     
     <destroyMethod name="destroy"/>
   </component>
-  
-  <!-- Event Manager for Observation. -->
-  <component name="event_manager" class="org.seasar.karrta.jcr.observation.EventManager" />
-  
+
   <!-- session factory -->
   <component
     name="session_factory" class="org.seasar.karrta.jcr.session.JcrSessionFactory">

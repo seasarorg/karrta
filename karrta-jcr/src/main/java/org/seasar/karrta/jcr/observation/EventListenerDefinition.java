@@ -27,6 +27,30 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * 
  */
 public class EventListenerDefinition {
+
+    public EventListenerDefinition() {}
+
+    /**
+     * @param listener
+     * @param eventTypes
+     * @param absPath
+     * @param isDeep
+     * @param uuids
+     * @param nodeTypeNames
+     * @param noLocal
+     */
+    public EventListenerDefinition(EventListener listener, int eventTypes, String absPath,
+        boolean isDeep, String[] uuids, String[] nodeTypeNames, boolean noLocal) {
+
+        this.listener_ = listener;
+        this.eventTypes_ = eventTypes;
+        this.absPath_ = absPath;
+        this.isDeep_ = isDeep;
+        this.uuids_ = uuids;
+        this.nodeTypeNames_ = nodeTypeNames;
+        this.noLocal_ = noLocal;
+    }
+
     /** event listener */
     private EventListener listener_;
 
@@ -34,7 +58,7 @@ public class EventListenerDefinition {
         return listener_;
     }
 
-    public void setListner(EventListener listener) {
+    public void setListener(EventListener listener) {
         this.listener_ = listener;
     }
 
@@ -88,7 +112,7 @@ public class EventListenerDefinition {
     public String[] getNodeTypeNames() {
         return nodeTypeNames_;
     }
-    
+
     public void setNodeTypeNames(String[] nodeTypeNames) {
         this.nodeTypeNames_ = nodeTypeNames;
     }
@@ -99,13 +123,14 @@ public class EventListenerDefinition {
     public boolean getNoLocal() {
         return noLocal_;
     }
-    
+
     public void setNoLocal(boolean noLocal) {
         this.noLocal_ = noLocal;
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString() {
