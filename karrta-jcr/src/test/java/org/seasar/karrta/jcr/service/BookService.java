@@ -19,46 +19,53 @@ import org.seasar.karrta.jcr.node.BookNode;
 
 /**
  * book logic
+ * 
  * @author yosukehara
- *
+ * 
  */
 public interface BookService {
-    /**
-     * create.
-     * @param book
-     */
-    void create(BookNode book);
-    
-    /**
-     * update. 
-     * @param book
-     */
-    void update(BookNode book);
-    
-    /**
-     * remove.
-     * @param book
-     */
-    void remove(BookNode book);
-    
-    /**
-     * find by id.
-     * @param id
-     * @return
-     */
-    BookNode findById(long id);
-    
-    /**
-     * find by ids.
-     * @param ids
-     * @return
-     */
-    BookNode[] findByIds(String[] ids);
-    
-    /**
-     * find by keyword.
-     * @param keyword
-     * @return
-     */
-    BookNode[] findByKeyword(String keyword);
+	/**
+	 * create.
+	 * 
+	 * @param book
+	 */
+	void create(BookNode book);
+
+	/**
+	 * update.
+	 * 
+	 * @param book
+	 */
+	void update(BookNode book);
+
+	/**
+	 * remove.
+	 * 
+	 * @param book
+	 */
+	void remove(BookNode book);
+
+	/**
+	 * find by id.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	BookNode findById(long id);
+
+	/**
+	 * find by ids.
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	BookNode[] findByIds(String[] ids);
+
+	/**
+	 * find by keyword.
+	 * 
+	 * @param keyword
+	 * @return
+	 */
+	BookNode[] findByKeyword(String keyword);
 }

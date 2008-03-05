@@ -30,10 +30,11 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
  */
 @Node(jcrMixinTypes="mix:referenceable")
 public class BookNode extends BaseNode {
-    /** path */
-    @Field(path = true)
-    protected String path = "/book";
     
+    /** path */
+    @Field(path=true)
+    protected String path;
+
     /** id */
     @Field(id = true)
     private long id;

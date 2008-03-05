@@ -28,31 +28,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class EventListenerDefinition {
 
-    public EventListenerDefinition() {}
-
-    /**
-     * @param listener
-     * @param eventTypes
-     * @param absPath
-     * @param isDeep
-     * @param uuids
-     * @param nodeTypeNames
-     * @param noLocal
-     */
-    public EventListenerDefinition(EventListener listener, int eventTypes, String absPath,
-        boolean isDeep, String[] uuids, String[] nodeTypeNames, boolean noLocal) {
-
-        this.listener_ = listener;
-        this.eventTypes_ = eventTypes;
-        this.absPath_ = absPath;
-        this.isDeep_ = isDeep;
-        this.uuids_ = uuids;
-        this.nodeTypeNames_ = nodeTypeNames;
-        this.noLocal_ = noLocal;
-    }
-
     /** event listener */
-    private EventListener listener_;
+    protected EventListener listener_;
 
     public EventListener getListener() {
         return listener_;
@@ -63,7 +40,7 @@ public class EventListenerDefinition {
     }
 
     /** event types */
-    private int eventTypes_;
+    protected int eventTypes_;
 
     public int getEventTypes() {
         return eventTypes_;
@@ -74,7 +51,7 @@ public class EventListenerDefinition {
     }
 
     /** absolute path */
-    private String absPath_;
+    protected String absPath_;
 
     public String getAbsPath() {
         return absPath_;
@@ -85,7 +62,7 @@ public class EventListenerDefinition {
     }
 
     /** is deep */
-    private boolean isDeep_;
+    protected boolean isDeep_;
 
     public boolean isDeep() {
         return isDeep_;
@@ -96,7 +73,7 @@ public class EventListenerDefinition {
     }
 
     /** uuids */
-    private String[] uuids_;
+    protected String[] uuids_;
 
     public String[] getUuids() {
         return uuids_;
@@ -107,7 +84,7 @@ public class EventListenerDefinition {
     }
 
     /** node type names */
-    private String[] nodeTypeNames_;
+    protected String[] nodeTypeNames_;
 
     public String[] getNodeTypeNames() {
         return nodeTypeNames_;
@@ -118,7 +95,7 @@ public class EventListenerDefinition {
     }
 
     /** no local */
-    private boolean noLocal_;
+    protected boolean noLocal_;
 
     public boolean getNoLocal() {
         return noLocal_;
@@ -128,9 +105,37 @@ public class EventListenerDefinition {
         this.noLocal_ = noLocal;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * set property.
      * 
+     * @param name
+     * @param value
+     */
+    public void setProperty(String name, Object value) {
+        if ("isDeep".equals(name)) {
+            this.isDeep_ = ((Boolean) value).booleanValue();
+            
+        } else if ("getEventTypes".equals(name)) {
+            this.eventTypes_ = ((Integer) value).intValue();
+            
+        } else if ("getAbsPath".equals(name)) {
+            this.absPath_ = (String) value;
+            
+        } else if ("getListener".equals(name)) {
+            this.listener_ = (EventListener)value;
+            
+        } else if ("getNoLocal".equals(name)) {
+            this.noLocal_ = ((Boolean) value).booleanValue();
+            
+        } else if ("getNodeTypeNames".equals(name)) {
+            this.nodeTypeNames_ = (String[])value;
+            
+        } else if ("getUuids".equals(name)) {
+            this.uuids_ = (String[])value;
+        }
+    }
+    
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

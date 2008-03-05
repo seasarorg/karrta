@@ -16,19 +16,18 @@
 package org.seasar.karrta.jcr.register;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
+import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.autoregister.AbstractComponentAutoRegister;
 import org.seasar.framework.container.autoregister.ClassPattern;
+import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.ResourceUtil;
 import org.seasar.framework.util.StringUtil;
-import org.seasar.framework.util.ClassTraversal.ClassHandler;
 import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
 
 /**
@@ -37,16 +36,19 @@ import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
  * @author yosukehara
  * 
  */
-public class JcrNodeComponentAutoRegister extends AbstractComponentAutoRegister {
-    private Log logger_ = LogFactory.getLog(JcrNodeComponentAutoRegister.class);
+public class JcrObservationComponentAutoRegister extends AbstractComponentAutoRegister {
+    private Log logger_ = LogFactory.getLog(JcrObservationComponentAutoRegister.class);
 
-    /** jcr node classes */
-    private List<Class> jcrNodeClasses = new ArrayList<Class>();
-
-    public List<Class> getJcrNodeClasses() {
-        return jcrNodeClasses;
+    public JcrObservationComponentAutoRegister() {
     }
+    
+    /** jcr node classes */
+    private Set<Object> observationClasses_ = new HashSet<Object>();
 
+    public Set<Object> getJcrObservations() {
+        return observationClasses_;
+    }
+    
     /*
      * @see org.seasar.framework.container.autoregister.AbstractAutoRegister#registerAll()
      */
@@ -56,9 +58,9 @@ public class JcrNodeComponentAutoRegister extends AbstractComponentAutoRegister 
         final String[] referencePackages = this.getTargetPackages();
 
         for (int i = 0; i < referencePackages.length; ++i) {
-            File dir = getPackageDir(packageDir, referencePackages[i]);
+            File dir = this.getPackageDir(packageDir, referencePackages[i]);
             if (dir.exists()) {
-                traverseFileSystem(packageDir, "", this);
+                this.traverseFileSystem(packageDir, "");
             }
         }
     }
@@ -86,7 +88,7 @@ public class JcrNodeComponentAutoRegister extends AbstractComponentAutoRegister 
      * @param rootPackage
      * @return
      */
-    private static File getPackageDir(final File rootDir, final String rootPackage) {
+    private File getPackageDir(final File rootDir, final String rootPackage) {
         File packageDir = rootDir;
         if (rootPackage != null) {
             final String[] names = rootPackage.split("\\.");
@@ -98,64 +100,56 @@ public class JcrNodeComponentAutoRegister extends AbstractComponentAutoRegister 
     }
 
     /*
-     * @see org.seasar.framework.container.autoregister.AbstractComponentAutoRegister#processClass(java.lang.String,
-     *      java.lang.String)
+     * @see org.seasar.framework.container.autoregister.AbstractComponentAutoRegister#processClass(java.lang.String, java.lang.String)
      */
     @Override
     public void processClass(final String packageName, final String shortClassName) {
-        if (isIgnore(packageName, shortClassName)) return;
+        if (isIgnore(packageName, shortClassName)) {
+            return;
+        }
 
         for (int i = 0; i < getClassPatternSize(); ++i) {
             final ClassPattern cp = getClassPattern(i);
             if (cp.isAppliedPackageName(packageName) && cp.isAppliedShortClassName(shortClassName)) {
+                
                 try {
                     Class clazz = Class.forName(ClassUtil.concatName(packageName, shortClassName));
-
-                    boolean hasNodeAnnotation = false;
-                    Annotation[] annotations = clazz.getAnnotations();
-                    for (Annotation a : annotations) {
-                        if (a instanceof Node) {
-                            hasNodeAnnotation = true;
-                            break;
-                        }
-                    }
-                    if (!hasNodeAnnotation) continue;
-
-                    this.register(ClassUtil.concatName(packageName, shortClassName));
-                    this.jcrNodeClasses.add(clazz);
-                    logger_.debug("::: jcrNodeClass:[" + clazz.getName() + "]");
-
-                } catch (ClassNotFoundException e) {
-                    throw new JcrRepositoryRuntimeException("", e);
+                    S2Container container = SingletonS2ContainerFactory.getContainer();
+                    //logger_.debug("::: container#getComponent:[" + container.getComponent(clazz) + "]");
+                    
+                    this.observationClasses_.add(container.getComponent(clazz));
+                    
+                } catch(ClassNotFoundException e) {
+                	throw new JcrRepositoryRuntimeException("", e);
                 }
                 return;
             }
         }
     }
-
+    
     /**
      * tracerse file system.
      * 
      * @param dir
      * @param packageName
      */
-    private static void traverseFileSystem(final File dir, final String packageName,
-            final ClassHandler handler) {
+    private void traverseFileSystem(final File dir, final String packageName) {
         final File[] files = dir.listFiles();
         for (int i = 0; i < files.length; ++i) {
             final File file = files[i];
             final String fileName = file.getName();
-
+            
             if (file.isDirectory()) {
-                traverseFileSystem(file, ClassUtil.concatName(packageName, fileName), handler);
+                this.traverseFileSystem(
+                    file, ClassUtil.concatName(packageName, fileName));
 
             } else if (fileName.endsWith(".class")) {
-                final String shortClassName = fileName.substring(0, fileName.length()
-                        - CLASS_SUFFIX.length());
+                final String shortClassName =
+                    fileName.substring(0, fileName.length() - CLASS_SUFFIX.length());
 
-                handler.processClass(packageName, shortClassName);
+                this.processClass(packageName, shortClassName);
             }
         }
     }
-
+    
 }

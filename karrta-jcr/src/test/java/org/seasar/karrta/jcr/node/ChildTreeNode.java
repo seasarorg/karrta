@@ -94,7 +94,7 @@ public class ChildTreeNode {
 
     /** created at */
     @Field
-    Date createdAt = new Date();
+    private Date createdAt = new Date();
 
     public Date getCreatedAt() {
         return createdAt;
@@ -106,7 +106,7 @@ public class ChildTreeNode {
 
     /** modified */
     @Field
-    Date modified = new Date();
+    private Date modified = new Date();
 
     public Date getModified() {
         return modified;
@@ -116,9 +116,9 @@ public class ChildTreeNode {
         this.modified = modified;
     }
 
-    /** children */
+    /** children */	
     @Collection(elementClassName = ChildTreeNode.class, collectionConverter = NTCollectionConverterImpl.class)
-    List<ChildTreeNode> children = null;
+    private List<ChildTreeNode> children = null;
 
     public List<ChildTreeNode> getChildren() {
         return children;

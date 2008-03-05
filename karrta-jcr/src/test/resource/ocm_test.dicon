@@ -3,36 +3,56 @@
     "http://www.seasar.org/dtd/components21.dtd">
 <components>
   <include path="configuration.dicon" />
-  <include path="jcr/ocm.dicon"       />
+  <include path="jcr/jcr.dicon"       />
 
   <!-- ============================================================ -->
   <!--                            OCM                               -->
   <!-- ============================================================ -->
   <!-- book ocm -->
   <component name="book_ocm" class="org.seasar.karrta.jcr.ocm.BookOcm">
-    <aspect>ocm.interceptor</aspect>
+    <aspect>jcr.interceptor</aspect>
   </component>
   
   <!-- TreeOcm -->
   <component name="tree_ocm" class="org.seasar.karrta.jcr.ocm.TreeOcm">
-    <aspect>ocm.interceptor</aspect>
+    <aspect>jcr.interceptor</aspect>
   </component>
   
   <!-- ============================================================ -->
   <!--                          SERVICE                             -->
   <!-- ============================================================ -->
   <!-- book service -->
-  <component class="org.seasar.karrta.jcr.service.impl.BookServiceImpl">
+  <component name="book_service" class="org.seasar.karrta.jcr.service.impl.BookServiceImpl">
     <property name="bookOcm">book_ocm</property>
-
-    <aspect>ocm.transaction</aspect>
+    <aspect>jcr.transaction</aspect>
   </component>
   
   <!-- Tree service -->
-  <component class="org.seasar.karrta.jcr.service.impl.TreeServiceImpl">
+  <component name="tree_service" class="org.seasar.karrta.jcr.service.impl.TreeServiceImpl">
     <property name="treeOcm">tree_ocm</property>
+    <aspect>jcr.transaction</aspect>
+  </component>
+  
+  <!-- ============================================================ -->
+  <!--                        OBSERVATION                           -->
+  <!-- ============================================================ -->
+  <!-- Book node added event listener -->
+  <component
+    name="book_node_added_event_listener"
+    class="org.seasar.karrta.jcr.observation.BookNodeAddedEventListener">
 
-    <aspect>ocm.transaction</aspect>
+    <property name="bookService">book_service</property>
+  </component>
+  
+  <!-- Book node added event listener definition -->
+  <component class="org.seasar.karrta.jcr.observation.BookNodeAddedEventListenerDefinition">
+    <property name="listener"     >book_node_added_event_listener</property>
+    <property name="eventTypes"   >@javax.jcr.observation.Event@NODE_ADDED</property>
+    <property name="absPath"      >"/"</property>
+    <property name="isDeep"       >true</property>
+    <property name="uuids"        >null</property>
+    <property name="nodeTypeNames">null</property>
+    <property name="noLocal"      >false</property>
   </component>
 
 </components>

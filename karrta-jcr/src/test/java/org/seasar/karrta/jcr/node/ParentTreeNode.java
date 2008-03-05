@@ -77,7 +77,7 @@ public class ParentTreeNode extends BaseNode {
 
     /** created at */
     @Field
-    Date createdAt;
+    private Date createdAt;
 
     public Date getCreatedAt() {
         return createdAt;
@@ -89,7 +89,7 @@ public class ParentTreeNode extends BaseNode {
 
     /** modified */
     @Field
-    Date modified;
+    private Date modified;
 
     public Date getModified() {
         return modified;
@@ -101,7 +101,7 @@ public class ParentTreeNode extends BaseNode {
 
     /** children */
     @Collection(elementClassName = ChildTreeNode.class, collectionConverter = NTCollectionConverterImpl.class)
-    List<ChildTreeNode> children = null;
+    private List<ChildTreeNode> children = null;
 
     public List<ChildTreeNode> getChildren() {
         return children;

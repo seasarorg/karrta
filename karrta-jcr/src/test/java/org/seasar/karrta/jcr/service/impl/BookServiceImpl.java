@@ -42,19 +42,15 @@ public class BookServiceImpl extends BaseService implements BookService{
         logger_.debug("::: bookOcm:[" + bookOcm + "]");
     }
 
-    /**
-     * create.
-     * 
-     * @param book
+    /*
+     * @see org.seasar.karrta.jcr.service.BookService#create(org.seasar.karrta.jcr.node.BookNode)
      */
     public void create(BookNode book) {
         this.bookOcm_.create(book);
     }
 
-    /**
-     * update.
-     * 
-     * @param book
+    /*
+     * @see org.seasar.karrta.jcr.service.BookService#update(org.seasar.karrta.jcr.node.BookNode)
      */
     public void update(BookNode book) {
         BookNode bookNode = this.findById(book.getId());
@@ -67,20 +63,15 @@ public class BookServiceImpl extends BaseService implements BookService{
         logger_.debug(bookNode);
     }
 
-    /**
-     * remove.
-     * 
-     * @param book
+    /*
+     * @see org.seasar.karrta.jcr.service.BookService#remove(org.seasar.karrta.jcr.node.BookNode)
      */
     public void remove(BookNode book) {
         this.bookOcm_.remove(book);
     }
 
-    /**
-     * find by id.
-     * 
-     * @param id
-     * @return
+    /*
+     * @see org.seasar.karrta.jcr.service.BookService#findById(long)
      */
     public BookNode findById(long id) {
         Filter filter =
@@ -91,11 +82,8 @@ public class BookServiceImpl extends BaseService implements BookService{
         return this.bookOcm_.findById(query);
     }
     
-    /**
-     * find by ids.
-     * 
-     * @param ids
-     * @return
+    /*
+     * @see org.seasar.karrta.jcr.service.BookService#findByIds(java.lang.String[])
      */
     public BookNode[] findByIds(String[] ids) {
         Filter filter =
@@ -109,11 +97,9 @@ public class BookServiceImpl extends BaseService implements BookService{
         return this.bookOcm_.findByIds(query);
     }
     
-    /**
-     * fulltext-search.
-     * 
-     * @param keyword
-     * @return
+    /*
+     * (non-Javadoc)
+     * @see org.seasar.karrta.jcr.service.BookService#findByKeyword(java.lang.String)
      */
     public BookNode[] findByKeyword(String keyword) {
         Filter filter = queryManager_.createFilter(BookNode.class)
@@ -123,4 +109,17 @@ public class BookServiceImpl extends BaseService implements BookService{
         return this.bookOcm_.findByIds(query);
     }
 
+    /*
+     * @see org.seasar.karrta.jcr.service.BookService#afterNodeAdded(java.lang.String)
+     */
+    public void afterNodeAdded(String path) {
+    	logger_.debug("::: [" + path + "] :::");
+    }
+    
+    /*
+     * @see org.seasar.karrta.jcr.service.BookService#afterNodeRemoved(java.lang.String)
+     */
+    public void afterNodeRemoved(String path) {
+    	logger_.debug("::: [" + path + "] :::");
+    }
 }

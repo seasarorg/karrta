@@ -15,7 +15,6 @@
  */
 package org.seasar.karrta.jcr.node;
 
-import java.io.InputStream;
 import java.util.Calendar;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -44,13 +43,13 @@ public class ResourceNode {
     }
 
     @Field(jcrName = "jcr:data")
-    private InputStream data;
+    private byte[] data;
 
-    public InputStream getData() {
+    public byte[] getData() {
         return data;
     }
 
-    public void setData(InputStream data) {
+    public void setData(byte[] data) {
         this.data = data;
     }
 

@@ -23,32 +23,43 @@ import javax.jcr.observation.EventListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
+import org.seasar.karrta.jcr.service.BookService;
 
 /**
- * book node added event listener.
+ * book node re moved event listener.
  * 
  * @author yosukehara
- *
+ * 
  */
 public class BookNodeAddedEventListener implements EventListener {
     private static final Log logger_ = LogFactory.getLog(BookNodeAddedEventListener.class);
+
+    /** book service */
+    private BookService bookService_;
+
+    public void setBookService(BookService bookService) {
+        this.bookService_ = bookService;
+    }
     
+    private int counter_;
+
     /*
      * @see javax.jcr.observation.EventListener#onEvent(javax.jcr.observation.EventIterator)
      */
     public void onEvent(EventIterator events) {
-        
-        logger_.debug("::: #node-added:start :::");
-        
         while (events.hasNext()) {
-            Event event = events.nextEvent();            
+            Event event = events.nextEvent();
             try {
-                logger_.debug("::: #node-added: Type:[" + event.getType() + "], Path:[" + event.getPath() + "]");
+                logger_.debug("::: #node-added:[" + Thread.currentThread().hashCode() + "] Type:["
+                        + event.getType() + "], Path:[" + event.getPath() + "]");
 
                 // processing...
-                
+                // this.bookService_.findById(1L);
+                logger_.debug("::: #node-added:[" + counter_ + "]");
+                counter_++;
+
             } catch (RepositoryException e) {
-                throw new JcrRepositoryRuntimeException("",e);
+                throw new JcrRepositoryRuntimeException("", e);
             }
         }
     }

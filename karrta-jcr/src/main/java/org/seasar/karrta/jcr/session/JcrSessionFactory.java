@@ -15,13 +15,21 @@
  */
 package org.seasar.karrta.jcr.session;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.jcr.LoginException;
 import javax.jcr.NoSuchWorkspaceException;
@@ -42,7 +50,7 @@ import org.apache.jackrabbit.core.nodetype.NodeTypeRegistry;
 import org.apache.jackrabbit.core.nodetype.xml.NodeTypeReader;
 import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
 import org.seasar.karrta.jcr.observation.EventListenerDefinition;
-import org.seasar.karrta.jcr.observation.EventManager;
+import org.seasar.karrta.jcr.register.JcrObservationComponentAutoRegister;
 
 /**
  * 
@@ -54,12 +62,15 @@ public class JcrSessionFactory {
 
     /** default workspace name */
     private static final String DEFAULT_WORKSPACE_NAME = "default";
+
     /** default user */
     private static final String DEFAULT_USER = "defaultuser";
+
     /** default password */
     private static final String DEFAULT_PASSWORD = "defaultpassword";
 
-    public JcrSessionFactory() {}
+    public JcrSessionFactory() {
+    }
 
     /**
      * @param repository
@@ -125,12 +136,16 @@ public class JcrSessionFactory {
         this.namespaces_.put(namespace, url);
     }
 
-    /** event manager (observation) */
-    private EventManager eventManager_;
+    /** observation register. */
+    private JcrObservationComponentAutoRegister observationRegister_;
 
-    public void setEventManager(EventManager eventManager) {
-        this.eventManager_ = eventManager;
+    public void setObservationComponentRegister(
+            JcrObservationComponentAutoRegister observationRegister) {
+        this.observationRegister_ = observationRegister;
     }
+
+    /** event listener definitions */
+    private Set<?> eventListeners = null;
 
     /**
      * get session.
@@ -148,8 +163,12 @@ public class JcrSessionFactory {
             if (this.password_ == null || "".equals(this.password_)) {
                 this.password_ = DEFAULT_PASSWORD;
             }
+            if (this.eventListeners == null) {
+                this.observationRegister_.registerAll();
+                this.eventListeners = this.observationRegister_.getJcrObservations();
+            }
             Session session = this.repository_.login(new SimpleCredentials(this.user_,
-                this.password_.toCharArray()), this.workspaceName_);
+                    this.password_.toCharArray()), this.workspaceName_);
 
             this.registerNamespaces(session, this.namespaces_);
             this.registerNodeType(session);
@@ -188,20 +207,36 @@ public class JcrSessionFactory {
      * @throws JcrRepositoryRuntimeException
      */
     protected void addEventListeners(Session session) throws JcrRepositoryRuntimeException {
-        EventListenerDefinition[] eventDefinitions = this.eventManager_.getListenerDefinitions();
-
-        if (eventDefinitions == null || eventDefinitions.length == 0) return;
+        if (this.eventListeners == null || this.eventListeners.size() == 0) {
+            return;
+        }
         try {
             Workspace workspace = session.getWorkspace();
+            EventListenerDefinition eventDefinition = null;
 
-            for (EventListenerDefinition e : eventDefinitions) {
-                logger_.debug("::: addEventListener ### [" + e + "] ### :::");
-                
-                workspace.getObservationManager().addEventListener(
-                    e.getListener(), e.getEventTypes(), e.getAbsPath(),
-                    e.isDeep(), e.getUuids(), e.getNodeTypeNames(), e.getNoLocal());
+            for (Iterator i = this.eventListeners.iterator(); i.hasNext();) {
+                Object bean = i.next();
+                eventDefinition = new EventListenerDefinition();
+
+                BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
+                for (PropertyDescriptor property : beanInfo.getPropertyDescriptors()) {
+                    Method getter = property.getReadMethod();
+
+                    if (getter == null) continue;
+                    eventDefinition.setProperty(getter.getName(), getter.invoke(bean, null));
+                }
+                workspace.getObservationManager().addEventListener(eventDefinition.getListener(),
+                        eventDefinition.getEventTypes(), eventDefinition.getAbsPath(),
+                        eventDefinition.isDeep(), eventDefinition.getUuids(),
+                        eventDefinition.getNodeTypeNames(), eventDefinition.getNoLocal());
             }
-
+            
+        } catch (IllegalAccessException e) {
+            throw new JcrRepositoryRuntimeException("", e);
+        } catch (IntrospectionException e) {
+            throw new JcrRepositoryRuntimeException("", e);
+        } catch (InvocationTargetException e) {
+            throw new JcrRepositoryRuntimeException("", e);
         } catch (RepositoryException e) {
             throw new JcrRepositoryRuntimeException("", e);
         }
@@ -215,7 +250,8 @@ public class JcrSessionFactory {
     private void registerNodeType(Session session) throws JcrRepositoryRuntimeException {
         String[] nodeTypeFiles = this.getNodeTypeFiles();
 
-        if (nodeTypeFiles == null || nodeTypeFiles.length == 0) return;
+        if (nodeTypeFiles == null || nodeTypeFiles.length == 0)
+            return;
         try {
             Workspace workspace = session.getWorkspace();
             NodeTypeManager ntMgr = workspace.getNodeTypeManager();
@@ -250,7 +286,7 @@ public class JcrSessionFactory {
      * @throws JcrRepositoryRuntimeException
      */
     private void registerNamespaces(Session session, Properties namespaces)
-        throws JcrRepositoryRuntimeException {
+            throws JcrRepositoryRuntimeException {
 
         try {
             String[] jcrNamespaces = session.getWorkspace().getNamespaceRegistry().getPrefixes();
@@ -281,14 +317,16 @@ public class JcrSessionFactory {
      * 
      * @throws JcrRepositoryRuntimeException
      */
-    protected void unregisterNodeType() throws JcrRepositoryRuntimeException {}
+    protected void unregisterNodeType() throws JcrRepositoryRuntimeException {
+    }
 
     /**
      * register namespaces.
      * 
      * @throws JcrRepositoryRuntimeException
      */
-    protected void unregisterNamespaces() throws JcrRepositoryRuntimeException {}
+    protected void unregisterNamespaces() throws JcrRepositoryRuntimeException {
+    }
 
     /**
      * destroy session factory.
