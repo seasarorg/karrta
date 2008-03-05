@@ -93,9 +93,11 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
         Object result = null;
         try {
             for (Method m : invocation.getThis().getClass().getMethods()) {
-                if (m.getName().indexOf("setQueryManager") > -1) {
+                if ("setOcmQueryManager".equals(m.getName())) {
                     m.invoke(invocation.getThis(), this.ocmFactory.getQueryManager());
-                    break;
+                }
+                if ("setQueryManager".equals(m.getName())) {
+                    m.invoke(invocation.getThis(), session.getWorkspace().getQueryManager());
                 }
             }
             result = invocation.proceed();

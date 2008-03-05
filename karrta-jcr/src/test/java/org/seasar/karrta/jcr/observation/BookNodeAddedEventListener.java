@@ -23,6 +23,7 @@ import javax.jcr.observation.EventListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
+import org.seasar.karrta.jcr.node.BookNode;
 import org.seasar.karrta.jcr.service.BookService;
 
 /**
@@ -41,8 +42,6 @@ public class BookNodeAddedEventListener implements EventListener {
         this.bookService_ = bookService;
     }
     
-    private int counter_;
-
     /*
      * @see javax.jcr.observation.EventListener#onEvent(javax.jcr.observation.EventIterator)
      */
@@ -50,13 +49,19 @@ public class BookNodeAddedEventListener implements EventListener {
         while (events.hasNext()) {
             Event event = events.nextEvent();
             try {
-                logger_.debug("::: #node-added:[" + Thread.currentThread().hashCode() + "] Type:["
-                        + event.getType() + "], Path:[" + event.getPath() + "]");
-
-                // processing...
-                // this.bookService_.findById(1L);
-                logger_.debug("::: #node-added:[" + counter_ + "]");
-                counter_++;
+                logger_.debug(
+                    "::: #node-added:" 
+                          + "Type:[" + event.getType() + "],"
+                          + "Path:[" + event.getPath() + "]");
+                
+                BookNode[] books = this.bookService_.findByPath(event.getPath());
+                if (books !=null && books.length > 0) {
+                    logger_.debug("::: #books:[" + books.length + "]");
+                    
+                    for (BookNode b : books) {
+                        logger_.debug("::: #book:[" + b + "]");
+                    }
+                }
 
             } catch (RepositoryException e) {
                 throw new JcrRepositoryRuntimeException("", e);

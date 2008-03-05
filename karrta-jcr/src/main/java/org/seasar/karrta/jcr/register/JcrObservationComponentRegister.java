@@ -36,10 +36,10 @@ import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
  * @author yosukehara
  * 
  */
-public class JcrObservationComponentAutoRegister extends AbstractComponentAutoRegister {
-    private Log logger_ = LogFactory.getLog(JcrObservationComponentAutoRegister.class);
+public class JcrObservationComponentRegister extends AbstractComponentAutoRegister {
+    private Log logger_ = LogFactory.getLog(JcrObservationComponentRegister.class);
 
-    public JcrObservationComponentAutoRegister() {
+    public JcrObservationComponentRegister() {
     }
     
     /** jcr node classes */

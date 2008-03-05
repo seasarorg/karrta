@@ -68,4 +68,12 @@ public interface BookService {
 	 * @return
 	 */
 	BookNode[] findByKeyword(String keyword);
+	
+	/**
+	 * find by path.
+	 * 
+	 * @param path
+	 * @return
+	 */
+	BookNode[] findByPath(String path);
 }

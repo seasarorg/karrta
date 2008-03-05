@@ -52,12 +52,12 @@ public class TreeServiceImpl extends BaseService implements TreeService {
      * @see org.seasar.karrta.jcr.service.TreeService#findById(long)
      */
     public ParentTreeNode findById(long id) {
-        logger_.debug("::: TreeServiceImpl#findById:[" + this.queryManager_ + "]");
+        logger_.debug("::: TreeServiceImpl#findById:[" + this.ocmQueryManager_ + "]");
         Filter filter =
-            this.queryManager_.createFilter(ParentTreeNode.class)
+            this.ocmQueryManager_.createFilter(ParentTreeNode.class)
                               .addEqualTo("id", String.valueOf(id));
         
-        Query query = this.queryManager_.createQuery(filter);
+        Query query = this.ocmQueryManager_.createQuery(filter);
         return this.treeOcm_.findById(query);
     }
 

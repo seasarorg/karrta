@@ -47,8 +47,8 @@
   <!--                       OBSERVATION                            -->
   <!-- ============================================================ -->
   <!-- ObservationComponentRegister-->
-  <component name="observation_register" class="org.seasar.karrta.jcr.register.JcrObservationComponentAutoRegister">
-    <property name="instanceDef">@org.seasar.framework.container.deployer.InstanceDefFactory@PROTOTYPE</property>
+  <component name="observation_register" class="org.seasar.karrta.jcr.register.JcrObservationComponentRegister">
+    <property name="instanceDef">@org.seasar.framework.container.deployer.InstanceDefFactory@SINGLETON</property>
 
     <initMethod name="addClassPattern">
       <arg>"org.seasar.karrta.jcr"</arg>

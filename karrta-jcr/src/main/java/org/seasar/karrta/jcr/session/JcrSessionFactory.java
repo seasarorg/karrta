@@ -50,7 +50,7 @@ import org.apache.jackrabbit.core.nodetype.NodeTypeRegistry;
 import org.apache.jackrabbit.core.nodetype.xml.NodeTypeReader;
 import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
 import org.seasar.karrta.jcr.observation.EventListenerDefinition;
-import org.seasar.karrta.jcr.register.JcrObservationComponentAutoRegister;
+import org.seasar.karrta.jcr.register.JcrObservationComponentRegister;
 
 /**
  * 
@@ -137,10 +137,10 @@ public class JcrSessionFactory {
     }
 
     /** observation register. */
-    private JcrObservationComponentAutoRegister observationRegister_;
+    private JcrObservationComponentRegister observationRegister_;
 
     public void setObservationComponentRegister(
-            JcrObservationComponentAutoRegister observationRegister) {
+            JcrObservationComponentRegister observationRegister) {
         this.observationRegister_ = observationRegister;
     }
 

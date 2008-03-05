@@ -24,10 +24,17 @@ import org.apache.jackrabbit.ocm.query.QueryManager;
  *
  */
 public abstract class BaseService {
-    /** query manager */
-    protected QueryManager queryManager_;
+    /** ocm query manager */
+    protected QueryManager ocmQueryManager_;
 
-    public void setQueryManager(QueryManager queryManager) {
+    public void setOcmQueryManager(QueryManager ocmQueryManager) {
+        this.ocmQueryManager_ = ocmQueryManager;
+    }
+    
+    /** query manager */
+    protected javax.jcr.query.QueryManager  queryManager_;
+    
+    public void setQueryManager(javax.jcr.query.QueryManager queryManager) {
         this.queryManager_ = queryManager;
     }
 }

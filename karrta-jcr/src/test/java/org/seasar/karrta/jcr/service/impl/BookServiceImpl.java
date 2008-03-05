@@ -15,10 +15,19 @@
  */
 package org.seasar.karrta.jcr.service.impl;
 
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.Property;
+import javax.jcr.PropertyIterator;
+import javax.jcr.RepositoryException;
+import javax.jcr.query.QueryResult;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.ocm.query.Filter;
 import org.apache.jackrabbit.ocm.query.Query;
+import org.seasar.karrta.jcr.commons.JcrUtils;
+import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
 import org.seasar.karrta.jcr.node.BookNode;
 import org.seasar.karrta.jcr.ocm.BookOcm;
 import org.seasar.karrta.jcr.service.BaseService;
@@ -75,11 +84,11 @@ public class BookServiceImpl extends BaseService implements BookService{
      */
     public BookNode findById(long id) {
         Filter filter =
-            this.queryManager_.createFilter(BookNode.class)
+            this.ocmQueryManager_.createFilter(BookNode.class)
                               .addEqualTo("id", String.valueOf(id));
         
-        Query query = this.queryManager_.createQuery(filter);
-        return this.bookOcm_.findById(query);
+        Query query = this.ocmQueryManager_.createQuery(filter);
+        return this.bookOcm_.selectNode(query);
     }
     
     /*
@@ -87,39 +96,57 @@ public class BookServiceImpl extends BaseService implements BookService{
      */
     public BookNode[] findByIds(String[] ids) {
         Filter filter =
-            queryManager_.createFilter(BookNode.class)
+            ocmQueryManager_.createFilter(BookNode.class)
                          .addEqualTo("id", ids[0])
                          .addOrFilter(
-                            queryManager_.createFilter(BookNode.class)
+                            ocmQueryManager_.createFilter(BookNode.class)
                                          .addEqualTo("id", ids[1]));
         
-        Query query = this.queryManager_.createQuery(filter);
-        return this.bookOcm_.findByIds(query);
+        Query query = this.ocmQueryManager_.createQuery(filter);
+        return this.bookOcm_.selectNodes(query);
     }
     
     /*
-     * (non-Javadoc)
      * @see org.seasar.karrta.jcr.service.BookService#findByKeyword(java.lang.String)
      */
     public BookNode[] findByKeyword(String keyword) {
-        Filter filter = queryManager_.createFilter(BookNode.class)
+        Filter filter = ocmQueryManager_.createFilter(BookNode.class)
                                      .addContains("title", keyword);
         
-        Query query = this.queryManager_.createQuery(filter);
-        return this.bookOcm_.findByIds(query);
-    }
-
-    /*
-     * @see org.seasar.karrta.jcr.service.BookService#afterNodeAdded(java.lang.String)
-     */
-    public void afterNodeAdded(String path) {
-    	logger_.debug("::: [" + path + "] :::");
+        Query query = this.ocmQueryManager_.createQuery(filter);
+        return this.bookOcm_.selectNodes(query);
     }
     
     /*
-     * @see org.seasar.karrta.jcr.service.BookService#afterNodeRemoved(java.lang.String)
+     * @see org.seasar.karrta.jcr.service.BookService#findByPath(java.lang.String)
      */
-    public void afterNodeRemoved(String path) {
-    	logger_.debug("::: [" + path + "] :::");
+    public BookNode[] findByPath(String path) {
+        logger_.debug("::: [" + path + "] :::");
+        try {
+            javax.jcr.query.Query query = 
+                this.queryManager_.createQuery("/" + path, javax.jcr.query.Query.XPATH);
+            
+            QueryResult result = query.execute();
+            NodeIterator queryResultNodeIterator = result.getNodes();
+            
+            Node node = null;
+            while (queryResultNodeIterator.hasNext()) {
+                node = queryResultNodeIterator.nextNode();
+                if (node == null) continue;
+                
+                logger_.debug("::: #[" + node + "]");
+                PropertyIterator properties = node.getProperties("jcr:uuid");
+                String uuid = null;
+                while (properties.hasNext()) {
+                    Property property = properties.nextProperty();
+                    uuid = property.getString();
+                }
+                logger_.debug("UUID:[" + uuid + "]");
+            }
+            return null;
+            
+        } catch (RepositoryException e) {
+            throw new JcrRepositoryRuntimeException("", e);
+        }
     }
 }

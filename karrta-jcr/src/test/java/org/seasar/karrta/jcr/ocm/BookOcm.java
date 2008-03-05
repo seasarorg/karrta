@@ -49,12 +49,12 @@ public interface BookOcm {
     void remove(BookNode book);
 
     /**
-     * find by id.
+     * select.
      * 
      * @param query
      * @return
      */
-    BookNode findById(Query query);
+    BookNode selectNode(Query query);
 
     /**
      * find by ids.
@@ -62,6 +62,5 @@ public interface BookOcm {
      * @param query
      * @return
      */
-    BookNode[] findByIds(Query query);
-
+    BookNode[] selectNodes(Query query);
 }

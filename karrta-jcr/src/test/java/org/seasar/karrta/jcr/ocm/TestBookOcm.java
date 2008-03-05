@@ -49,7 +49,7 @@ public class TestBookOcm extends S2TestCase {
     /**
      * test#1
      */
-    public void test1() {
+    public void test1() throws Exception {
         logger_.debug("### create.start ###");
         // #1
         BookNode bookNode1 = this.getBookNode1();
@@ -88,6 +88,8 @@ public class TestBookOcm extends S2TestCase {
         this.dump(bookNodeResults);
         assertEquals(2, bookNodeResults.length);
         logger_.debug("### find by ids.end ###\n");
+        
+        Thread.sleep(5000);
     }
 
     public void test2() {
