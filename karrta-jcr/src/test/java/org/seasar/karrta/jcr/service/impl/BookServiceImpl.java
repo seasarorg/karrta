@@ -26,7 +26,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.ocm.query.Filter;
 import org.apache.jackrabbit.ocm.query.Query;
-import org.seasar.karrta.jcr.commons.JcrUtils;
 import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
 import org.seasar.karrta.jcr.node.BookNode;
 import org.seasar.karrta.jcr.ocm.BookOcm;
@@ -129,6 +128,8 @@ public class BookServiceImpl extends BaseService implements BookService{
             QueryResult result = query.execute();
             NodeIterator queryResultNodeIterator = result.getNodes();
             
+            logger_.debug("::: queryResultNodeIterator:[" + queryResultNodeIterator + "]");
+            /*
             Node node = null;
             while (queryResultNodeIterator.hasNext()) {
                 node = queryResultNodeIterator.nextNode();
@@ -143,6 +144,7 @@ public class BookServiceImpl extends BaseService implements BookService{
                 }
                 logger_.debug("UUID:[" + uuid + "]");
             }
+            */
             return null;
             
         } catch (RepositoryException e) {

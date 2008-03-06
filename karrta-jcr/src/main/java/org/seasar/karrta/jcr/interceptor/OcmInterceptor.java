@@ -27,7 +27,6 @@ import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.query.Query;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 import org.seasar.karrta.jcr.annotation.Ocm;
-import org.seasar.karrta.jcr.commons.JcrUtils;
 import org.seasar.karrta.jcr.exception.InvalidArgumentException;
 import org.seasar.karrta.jcr.exception.InvalidMethodNameException;
 import org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory;

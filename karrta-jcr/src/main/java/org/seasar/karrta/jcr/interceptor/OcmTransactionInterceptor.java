@@ -111,7 +111,7 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
             xares.rollback(xid);
 
         } finally {
-            session.logout();
+//            session.logout();
             this.sessionManager_.removeSession(currentThreadHashCode, session);
 
             logger_.debug("::: [End Transaction] ::: [" + currentThreadHashCode + "] :::");

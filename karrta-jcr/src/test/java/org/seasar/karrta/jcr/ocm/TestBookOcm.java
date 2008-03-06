@@ -49,15 +49,15 @@ public class TestBookOcm extends S2TestCase {
     /**
      * test#1
      */
-    public void test1() throws Exception {
+    public void test1(){
         logger_.debug("### create.start ###");
         // #1
-        BookNode bookNode1 = this.getBookNode1();
-        this.bookService_.create(bookNode1);
+        BookNode bookNode1 = getBookNode1();
+        bookService_.create(bookNode1);
 
-        BookNode bookNodeResult = this.bookService_.findById(4873112710L);
+        BookNode bookNodeResult = bookService_.findById(4873112710L);
         logger_.debug(bookNodeResult);
-        
+
         assertEquals(bookNode1.getId(), bookNodeResult.getId());
         assertEquals(bookNode1.getTitle(), bookNodeResult.getTitle());
         assertEquals(bookNode1.getIsbn13(), bookNodeResult.getIsbn13());
@@ -69,40 +69,97 @@ public class TestBookOcm extends S2TestCase {
 
         // #2
         logger_.debug("### create.start ###");
-        this.bookService_.create(this.getBookNode2());
+        bookService_.create(getBookNode2());
         logger_.debug("### create.end ###\n");
 
         // update.
         logger_.debug("### update1.start ###");
-        this.bookService_.update(this.getBookNode1ForUpdate());
+        bookService_.update(getBookNode1ForUpdate());
         logger_.debug("### update1.end ###\n");
 
         logger_.debug("### update2.start ###");
-        this.bookService_.update(this.getBookNode2ForUpdate());
+        bookService_.update(getBookNode2ForUpdate());
         logger_.debug("### update2.end ###\n");
 
         // find by ids.
         logger_.debug("### find by ids.start ###");
-        BookNode[] bookNodeResults = this.bookService_.findByIds(new String[] { "4873112710",
-            "4873113539" });
-        this.dump(bookNodeResults);
+        BookNode[] bookNodeResults = bookService_.findByIds(new String[] {
+            "4873112710", "4873113539" });
+        dump(bookNodeResults);
         assertEquals(2, bookNodeResults.length);
         logger_.debug("### find by ids.end ###\n");
         
-        Thread.sleep(5000);
+        /*
+        Runnable r1 = new Runnable() {
+            public void run() {
+                try {
+                    logger_.debug("### create.start ###");
+                    // #1
+                    BookNode bookNode1 = getBookNode1();
+                    bookService_.create(bookNode1);
+
+                    BookNode bookNodeResult = bookService_.findById(4873112710L);
+                    logger_.debug(bookNodeResult);
+
+                    assertEquals(bookNode1.getId(), bookNodeResult.getId());
+                    assertEquals(bookNode1.getTitle(), bookNodeResult.getTitle());
+                    assertEquals(bookNode1.getIsbn13(), bookNodeResult.getIsbn13());
+                    assertEquals(bookNode1.getPubDate(), bookNodeResult.getPubDate());
+                    assertEquals(bookNode1.getDescription(), bookNodeResult.getDescription());
+
+                    logger_.debug(bookNodeResult.toString());
+                    logger_.debug("### create.end ###\n");
+
+                    // #2
+                    logger_.debug("### create.start ###");
+                    bookService_.create(getBookNode2());
+                    logger_.debug("### create.end ###\n");
+
+                    // update.
+                    logger_.debug("### update1.start ###");
+                    bookService_.update(getBookNode1ForUpdate());
+                    logger_.debug("### update1.end ###\n");
+
+                    logger_.debug("### update2.start ###");
+                    bookService_.update(getBookNode2ForUpdate());
+                    logger_.debug("### update2.end ###\n");
+
+                    // find by ids.
+                    logger_.debug("### find by ids.start ###");
+                    BookNode[] bookNodeResults = bookService_.findByIds(new String[] {
+                        "4873112710", "4873113539" });
+                    dump(bookNodeResults);
+                    assertEquals(2, bookNodeResults.length);
+                    logger_.debug("### find by ids.end ###\n");
+                    
+
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+        Thread th1 = new Thread(r1);
+        th1.start();
+        */
+        try {
+            System.out.println("---### start ###---");
+            Thread.sleep(10000);
+            System.out.println("---### end   ###---");
+        } catch (Exception e) {}
+        
     }
 
     public void test2() {
         Runnable r1 = new Runnable() {
             public void run() {
                 try {
-                    BookNode[] bookNodeResults = 
-                        bookService_.findByIds(new String[] { "4873112710", "4873113539" });
-                    
+                    BookNode[] bookNodeResults = bookService_.findByIds(new String[] {
+                        "4873112710", "4873113539" });
+
                     dump(bookNodeResults);
                     assertNotNull(bookNodeResults);
-                    assertEquals(2,bookNodeResults.length);
-                    
+                    assertEquals(2, bookNodeResults.length);
+
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -123,7 +180,8 @@ public class TestBookOcm extends S2TestCase {
             }
         };
         Thread th2 = new Thread(r2);
-        
+
+        /*
         Runnable r3 = new Runnable() {
             public void run() {
                 try {
@@ -136,10 +194,9 @@ public class TestBookOcm extends S2TestCase {
             }
         };
         Thread th3 = new Thread(r3);
-
+        */
         th1.start();
         th2.start();
-        th3.start();
 
         try {
             System.out.println("---### start ###---");
@@ -147,7 +204,7 @@ public class TestBookOcm extends S2TestCase {
             System.out.println("---### end   ###---");
         } catch (Exception e) {}
     }
-    
+
     public void test3() {
         // retrieve.
         logger_.debug("### find by id.start ###");
@@ -173,10 +230,6 @@ public class TestBookOcm extends S2TestCase {
 
         logger_.debug("### remove.start ###");
         this.bookService_.remove(this.bookService_.findById(4873113539L));
-        logger_.debug("### remove.end ###\n");
-        
-        logger_.debug("### remove.start ###");
-        this.bookService_.remove(this.bookService_.findById(321490452L));
         logger_.debug("### remove.end ###\n");
 
         // retrieve.
@@ -245,7 +298,7 @@ public class TestBookOcm extends S2TestCase {
         bookNode2.setTitle("RESTful Webサービスを深く理解できる本 - update");
         return bookNode2;
     }
-    
+
     private BookNode getBookNode3() {
         BookNode bookNode = new BookNode();
         bookNode.setPath("/book");
