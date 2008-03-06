@@ -35,11 +35,20 @@
     <destroyMethod name="destroy"/>
   </component>
   
+  
   <!-- session manager -->
   <component
     name="session_manager" class="org.seasar.karrta.jcr.session.JcrSessionManager">
     <arg>session_factory</arg>
-    
+    <arg>
+      <component class="org.apache.commons.pool.impl.GenericObjectPool$Config">
+        <property name="maxActive">10</property>
+        <property name="maxIdle">3</property>
+        <property name="maxWait">1000</property>
+        <property name="whenExhaustedAction">@org.apache.commons.pool.impl.GenericObjectPool@WHEN_EXHAUSTED_BLOCK</property>
+        <property name="minEvictableIdleTimeMillis">30000</property>
+      </component>
+    </arg>
     <destroyMethod name="destroy"/>
   </component>
 

@@ -39,13 +39,16 @@ public class JcrSessionManager extends GenericObjectPool {
 
     /**
      * @param sessionFactory
+     * @param config
      */
-    public JcrSessionManager(JcrSessionFactory sessionFactory) {
-        super(sessionFactory);
-        this.setMaxIdle(3);
-        this.setMaxActive(10);
-        this.setMinEvictableIdleTimeMillis(30000);
-        this.setTestOnBorrow(false);
+    public JcrSessionManager(JcrSessionFactory sessionFactory, GenericObjectPool.Config config) {
+        super(sessionFactory, config);
+        
+        logger_.debug("                 maxActive:[" + config.maxActive                  + "]");
+        logger_.debug("                   maxIdle:[" + config.maxIdle                    + "]");
+        logger_.debug("                   maxWait:[" + config.maxWait                    + "]");
+        logger_.debug("       whenExhaustedAction:[" + config.whenExhaustedAction        + "]");
+        logger_.debug("minEvictableIdleTimeMillis:[" + config.minEvictableIdleTimeMillis + "]");
     }
 
     /**
