@@ -148,9 +148,6 @@ public class JcrSessionFactory implements PoolableObjectFactory{
     /** event listener definitions */
     private Set<?> eventListeners = null;
     
-    /** is regsitered event listener */
-    private boolean isRegesteredEventListener_ = false;
-    
     /*
      * @see org.apache.commons.pool.PoolableObjectFactory#makeObject()
      */
@@ -161,8 +158,7 @@ public class JcrSessionFactory implements PoolableObjectFactory{
      * @see org.apache.commons.pool.PoolableObjectFactory#destroyObject(java.lang.Object)
      */
     public void destroyObject(Object obj) { 
-        if (obj instanceof Session) {
-        }
+        logger_.debug("::: destroyObject :::");
     }
     
     /*
@@ -186,7 +182,6 @@ public class JcrSessionFactory implements PoolableObjectFactory{
         logger_.debug("::: passivateObject :::");
     }
     
-
     /**
      * get session object.
      * 
@@ -213,10 +208,7 @@ public class JcrSessionFactory implements PoolableObjectFactory{
 
             this.registerNamespaces(session, this.namespaces_);
             this.registerNodeType(session);
-            if (! this.isRegesteredEventListener_) {
-                this.addEventListeners(session);
-                this.isRegesteredEventListener_ = true;
-            }
+            
             logger_.debug("::: session:[" + session + "] :::");
             return session;
 
@@ -227,6 +219,16 @@ public class JcrSessionFactory implements PoolableObjectFactory{
         } catch (RepositoryException e) {
             throw new JcrRepositoryRuntimeException("", e);
         }
+    }
+    
+    /**
+     * start event listener.
+     * 
+     */
+    public void startEventListener() {
+        logger_.debug("::: startEventListener :::");
+        Session session = this.getSession();
+        this.addEventListeners(session);
     }
 
     /**

@@ -31,6 +31,8 @@
     <initMethod name="addNamespace">
       <arg>"ocm"</arg><arg>"http://jackrabbit.apache.org/ocm"</arg>
     </initMethod>
+
+    <initMethod name="startEventListener" />
     
     <destroyMethod name="destroy"/>
   </component>
