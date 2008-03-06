@@ -129,7 +129,6 @@ public class TestBookOcm extends S2TestCase {
         };
         Thread th2 = new Thread(r2);
 
-        /*
         Runnable r3 = new Runnable() {
             public void run() {
                 try {
@@ -142,9 +141,9 @@ public class TestBookOcm extends S2TestCase {
             }
         };
         Thread th3 = new Thread(r3);
-        */
         th1.start();
         th2.start();
+        th3.start();
 
         try {
             System.out.println("---### start ###---");
@@ -178,6 +177,10 @@ public class TestBookOcm extends S2TestCase {
 
         logger_.debug("### remove.start ###");
         this.bookService_.remove(this.bookService_.findById(4873113539L));
+        logger_.debug("### remove.end ###\n");
+        
+        logger_.debug("### remove.start ###");
+        this.bookService_.remove(this.bookService_.findById(321490452L));
         logger_.debug("### remove.end ###\n");
 
         // retrieve.
