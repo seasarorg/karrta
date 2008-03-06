@@ -15,13 +15,19 @@
  */
 package org.seasar.karrta.jcr.service;
 
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.Property;
+import javax.jcr.PropertyIterator;
+import javax.jcr.RepositoryException;
+
 import org.apache.jackrabbit.ocm.query.QueryManager;
 
 /**
  * base service.
  * 
  * @author yosukehara
- *
+ * 
  */
 public abstract class BaseService {
     /** ocm query manager */
@@ -30,11 +36,35 @@ public abstract class BaseService {
     public void setOcmQueryManager(QueryManager ocmQueryManager) {
         this.ocmQueryManager_ = ocmQueryManager;
     }
-    
+
     /** query manager */
-    protected javax.jcr.query.QueryManager  queryManager_;
-    
+    protected javax.jcr.query.QueryManager queryManager_;
+
     public void setQueryManager(javax.jcr.query.QueryManager queryManager) {
         this.queryManager_ = queryManager;
+    }
+
+    /**
+     * get UUID by node path.
+     * 
+     * @param queryResultNodeIterator
+     * @param path
+     * @return
+     * @throws RepositoryException
+     */
+    protected String getUUIDByNodePath(NodeIterator queryResultNodeIterator, String path)
+        throws RepositoryException {
+
+        String uuid = null;
+
+        while (queryResultNodeIterator.hasNext()) {
+            Node node = queryResultNodeIterator.nextNode();
+            if (node == null || !node.getPath().equals(path)) continue;
+
+            PropertyIterator properties = node.getProperties("jcr:uuid");
+            Property property = properties.nextProperty();
+            uuid = property.getString();
+        }
+        return uuid;
     }
 }

@@ -49,6 +49,14 @@ public interface BookOcm {
     void remove(BookNode book);
 
     /**
+     * get object by uuid.
+     * 
+     * @param uuid
+     * @return
+     */
+    BookNode getObjectByUuid(String uuid);
+    
+    /**
      * select.
      * 
      * @param query

@@ -54,14 +54,8 @@ public class BookNodeAddedEventListener implements EventListener {
                           + "Type:[" + event.getType() + "],"
                           + "Path:[" + event.getPath() + "]");
                 
-                BookNode[] books = this.bookService_.findByPath(event.getPath());
-                if (books !=null && books.length > 0) {
-                    logger_.debug("::: #books:[" + books.length + "]");
-                    
-                    for (BookNode b : books) {
-                        logger_.debug("::: #book:[" + b + "]");
-                    }
-                }
+                BookNode book = this.bookService_.findByPath(event.getPath());
+                logger_.debug("::: BookNodeAddedEventListener:[\n" + book + "\n]:::");
 
             } catch (RepositoryException e) {
                 throw new JcrRepositoryRuntimeException("", e);

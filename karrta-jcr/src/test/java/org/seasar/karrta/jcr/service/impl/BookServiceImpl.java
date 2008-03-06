@@ -15,10 +15,7 @@
  */
 package org.seasar.karrta.jcr.service.impl;
 
-import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.QueryResult;
 
@@ -91,6 +88,13 @@ public class BookServiceImpl extends BaseService implements BookService{
     }
     
     /*
+     * @see org.seasar.karrta.jcr.service.BookService#findByUUID(java.lang.String)
+     */
+    public BookNode findByUUID(String uuid) {
+        return this.bookOcm_.getObjectByUuid(uuid);
+    }
+    
+    /*
      * @see org.seasar.karrta.jcr.service.BookService#findByIds(java.lang.String[])
      */
     public BookNode[] findByIds(String[] ids) {
@@ -119,7 +123,7 @@ public class BookServiceImpl extends BaseService implements BookService{
     /*
      * @see org.seasar.karrta.jcr.service.BookService#findByPath(java.lang.String)
      */
-    public BookNode[] findByPath(String path) {
+    public BookNode findByPath(String path) {
         logger_.debug("::: [" + path + "] :::");
         try {
             javax.jcr.query.Query query = 
@@ -128,22 +132,9 @@ public class BookServiceImpl extends BaseService implements BookService{
             QueryResult result = query.execute();
             NodeIterator queryResultNodeIterator = result.getNodes();
             
-            logger_.debug("::: queryResultNodeIterator:[" + queryResultNodeIterator + "]");
-            Node node = null;
-            while (queryResultNodeIterator.hasNext()) {
-                node = queryResultNodeIterator.nextNode();
-                if (node == null) continue;
-                
-                logger_.debug("::: #[" + node + "]");
-                PropertyIterator properties = node.getProperties("jcr:uuid");
-                String uuid = null;
-                while (properties.hasNext()) {
-                    Property property = properties.nextProperty();
-                    uuid = property.getString();
-                }
-                logger_.debug("UUID:[" + uuid + "]");
-            }
-            return null;
+            String uuid = super.getUUIDByNodePath(queryResultNodeIterator, path);
+            BookNode book = this.findByUUID(uuid);
+            return book;
             
         } catch (RepositoryException e) {
             throw new JcrRepositoryRuntimeException("", e);

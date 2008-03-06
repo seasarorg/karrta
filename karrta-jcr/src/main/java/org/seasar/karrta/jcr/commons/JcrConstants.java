@@ -23,143 +23,143 @@ import javax.jcr.Session;
 
 public class JcrConstants {
 	/** jcr:autoCreated */
-	private static final String JCR_AUTOCREATED = "autoCreated";
+	public static final String JCR_AUTOCREATED = "autoCreated";
 	/** jcr:baseVersion */
-	private static final String JCR_BASEVERSION = "baseVersion";
+	public static final String JCR_BASEVERSION = "baseVersion";
 	/** jcr:child */
-	private static final String JCR_CHILD = "child";
+	public static final String JCR_CHILD = "child";
 	/** jcr:childNodeDefinition */
-	private static final String JCR_CHILDNODEDEFINITION = "childNodeDefinition";
+	public static final String JCR_CHILDNODEDEFINITION = "childNodeDefinition";
 	/** jcr:content */
-	private static final String JCR_CONTENT = "content";
+	public static final String JCR_CONTENT = "content";
 	/** jcr:created */
-	private static final String JCR_CREATED = "created";
+	public static final String JCR_CREATED = "created";
 	/** jcr:data */
-	private static final String JCR_DATA = "data";
+	public static final String JCR_DATA = "data";
 	/** jcr:defaultPrimaryType */
-	private static final String JCR_DEFAULTPRIMARYTYPE = "defaultPrimaryType";
+	public static final String JCR_DEFAULTPRIMARYTYPE = "defaultPrimaryType";
 	/** jcr:defaultValues */
-	private static final String JCR_DEFAULTVALUES = "defaultValues";
+	public static final String JCR_DEFAULTVALUES = "defaultValues";
 	/** jcr:encoding */
-	private static final String JCR_ENCODING = "encoding";
+	public static final String JCR_ENCODING = "encoding";
 	/** jcr:frozenMixinTypes */
-	private static final String JCR_FROZENMIXINTYPES = "frozenMixinTypes";
+	public static final String JCR_FROZENMIXINTYPES = "frozenMixinTypes";
 	/** jcr:frozenNode */
-	private static final String JCR_FROZENNODE = "frozenNode";
+	public static final String JCR_FROZENNODE = "frozenNode";
 	/** jcr:frozenPrimaryType */
-	private static final String JCR_FROZENPRIMARYTYPE = "frozenPrimaryType";
+	public static final String JCR_FROZENPRIMARYTYPE = "frozenPrimaryType";
 	/** jcr:frozenUuid */
-	private static final String JCR_FROZENUUID = "frozenUuid";
+	public static final String JCR_FROZENUUID = "frozenUuid";
 	/** jcr:hasOrderableChildNodes */
-	private static final String JCR_HASORDERABLECHILDNODES = "hasOrderableChildNodes";
+	public static final String JCR_HASORDERABLECHILDNODES = "hasOrderableChildNodes";
 	/** jcr:isCheckedOut */
-	private static final String JCR_ISCHECKEDOUT = "isCheckedOut";
+	public static final String JCR_ISCHECKEDOUT = "isCheckedOut";
 	/** jcr:isMixin */
-	private static final String JCR_ISMIXIN = "isMixin";
+	public static final String JCR_ISMIXIN = "isMixin";
 	/** jcr:language */
-	private static final String JCR_LANGUAGE = "language";
+	public static final String JCR_LANGUAGE = "language";
 	/** jcr:lastModified */
-	private static final String JCR_LASTMODIFIED = "lastModified";
+	public static final String JCR_LASTMODIFIED = "lastModified";
 	/** jcr:lockIsDeep */
-	private static final String JCR_LOCKISDEEP = "lockIsDeep";
+	public static final String JCR_LOCKISDEEP = "lockIsDeep";
 	/** jcr:lockOwner */
-	private static final String JCR_LOCKOWNER = "lockOwner";
+	public static final String JCR_LOCKOWNER = "lockOwner";
 	/** jcr:mandatory */
-	private static final String JCR_MANDATORY = "mandatory";
+	public static final String JCR_MANDATORY = "mandatory";
 	/** jcr:mergeFailed */
-	private static final String JCR_MERGEFAILED = "mergeFailed";
+	public static final String JCR_MERGEFAILED = "mergeFailed";
 	/** jcr:mimeType */
-	private static final String JCR_MIMETYPE = "mimeType";
+	public static final String JCR_MIMETYPE = "mimeType";
 	/** jcr:mixinTypes */
-	private static final String JCR_MIXINTYPES = "mixinTypes";
+	public static final String JCR_MIXINTYPES = "mixinTypes";
 	/** jcr:multiple */
-	private static final String JCR_MULTIPLE = "multiple";
+	public static final String JCR_MULTIPLE = "multiple";
 	/** jcr:name */
-	private static final String JCR_NAME = "name";
+	public static final String JCR_NAME = "name";
 	/** jcr:nodeTypeName */
-	private static final String JCR_NODETYPENAME = "nodeTypeName";
+	public static final String JCR_NODETYPENAME = "nodeTypeName";
 	/** jcr:onParentVersion */
-	private static final String JCR_ONPARENTVERSION = "onParentVersion";
+	public static final String JCR_ONPARENTVERSION = "onParentVersion";
 	/** jcr:predecessors */
-	private static final String JCR_PREDECESSORS = "predecessors";
+	public static final String JCR_PREDECESSORS = "predecessors";
 	/** jcr:primaryItemName */
-	private static final String JCR_PRIMARYITEMNAME = "primaryItemName";
+	public static final String JCR_PRIMARYITEMNAME = "primaryItemName";
 	/** jcr:primaryType */
-	private static final String JCR_PRIMARYTYPE = "primaryType";
+	public static final String JCR_PRIMARYTYPE = "primaryType";
 	/** jcr:propertyDefinition */
-	private static final String JCR_PROPERTYDEFINITION = "propertyDefinition";
+	public static final String JCR_PROPERTYDEFINITION = "propertyDefinition";
 	/** jcr:protected */
-	private static final String JCR_PROTECTED = "protected";
+	public static final String JCR_PROTECTED = "protected";
 	/** jcr:requiredPrimaryTypes */
-	private static final String JCR_REQUIREDPRIMARYTYPES = "requiredPrimaryTypes";
+	public static final String JCR_REQUIREDPRIMARYTYPES = "requiredPrimaryTypes";
 	/** jcr:requiredType */
-	private static final String JCR_REQUIREDTYPE = "requiredType";
+	public static final String JCR_REQUIREDTYPE = "requiredType";
 	/** jcr:rootVersion */
-	private static final String JCR_ROOTVERSION = "rootVersion";
+	public static final String JCR_ROOTVERSION = "rootVersion";
 	/** jcr:sameNameSiblings */
-	private static final String JCR_SAMENAMESIBLINGS = "sameNameSiblings";
+	public static final String JCR_SAMENAMESIBLINGS = "sameNameSiblings";
 	/** jcr:statement */
-	private static final String JCR_STATEMENT = "statement";
+	public static final String JCR_STATEMENT = "statement";
 	/** jcr:successors */
-	private static final String JCR_SUCCESSORS = "successors";
+	public static final String JCR_SUCCESSORS = "successors";
 	/** jcr:supertypes */
-	private static final String JCR_SUPERTYPES = "supertypes";
+	public static final String JCR_SUPERTYPES = "supertypes";
 	/** jcr:system */
-	private static final String JCR_SYSTEM = "system";
+	public static final String JCR_SYSTEM = "system";
 	/** jcr:uuid */
-	private static final String JCR_UUID = "uuid";
+	public static final String JCR_UUID = "uuid";
 	/** jcr:valueConstraints */
-	private static final String JCR_VALUECONSTRAINTS = "valueConstraints";
+	public static final String JCR_VALUECONSTRAINTS = "valueConstraints";
 	/** jcr:versionHistory */
-	private static final String JCR_VERSIONHISTORY = "versionHistory";
+	public static final String JCR_VERSIONHISTORY = "versionHistory";
 	/** jcr:versionLabels */
-	private static final String JCR_VERSIONLABELS = "versionLabels";
+	public static final String JCR_VERSIONLABELS = "versionLabels";
 	/** jcr:versionStorage */
-	private static final String JCR_VERSIONSTORAGE = "versionStorage";
+	public static final String JCR_VERSIONSTORAGE = "versionStorage";
 	/** jcr:versionableUuid */
-	private static final String JCR_VERSIONABLEUUID = "versionableUuid";
+	public static final String JCR_VERSIONABLEUUID = "versionableUuid";
 	/** Pseudo property jcr:path used with query results */
-	private static final String JCR_PATH = "path";
+	public static final String JCR_PATH = "path";
 	/** Pseudo property jcr:score used with query results */
-	private static final String JCR_SCORE = "score";
+	public static final String JCR_SCORE = "score";
 	/** mix:lockable */
-	private static final String MIX_LOCKABLE = "lockable";
+	public static final String MIX_LOCKABLE = "lockable";
 	/** mix:referenceable */
-	private static final String MIX_REFERENCEABLE = "referenceable";
+	public static final String MIX_REFERENCEABLE = "referenceable";
 	/** mix:versionable */
-	private static final String MIX_VERSIONABLE = "versionable";
+	public static final String MIX_VERSIONABLE = "versionable";
 	/** nt:base */
-	private static final String NT_BASE = "base";
+	public static final String NT_BASE = "base";
 	/** nt:childNodeDefinition */
-	private static final String NT_CHILDNODEDEFINITION = "childNodeDefinition";
+	public static final String NT_CHILDNODEDEFINITION = "childNodeDefinition";
 	/** nt:file */
-	private static final String NT_FILE = "file";
+	public static final String NT_FILE = "file";
 	/** nt:folder */
-	private static final String NT_FOLDER = "folder";
+	public static final String NT_FOLDER = "folder";
 	/** nt:frozenNode */
-	private static final String NT_FROZENNODE = "frozenNode";
+	public static final String NT_FROZENNODE = "frozenNode";
 	/** nt:hierarchyNode */
-	private static final String NT_HIERARCHYNODE = "hierarchyNode";
+	public static final String NT_HIERARCHYNODE = "hierarchyNode";
 	/** nt:linkedFile */
-	private static final String NT_LINKEDFILE = "linkedFile";
+	public static final String NT_LINKEDFILE = "linkedFile";
 	/** nt:nodeType */
-	private static final String NT_NODETYPE = "nodeType";
+	public static final String NT_NODETYPE = "nodeType";
 	/** nt:propertyDefinition */
-	private static final String NT_PROPERTYDEFINITION = "propertyDefinition";
+	public static final String NT_PROPERTYDEFINITION = "propertyDefinition";
 	/** nt:query */
-	private static final String NT_QUERY = "query";
+	public static final String NT_QUERY = "query";
 	/** nt:resource */
-	private static final String NT_RESOURCE = "resource";
+	public static final String NT_RESOURCE = "resource";
 	/** nt:unstructured */
-	private static final String NT_UNSTRUCTURED = "unstructured";
+	public static final String NT_UNSTRUCTURED = "unstructured";
 	/** nt:version */
-	private static final String NT_VERSION = "version";
+	public static final String NT_VERSION = "version";
 	/** nt:versionHistory */
-	private static final String NT_VERSIONHISTORY = "versionHistory";
+	public static final String NT_VERSIONHISTORY = "versionHistory";
 	/** nt:versionLabels */
-	private static final String NT_VERSIONLABELS = "versionLabels";
+	public static final String NT_VERSIONLABELS = "versionLabels";
 	/** nt:versionedChild */
-	private static final String NT_VERSIONEDCHILD = "versionedChild";
+	public static final String NT_VERSIONEDCHILD = "versionedChild";
 
 	private boolean cache_ = true;
 	private Session session_ = null;

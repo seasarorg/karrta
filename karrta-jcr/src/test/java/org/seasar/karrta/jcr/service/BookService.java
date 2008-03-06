@@ -54,6 +54,14 @@ public interface BookService {
 	BookNode findById(long id);
 
 	/**
+	 * find by uuid.
+	 * 
+	 * @param uuid
+	 * @return
+	 */
+	BookNode findByUUID(String uuid);
+	
+	/**
 	 * find by ids.
 	 * 
 	 * @param ids
@@ -75,5 +83,5 @@ public interface BookService {
 	 * @param path
 	 * @return
 	 */
-	BookNode[] findByPath(String path);
+	BookNode findByPath(String path);
 }

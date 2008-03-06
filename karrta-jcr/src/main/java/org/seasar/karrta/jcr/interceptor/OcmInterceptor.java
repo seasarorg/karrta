@@ -41,20 +41,22 @@ public class OcmInterceptor extends AbstractInterceptor {
     private static final long serialVersionUID = 1L;
     private static final Log logger_ = LogFactory.getLog(OcmInterceptor.class);
     
-    private static final String TYPE_CREATE = "create";
-    private static final String TYPE_INSERT = "insert";
-    private static final String TYPE_ADD    = "add";
-    private static final String TYPE_UPDATE = "update";
-    private static final String TYPE_REMOVE = "remove";
-    private static final String TYPE_DELETE = "delete";
-    private static final String TYPE_FIND   = "find";
-    private static final String TYPE_SELECT = "select";
+    private static final String TYPE_CREATE      = "create";
+    private static final String TYPE_INSERT      = "insert";
+    private static final String TYPE_ADD         = "add";
+    private static final String TYPE_UPDATE      = "update";
+    private static final String TYPE_REMOVE      = "remove";
+    private static final String TYPE_DELETE      = "delete";
+    private static final String TYPE_FIND        = "find";
+    private static final String TYPE_SELECT      = "select";
+    private static final String TYPE_GET_BY_UUID = "getObjectByUuid";
     
-    private static final int TYPE_ERROR_CODE  = 0;
-    private static final int TYPE_CREATE_CODE = 1;
-    private static final int TYPE_UPDATE_CODE = 2;
-    private static final int TYPE_REMOVE_CODE = 3;
-    private static final int TYPE_FIND_CODE   = 4;
+    private static final int TYPE_ERROR_CODE       = 0;
+    private static final int TYPE_CREATE_CODE      = 1;
+    private static final int TYPE_UPDATE_CODE      = 2;
+    private static final int TYPE_REMOVE_CODE      = 3;
+    private static final int TYPE_FIND_CODE        = 4;
+    private static final int TYPE_GET_BY_UUID_CODE = 5;
     
     /** ocm factory */ 
     private ObjectContentManagerFactory ocmFactory_;
@@ -84,11 +86,9 @@ public class OcmInterceptor extends AbstractInterceptor {
         Object[] args = invocation.getArguments();
         if (args != null && args.length == 1) {
             for (Object arg : args) {
-                if (arg != null && 
-                    ( (methodType != TYPE_FIND_CODE && bean.getName().equals(arg.getClass().getName()))
-                   || (methodType == TYPE_FIND_CODE && arg.getClass().getName().indexOf("Query") > -1)) ){
-                    
+                if (this.checkArgument(methodType, bean, arg)){
                     canInvoke = true;
+                    break;
                 }
             }
         }
@@ -100,7 +100,7 @@ public class OcmInterceptor extends AbstractInterceptor {
         }
         ObjectContentManager ocm = this.ocmFactory_.getObjectContentManager();
         Object result = null;
-
+        
         switch(methodType) {
             case TYPE_CREATE_CODE:
                 ocm.insert(args[0]);
@@ -128,12 +128,41 @@ public class OcmInterceptor extends AbstractInterceptor {
                     isArray ? IteratorUtils.toArray(iterator, bean)
                             : collection.size() == 0  ? null : collection.get(0);
                 break;
+            case TYPE_GET_BY_UUID_CODE:
+                result = ocm.getObjectByUuid((String)args[0]);
+                break;
         }
-        //ocm.logout();
         end = System.currentTimeMillis();
-
         logger_.debug("::::: [" + "processing time:[" + (end - start) + "ms] :::::");
         
+        return result;
+    }
+
+    /**
+     * check argument.
+     * 
+     * @param methodType
+     * @param bean
+     * @param arg
+     * @return
+     */
+    private boolean checkArgument(int methodType, Class<?> bean, Object arg) {
+        if (methodType == TYPE_ERROR_CODE || arg == null) return false;
+        
+        boolean result = false;
+        switch(methodType) {
+            case TYPE_CREATE_CODE:
+            case TYPE_UPDATE_CODE:
+            case TYPE_REMOVE_CODE:
+                result = bean.getName().equals(arg.getClass().getName());
+                break;
+            case TYPE_FIND_CODE:
+                result = arg.getClass().getName().indexOf("Query") > -1;
+                break;
+            case TYPE_GET_BY_UUID_CODE:
+                result = arg instanceof String;
+                break;
+        }
         return result;
     }
     
@@ -145,15 +174,16 @@ public class OcmInterceptor extends AbstractInterceptor {
      */
     private int checkMethod(String methodName) {
         int result = 
-            methodName.indexOf(TYPE_CREATE) > -1 ? TYPE_CREATE_CODE :
-            methodName.indexOf(TYPE_INSERT) > -1 ? TYPE_CREATE_CODE :
-            methodName.indexOf(TYPE_ADD)    > -1 ? TYPE_CREATE_CODE :
-            methodName.indexOf(TYPE_UPDATE) > -1 ? TYPE_UPDATE_CODE :
-            methodName.indexOf(TYPE_REMOVE) > -1 ? TYPE_REMOVE_CODE :
-            methodName.indexOf(TYPE_DELETE) > -1 ? TYPE_REMOVE_CODE :
-            methodName.indexOf(TYPE_FIND)   > -1 ? TYPE_FIND_CODE   :
-            methodName.indexOf(TYPE_SELECT) > -1 ? TYPE_FIND_CODE   :
-                                                   TYPE_ERROR_CODE;
+            methodName.indexOf(TYPE_CREATE)      > -1 ? TYPE_CREATE_CODE      :
+            methodName.indexOf(TYPE_INSERT)      > -1 ? TYPE_CREATE_CODE      :
+            methodName.indexOf(TYPE_ADD)         > -1 ? TYPE_CREATE_CODE      :
+            methodName.indexOf(TYPE_UPDATE)      > -1 ? TYPE_UPDATE_CODE      :
+            methodName.indexOf(TYPE_REMOVE)      > -1 ? TYPE_REMOVE_CODE      :
+            methodName.indexOf(TYPE_DELETE)      > -1 ? TYPE_REMOVE_CODE      :
+            methodName.indexOf(TYPE_FIND)        > -1 ? TYPE_FIND_CODE        :
+            methodName.indexOf(TYPE_SELECT)      > -1 ? TYPE_FIND_CODE        :
+            methodName.indexOf(TYPE_GET_BY_UUID) > -1 ? TYPE_GET_BY_UUID_CODE :
+                                                        TYPE_ERROR_CODE;
         return result;
     }
 
