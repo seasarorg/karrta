@@ -26,7 +26,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.api.XASession;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 import org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory;
-import org.seasar.karrta.jcr.session.JcrSessionFactory;
 import org.seasar.karrta.jcr.session.JcrSessionManager;
 
 /**
@@ -39,23 +38,16 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
     private static final long serialVersionUID = 1L;
     private static final Log logger_ = LogFactory.getLog(OcmTransactionInterceptor.class);
 
-    /** session factory */
-    private JcrSessionFactory sessionFactory_;
-
-    public void setJcrSessionFactory(JcrSessionFactory sessionFactory) {
-        this.sessionFactory_ = sessionFactory;
-    }
-
     /** session manager */
     private JcrSessionManager sessionManager_;
 
     public void setJcrSessionManager(JcrSessionManager sessionManager) {
         this.sessionManager_ = sessionManager;
     }
-    
+
     /** object content manager */
     private ObjectContentManagerFactory ocmFactory;
-    
+
     public void setOcmFactory(ObjectContentManagerFactory ocmFactory) {
         this.ocmFactory = ocmFactory;
     }
@@ -68,12 +60,11 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
         if (this.sessionManager_.isExist(currentThreadHashCode)) {
             return invocation.proceed();
         }
-        
+
         logger_.debug("::: [Begin Transaction] ::: [" + currentThreadHashCode + "] :::");
 
-        XASession session = (XASession) this.sessionFactory_.getSession();
-        this.sessionManager_.addSession(currentThreadHashCode, session);
-
+        // check in jcr-session.
+        XASession session = (XASession) sessionManager_.borrowObject(currentThreadHashCode);
         Xid xid = new Xid() {
             public byte[] getBranchQualifier() {
                 return new byte[0];
@@ -111,8 +102,8 @@ public class OcmTransactionInterceptor extends AbstractInterceptor {
             xares.rollback(xid);
 
         } finally {
-//            session.logout();
-            this.sessionManager_.removeSession(currentThreadHashCode, session);
+            // check out jcr-session.
+            this.sessionManager_.returnSession(currentThreadHashCode, session);
 
             logger_.debug("::: [End Transaction] ::: [" + currentThreadHashCode + "] :::");
         }

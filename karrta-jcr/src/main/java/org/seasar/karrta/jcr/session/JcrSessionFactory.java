@@ -43,6 +43,7 @@ import javax.jcr.nodetype.NodeTypeManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.pool.PoolableObjectFactory;
 import org.apache.jackrabbit.core.nodetype.InvalidNodeTypeDefException;
 import org.apache.jackrabbit.core.nodetype.NodeTypeDef;
 import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
@@ -57,7 +58,7 @@ import org.seasar.karrta.jcr.register.JcrObservationComponentRegister;
  * @author yosuke
  * 
  */
-public class JcrSessionFactory {
+public class JcrSessionFactory implements PoolableObjectFactory{
     private static final Log logger_ = LogFactory.getLog(JcrSessionFactory.class);
 
     /** default workspace name */
@@ -101,7 +102,7 @@ public class JcrSessionFactory {
     }
 
     /** user */
-    String user_;
+    private String user_;
 
     public String getUser() {
         return user_;
@@ -112,7 +113,7 @@ public class JcrSessionFactory {
     }
 
     /** password */
-    String password_;
+    private String password_;
 
     public String getPassword() {
         return password_;
@@ -146,13 +147,53 @@ public class JcrSessionFactory {
 
     /** event listener definitions */
     private Set<?> eventListeners = null;
+    
+    /** is regsitered event listener */
+    private boolean isRegesteredEventListener_ = false;
+    
+    /*
+     * @see org.apache.commons.pool.PoolableObjectFactory#makeObject()
+     */
+    public Object makeObject() {
+        return this.getSession();
+    }
+    /*
+     * @see org.apache.commons.pool.PoolableObjectFactory#destroyObject(java.lang.Object)
+     */
+    public void destroyObject(Object obj) { 
+        if (obj instanceof Session) {
+        }
+    }
+    
+    /*
+     * @see org.apache.commons.pool.PoolableObjectFactory#validateObject(java.lang.Object)
+     */
+    public boolean validateObject(Object obj) {
+        return (obj instanceof Session);
+    }
+    
+    /*
+     * @see org.apache.commons.pool.PoolableObjectFactory#activateObject(java.lang.Object)
+     */
+    public void activateObject(Object obj) {
+        logger_.debug("::: activateObject :::");
+    }
+    
+    /*
+     * @see org.apache.commons.pool.PoolableObjectFactory#passivateObject(java.lang.Object)
+     */
+    public void passivateObject(Object obj) {
+        logger_.debug("::: passivateObject :::");
+    }
+    
 
     /**
-     * get session.
+     * get session object.
      * 
      * @return
+     * @throws JcrRepositoryRuntimeException
      */
-    public Session getSession() throws JcrRepositoryRuntimeException {
+    private Session getSession() throws JcrRepositoryRuntimeException {
         try {
             if (this.workspaceName_ == null || "".equals(this.workspaceName_)) {
                 this.workspaceName_ = DEFAULT_WORKSPACE_NAME;
@@ -172,10 +213,11 @@ public class JcrSessionFactory {
 
             this.registerNamespaces(session, this.namespaces_);
             this.registerNodeType(session);
-            this.addEventListeners(session);
-
+            if (! this.isRegesteredEventListener_) {
+                this.addEventListeners(session);
+                this.isRegesteredEventListener_ = true;
+            }
             logger_.debug("::: session:[" + session + "] :::");
-
             return session;
 
         } catch (LoginException e) {

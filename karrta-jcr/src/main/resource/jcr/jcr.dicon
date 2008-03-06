@@ -38,7 +38,7 @@
   <!-- session manager -->
   <component
     name="session_manager" class="org.seasar.karrta.jcr.session.JcrSessionManager">
-    <property name="jcrSessionFactory">session_factory</property>
+    <arg>session_factory</arg>
     
     <destroyMethod name="destroy"/>
   </component>
@@ -74,7 +74,6 @@
 
   <!-- ocm transaction -->
   <component name="transaction" class="org.seasar.karrta.jcr.interceptor.OcmTransactionInterceptor">
-    <property name="jcrSessionFactory">session_factory</property>
     <property name="jcrSessionManager">session_manager</property>
     <property name="ocmFactory">factory</property>
   </component>

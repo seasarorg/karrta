@@ -17,6 +17,8 @@ package org.seasar.karrta.jcr.ocm;
 
 import java.util.List;
 
+import javax.jcr.Session;
+
 import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
 import org.apache.jackrabbit.ocm.mapper.Mapper;
@@ -74,9 +76,10 @@ public class ObjectContentManagerFactory {
         }
 
         Mapper mapper = new AnnotationMapperImpl(this.mappingClasses_);
-        int hashCode = Thread.currentThread().hashCode();
+        int currnetThreadHashCode = Thread.currentThread().hashCode();
         ObjectContentManager ocm =
-            new ObjectContentManagerImpl(this.sessionManager_.getSession(hashCode), mapper);
+            new ObjectContentManagerImpl(
+                (Session)this.sessionManager_.borrowObject(currnetThreadHashCode), mapper);
         return ocm;
     }
 

@@ -129,7 +129,6 @@ public class BookServiceImpl extends BaseService implements BookService{
             NodeIterator queryResultNodeIterator = result.getNodes();
             
             logger_.debug("::: queryResultNodeIterator:[" + queryResultNodeIterator + "]");
-            /*
             Node node = null;
             while (queryResultNodeIterator.hasNext()) {
                 node = queryResultNodeIterator.nextNode();
@@ -144,7 +143,6 @@ public class BookServiceImpl extends BaseService implements BookService{
                 }
                 logger_.debug("UUID:[" + uuid + "]");
             }
-            */
             return null;
             
         } catch (RepositoryException e) {

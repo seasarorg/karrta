@@ -22,26 +22,32 @@ import javax.jcr.Session;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.pool.impl.GenericObjectPool;
+import org.seasar.karrta.jcr.exception.JcrRepositoryRuntimeException;
 
 /**
  * jcr session manager.
  * 
  * @author yosukehara
- *
+ * 
  */
-public class JcrSessionManager {
+public class JcrSessionManager extends GenericObjectPool {
     private static final Log logger_ = LogFactory.getLog(JcrSessionManager.class);
-    
+
     /** sessions */
     private ConcurrentMap<Integer, Session> sessions_ = new ConcurrentHashMap<Integer, Session>();
-    
-    /** session factory */
-    private JcrSessionFactory sessionFactory_;
-    
-    public void setJcrSessionFactory(JcrSessionFactory sessionFactory) {
-        this.sessionFactory_ = sessionFactory;
+
+    /**
+     * @param sessionFactory
+     */
+    public JcrSessionManager(JcrSessionFactory sessionFactory) {
+        super(sessionFactory);
+        this.setMaxIdle(3);
+        this.setMaxActive(10);
+        this.setMinEvictableIdleTimeMillis(30000);
+        this.setTestOnBorrow(false);
     }
-    
+
     /**
      * add session.
      * 
@@ -51,24 +57,37 @@ public class JcrSessionManager {
     public void addSession(int currentThreadHashCode, Session session) {
         this.sessions_.put(new Integer(currentThreadHashCode), session);
     }
-    
+
     /**
      * remove session.
      * 
      * @param currentThreadHashCode
      * @param session
      */
-    public void removeSession(int currentThreadHashCode, Session session) {
+    public void returnSession(int currentThreadHashCode, Session session) {
         this.sessions_.remove(new Integer(currentThreadHashCode), session);
+        try {
+            super.returnObject(session);
+        } catch (Exception e) {
+            throw new JcrRepositoryRuntimeException("", e);
+        }
+    }
+
+    /*
+     * @see org.apache.commons.pool.impl.GenericObjectPool#borrowObject()
+     */
+    public Object borrowObject() {
+        return this.borrowObject(Thread.currentThread().hashCode());
     }
     
     /**
-     * get session.
+     * borrow object.
      * 
+     * @param currentThreadHashCode
      * @return
      */
-    public Session getSession() {
-        return this.sessionFactory_.getSession();
+    public Object borrowObject(int currentThreadHashCode) {
+        return this.getSession(currentThreadHashCode);
     }
     
     /**
@@ -76,16 +95,21 @@ public class JcrSessionManager {
      * 
      * @param currentThreadHashCode
      */
-    public Session getSession(int currentThreadHashCode) {
+    private Session getSession(int currentThreadHashCode) {
         Session session = this.sessions_.get(new Integer(currentThreadHashCode));
         if (session == null) {
-            session = this.getSession();
-            
+            try {
+                session = (Session) super.borrowObject();
+                this.sessions_.put(new Integer(currentThreadHashCode), session);
+
+            } catch (Exception e) {
+                throw new JcrRepositoryRuntimeException("", e);
+            }
             logger_.debug("::: JcrSessionManager-session:[" + session + "] :::");
         }
         return session;
     }
-    
+
     /**
      * 
      * @param currentThreadHashCode
@@ -94,12 +118,12 @@ public class JcrSessionManager {
     public boolean isExist(int currentThreadHashCode) {
         return (this.sessions_.get(new Integer(currentThreadHashCode)) != null);
     }
-    
+
     /**
      * clear.
      */
     public void destroy() {
         this.sessions_.clear();
     }
-    
+
 }
