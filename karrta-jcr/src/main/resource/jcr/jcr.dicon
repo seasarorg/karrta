@@ -37,7 +37,6 @@
     <destroyMethod name="destroy"/>
   </component>
   
-  
   <!-- session manager -->
   <component
     name="session_manager" class="org.seasar.karrta.jcr.session.JcrSessionManager">
