@@ -35,7 +35,7 @@ import org.seasar.karrta.jcr.service.BookService;
  * @author yosukehara
  * 
  */
-public class BookServiceImpl extends BaseService implements BookService{
+public class BookServiceImpl extends BaseService implements BookService {
     private static final Log logger_ = LogFactory.getLog(BookServiceImpl.class);
 
     /** book ocm */
@@ -43,7 +43,7 @@ public class BookServiceImpl extends BaseService implements BookService{
 
     public void setBookOcm(BookOcm bookOcm) {
         this.bookOcm_ = bookOcm;
-        
+
         logger_.debug("::: bookOcm:[" + bookOcm + "]");
     }
 
@@ -61,9 +61,9 @@ public class BookServiceImpl extends BaseService implements BookService{
         BookNode bookNode = this.findById(book.getId());
         bookNode.setTitle(book.getTitle());
         logger_.debug(bookNode);
-        
+
         this.bookOcm_.update(book);
-        
+
         bookNode = this.findById(bookNode.getId());
         logger_.debug(bookNode);
     }
@@ -79,63 +79,62 @@ public class BookServiceImpl extends BaseService implements BookService{
      * @see org.seasar.karrta.jcr.service.BookService#findById(long)
      */
     public BookNode findById(long id) {
-        Filter filter =
+        Filter filter = 
             this.ocmQueryManager_.createFilter(BookNode.class)
-                              .addEqualTo("id", String.valueOf(id));
-        
+                                 .addEqualTo("id", String.valueOf(id));
+
         Query query = this.ocmQueryManager_.createQuery(filter);
         return this.bookOcm_.selectNode(query);
     }
-    
+
     /*
      * @see org.seasar.karrta.jcr.service.BookService#findByUUID(java.lang.String)
      */
     public BookNode findByUUID(String uuid) {
         return this.bookOcm_.getObjectByUuid(uuid);
     }
-    
+
     /*
      * @see org.seasar.karrta.jcr.service.BookService#findByIds(java.lang.String[])
      */
     public BookNode[] findByIds(String[] ids) {
-        Filter filter =
-            ocmQueryManager_.createFilter(BookNode.class)
-                         .addEqualTo("id", ids[0])
-                         .addOrFilter(
-                            ocmQueryManager_.createFilter(BookNode.class)
-                                         .addEqualTo("id", ids[1]));
-        
+        Filter filter = ocmQueryManager_
+                .createFilter(BookNode.class)
+                .addEqualTo("id", ids[0])
+                .addOrFilter(
+                    ocmQueryManager_.createFilter(BookNode.class)
+                                    .addEqualTo("id", ids[1]));
+
         Query query = this.ocmQueryManager_.createQuery(filter);
         return this.bookOcm_.selectNodes(query);
     }
-    
+
     /*
      * @see org.seasar.karrta.jcr.service.BookService#findByKeyword(java.lang.String)
      */
     public BookNode[] findByKeyword(String keyword) {
-        Filter filter = ocmQueryManager_.createFilter(BookNode.class)
-                                     .addContains("title", keyword);
-        
+        Filter filter = ocmQueryManager_.createFilter(BookNode.class).addContains("title", keyword);
+
         Query query = this.ocmQueryManager_.createQuery(filter);
         return this.bookOcm_.selectNodes(query);
     }
-    
+
     /*
      * @see org.seasar.karrta.jcr.service.BookService#findByPath(java.lang.String)
      */
     public BookNode findByPath(String path) {
         logger_.debug("::: [" + path + "] :::");
         try {
-            javax.jcr.query.Query query = 
-                this.queryManager_.createQuery("/" + path, javax.jcr.query.Query.XPATH);
-            
+            javax.jcr.query.Query query = this.queryManager_.createQuery("/" + path,
+                    javax.jcr.query.Query.XPATH);
+
             QueryResult result = query.execute();
             NodeIterator queryResultNodeIterator = result.getNodes();
-            
+
             String uuid = super.getUUIDByNodePath(queryResultNodeIterator, path);
             BookNode book = this.findByUUID(uuid);
             return book;
-            
+
         } catch (RepositoryException e) {
             throw new JcrRepositoryRuntimeException("", e);
         }

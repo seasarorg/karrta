@@ -34,9 +34,9 @@ import org.seasar.karrta.jcr.session.JcrSessionManager;
  * @author yosukehara
  * 
  */
-public class OcmTransactionInterceptor extends AbstractInterceptor {
+public class JcrTransactionInterceptor extends AbstractInterceptor {
     private static final long serialVersionUID = 1L;
-    private static final Log logger_ = LogFactory.getLog(OcmTransactionInterceptor.class);
+    private static final Log logger_ = LogFactory.getLog(JcrTransactionInterceptor.class);
 
     /** session manager */
     private JcrSessionManager sessionManager_;

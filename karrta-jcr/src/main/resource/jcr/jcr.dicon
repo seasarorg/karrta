@@ -83,7 +83,7 @@
   </component>
 
   <!-- ocm transaction -->
-  <component name="transaction" class="org.seasar.karrta.jcr.interceptor.OcmTransactionInterceptor">
+  <component name="transaction" class="org.seasar.karrta.jcr.interceptor.JcrTransactionInterceptor">
     <property name="jcrSessionManager">session_manager</property>
     <property name="ocmFactory">factory</property>
   </component>
