@@ -68,6 +68,7 @@ public class OcmInterceptor extends AbstractInterceptor {
     /*
      * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
      */
+    @SuppressWarnings("unchecked")
     public Object invoke(MethodInvocation invocation) throws Throwable {
         long start, end;
         start = System.currentTimeMillis();
