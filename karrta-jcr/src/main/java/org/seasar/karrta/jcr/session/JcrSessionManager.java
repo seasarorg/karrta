@@ -35,7 +35,7 @@ public class JcrSessionManager extends GenericObjectPool {
     private static final Log logger_ = LogFactory.getLog(JcrSessionManager.class);
 
     /** sessions */
-    private ConcurrentMap<Integer, Session> sessions_ = new ConcurrentHashMap<Integer, Session>();
+    private ConcurrentMap<Thread, Session> sessions_ = new ConcurrentHashMap<Thread, Session>();
 
     /**
      * @param sessionFactory
@@ -54,21 +54,21 @@ public class JcrSessionManager extends GenericObjectPool {
     /**
      * add session.
      * 
-     * @param currentThreadHashCode
+     * @param thread
      * @param session
      */
-    public void addSession(int currentThreadHashCode, Session session) {
-        this.sessions_.put(new Integer(currentThreadHashCode), session);
+    public void addSession(Thread thread, Session session) {
+        this.sessions_.put(thread, session);
     }
 
     /**
      * remove session.
      * 
-     * @param currentThreadHashCode
+     * @param thread
      * @param session
      */
-    public void returnSession(int currentThreadHashCode, Session session) {
-        this.sessions_.remove(new Integer(currentThreadHashCode), session);
+    public void returnSession(Thread thread, Session session) {
+        this.sessions_.remove(thread, session);
         try {
             super.returnObject(session);
         } catch (Exception e) {
@@ -80,7 +80,7 @@ public class JcrSessionManager extends GenericObjectPool {
      * @see org.apache.commons.pool.impl.GenericObjectPool#borrowObject()
      */
     public Object borrowObject() {
-        return this.borrowObject(Thread.currentThread().hashCode());
+        return this.borrowObject(Thread.currentThread());
     }
     
     /**
@@ -89,28 +89,27 @@ public class JcrSessionManager extends GenericObjectPool {
      * @param currentThreadHashCode
      * @return
      */
-    public Object borrowObject(int currentThreadHashCode) {
-        return this.getSession(currentThreadHashCode);
+    public Object borrowObject(Thread thread) {
+        return this.getSession(thread);
     }
     
     /**
      * get session.
      * 
-     * @param currentThreadHashCode
+     * @param thread
      */
-    private Session getSession(int currentThreadHashCode) {
-        Session session = this.sessions_.get(new Integer(currentThreadHashCode));
-        if (session == null) {
-            try {
-                session = (Session) super.borrowObject();
-                this.sessions_.put(new Integer(currentThreadHashCode), session);
+    private Session getSession(Thread thread) {
+        Session session = this.sessions_.get(thread);
+        if (session != null) return session;
 
-            } catch (Exception e) {
-                throw new JcrRepositoryRuntimeException("", e);
-            }
+        try {
+            session = (Session) super.borrowObject();
+            this.sessions_.put(thread, session);
             logger_.debug("::: JcrSessionManager-session:[" + session + "] :::");
+            return session;
+        } catch (Exception e) {
+            throw new JcrRepositoryRuntimeException("", e);
         }
-        return session;
     }
 
     /**
@@ -118,8 +117,9 @@ public class JcrSessionManager extends GenericObjectPool {
      * @param currentThreadHashCode
      * @return
      */
-    public boolean isExist(int currentThreadHashCode) {
-        return (this.sessions_.get(new Integer(currentThreadHashCode)) != null);
+    public boolean isExist(Thread thread) {
+        return this.sessions_.containsKey(thread);
+        //return (this.sessions_.get(new Integer(currentThreadHashCode)) != null);
     }
 
     /**

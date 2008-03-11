@@ -78,12 +78,12 @@
   </component>
 
   <!-- ocm interceptor -->
-  <component name="interceptor" class="org.seasar.karrta.jcr.interceptor.OcmInterceptor">
+  <component name="intercepter" class="org.seasar.karrta.jcr.intercepter.OcmInterceptor">
     <property name="objectContentManagerFactory">factory</property>
   </component>
 
   <!-- ocm transaction -->
-  <component name="transaction" class="org.seasar.karrta.jcr.interceptor.JcrTransactionInterceptor">
+  <component name="transaction" class="org.seasar.karrta.jcr.intercepter.JcrTransactionInterceptor">
     <property name="jcrSessionManager">session_manager</property>
     <property name="ocmFactory">factory</property>
   </component>

@@ -258,7 +258,7 @@ public class JcrSessionFactory implements PoolableObjectFactory{
             Workspace workspace = session.getWorkspace();
             EventListenerDefinition eventDefinition = null;
 
-            for (Iterator i = this.eventListeners.iterator(); i.hasNext();) {
+            for (Iterator<?> i = this.eventListeners.iterator(); i.hasNext();) {
                 Object bean = i.next();
                 eventDefinition = new EventListenerDefinition();
 

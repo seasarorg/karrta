@@ -10,12 +10,12 @@
   <!-- ============================================================ -->
   <!-- book ocm -->
   <component name="book_ocm" class="org.seasar.karrta.jcr.ocm.BookOcm">
-    <aspect>jcr.interceptor</aspect>
+    <aspect>jcr.intercepter</aspect>
   </component>
   
   <!-- TreeOcm -->
   <component name="tree_ocm" class="org.seasar.karrta.jcr.ocm.TreeOcm">
-    <aspect>jcr.interceptor</aspect>
+    <aspect>jcr.intercepter</aspect>
   </component>
   
   <!-- ============================================================ -->

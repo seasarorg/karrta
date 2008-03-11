@@ -76,10 +76,9 @@ public class ObjectContentManagerFactory {
         }
 
         Mapper mapper = new AnnotationMapperImpl(this.mappingClasses_);
-        int currnetThreadHashCode = Thread.currentThread().hashCode();
         ObjectContentManager ocm =
             new ObjectContentManagerImpl(
-                (Session)this.sessionManager_.borrowObject(currnetThreadHashCode), mapper);
+                (Session)this.sessionManager_.borrowObject(Thread.currentThread()), mapper);
         return ocm;
     }
 

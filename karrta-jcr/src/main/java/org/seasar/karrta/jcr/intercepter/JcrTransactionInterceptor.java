@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.karrta.jcr.interceptor;
+package org.seasar.karrta.jcr.intercepter;
 
 import java.lang.reflect.Method;
 
@@ -29,7 +29,7 @@ import org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory;
 import org.seasar.karrta.jcr.session.JcrSessionManager;
 
 /**
- * OCM Interceptor.
+ * OCM Intercepter.
  * 
  * @author yosukehara
  * 
@@ -56,15 +56,15 @@ public class JcrTransactionInterceptor extends AbstractInterceptor {
      * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
      */
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        int currentThreadHashCode = Thread.currentThread().hashCode();
-        if (this.sessionManager_.isExist(currentThreadHashCode)) {
+        Thread currentThread = Thread.currentThread();
+        if (this.sessionManager_.isExist(currentThread)) {
             return invocation.proceed();
         }
 
-        logger_.debug("::: [Begin Transaction] ::: [" + currentThreadHashCode + "] :::");
+        logger_.debug("::: [Begin Transaction] ::: [" + currentThread + "] :::");
 
         // check in jcr-session.
-        XASession session = (XASession) sessionManager_.borrowObject(currentThreadHashCode);
+        XASession session = (XASession) sessionManager_.borrowObject(currentThread);
         Xid xid = new Xid() {
             public byte[] getBranchQualifier() {
                 return new byte[0];
@@ -103,9 +103,8 @@ public class JcrTransactionInterceptor extends AbstractInterceptor {
 
         } finally {
             // check out jcr-session.
-            this.sessionManager_.returnSession(currentThreadHashCode, session);
-
-            logger_.debug("::: [End Transaction] ::: [" + currentThreadHashCode + "] :::");
+            this.sessionManager_.returnSession(currentThread, session);
+            logger_.debug("::: [End Transaction] ::: [" + currentThread + "] :::");
         }
         return result;
     }
