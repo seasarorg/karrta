@@ -30,7 +30,8 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
  */
 @Node(jcrMixinTypes="mix:referenceable")
 public class BookNode extends BaseNode {
-    
+    private static final long serialVersionUID = 3736367169439225697L;
+
     /** path */
     @Field(path=true)
     protected String path;
@@ -107,11 +108,67 @@ public class BookNode extends BaseNode {
         this.isbn13 = isbn13;
     }
 
-    /*
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + (int) (id ^ (id >>> 32));
+        result = prime * result + ((isbn13 == null) ? 0 : isbn13.hashCode());
+        result = prime * result + ((path == null) ? 0 : path.hashCode());
+        result = prime * result + ((pubDate == null) ? 0 : pubDate.hashCode());
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final BookNode other = (BookNode) obj;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
+            return false;
+        if (id != other.id)
+            return false;
+        if (isbn13 == null) {
+            if (other.isbn13 != null)
+                return false;
+        } else if (!isbn13.equals(other.isbn13))
+            return false;
+        if (path == null) {
+            if (other.path != null)
+                return false;
+        } else if (!path.equals(other.path))
+            return false;
+        if (pubDate == null) {
+            if (other.pubDate != null)
+                return false;
+        } else if (!pubDate.equals(other.pubDate))
+            return false;
+        if (title == null) {
+            if (other.title != null)
+                return false;
+        } else if (!title.equals(other.title))
+            return false;
+        if (uuid == null) {
+            if (other.uuid != null)
+                return false;
+        } else if (!uuid.equals(other.uuid))
+            return false;
+        return true;
     }
 }

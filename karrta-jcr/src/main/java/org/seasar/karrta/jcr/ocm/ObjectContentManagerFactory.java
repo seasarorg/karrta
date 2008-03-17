@@ -47,8 +47,10 @@ public class ObjectContentManagerFactory {
     }
 
     /** mapping class list */
+    @SuppressWarnings("unchecked")
     List<Class> mappingClasses_;
 
+    @SuppressWarnings("unchecked")
     public synchronized void setMappingClasses(List<Class> mappingClasses) {
         this.mappingClasses_ = mappingClasses;
     }

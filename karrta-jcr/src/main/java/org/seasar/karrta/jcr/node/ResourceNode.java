@@ -15,6 +15,8 @@
  */
 package org.seasar.karrta.jcr.node;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -29,8 +31,9 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
  * 
  */
 @Node(jcrType="nt:resource")
-public class ResourceNode {
-
+public class ResourceNode implements Serializable {
+    private static final long serialVersionUID = 8245163943379226471L;
+    
     @Field(jcrName = "jcr:mimeType")
     private String mimeType;
 
@@ -64,11 +67,44 @@ public class ResourceNode {
         this.lastModified = lastModified;
     }
 
-    /*
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(data);
+        result = prime * result
+                + ((lastModified == null) ? 0 : lastModified.hashCode());
+        result = prime * result
+                + ((mimeType == null) ? 0 : mimeType.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final ResourceNode other = (ResourceNode) obj;
+        if (!Arrays.equals(data, other.data))
+            return false;
+        if (lastModified == null) {
+            if (other.lastModified != null)
+                return false;
+        } else if (!lastModified.equals(other.lastModified))
+            return false;
+        if (mimeType == null) {
+            if (other.mimeType != null)
+                return false;
+        } else if (!mimeType.equals(other.mimeType))
+            return false;
+        return true;
     }
 }

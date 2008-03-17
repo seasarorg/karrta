@@ -15,13 +15,15 @@
  */
 package org.seasar.karrta.jcr.node;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 @Node
-public abstract class BaseNode {
+public abstract class BaseNode implements Serializable{
 
     /** path */
     @Field(path=true)
@@ -35,9 +37,6 @@ public abstract class BaseNode {
         this.path = path;
     }
 
-    /*
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);

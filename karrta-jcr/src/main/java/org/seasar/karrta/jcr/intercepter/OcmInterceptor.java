@@ -38,7 +38,7 @@ import org.seasar.karrta.jcr.ocm.ObjectContentManagerFactory;
  * 
  */
 public class OcmInterceptor extends AbstractInterceptor {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2540987620714518095L;
     private static final Log logger_ = LogFactory.getLog(OcmInterceptor.class);
     
     private static final String TYPE_CREATE      = "create";

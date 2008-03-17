@@ -119,7 +119,6 @@ public class JcrSessionManager extends GenericObjectPool {
      */
     public boolean isExist(Thread thread) {
         return this.sessions_.containsKey(thread);
-        //return (this.sessions_.get(new Integer(currentThreadHashCode)) != null);
     }
 
     /**

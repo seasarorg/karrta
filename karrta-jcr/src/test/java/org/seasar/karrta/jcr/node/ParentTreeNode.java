@@ -34,6 +34,7 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
  */
 @Node(jcrMixinTypes = "mix:referenceable")
 public class ParentTreeNode extends BaseNode {
+    private static final long serialVersionUID = -6171702360097997441L;
 
     /** path */
     @Field(path=true)
@@ -118,11 +119,70 @@ public class ParentTreeNode extends BaseNode {
         this.children.add(child);
     }
     
-    /*
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((children == null) ? 0 : children.hashCode());
+        result = prime * result
+                + ((createdAt == null) ? 0 : createdAt.hashCode());
+        result = prime * result + (int) (id ^ (id >>> 32));
+        result = prime * result
+                + ((modified == null) ? 0 : modified.hashCode());
+        result = prime * result + ((path == null) ? 0 : path.hashCode());
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final ParentTreeNode other = (ParentTreeNode) obj;
+        if (children == null) {
+            if (other.children != null)
+                return false;
+        } else if (!children.equals(other.children))
+            return false;
+        if (createdAt == null) {
+            if (other.createdAt != null)
+                return false;
+        } else if (!createdAt.equals(other.createdAt))
+            return false;
+        if (id != other.id)
+            return false;
+        if (modified == null) {
+            if (other.modified != null)
+                return false;
+        } else if (!modified.equals(other.modified))
+            return false;
+        if (path == null) {
+            if (other.path != null)
+                return false;
+        } else if (!path.equals(other.path))
+            return false;
+        if (title == null) {
+            if (other.title != null)
+                return false;
+        } else if (!title.equals(other.title))
+            return false;
+        if (uuid == null) {
+            if (other.uuid != null)
+                return false;
+        } else if (!uuid.equals(other.uuid))
+            return false;
+        return true;
+    }
+    
 }

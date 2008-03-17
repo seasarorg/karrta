@@ -36,8 +36,10 @@ public class JcrNodeComponentAutoRegister extends JcrComponentRegister {
     private Log logger_ = LogFactory.getLog(JcrNodeComponentAutoRegister.class);
 
     /** jcr node classes */
+    @SuppressWarnings("unchecked")
     private List<Class> jcrNodeClasses = new ArrayList<Class>();
 
+    @SuppressWarnings("unchecked")
     public List<Class> getJcrNodeClasses() {
         return jcrNodeClasses;
     }
@@ -47,6 +49,7 @@ public class JcrNodeComponentAutoRegister extends JcrComponentRegister {
      *   java.lang.String, java.lang.String)
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void processClass(final String packageName, final String shortClassName) {
         if (isIgnore(packageName, shortClassName)) return;
 

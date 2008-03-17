@@ -15,6 +15,8 @@
  */
 package org.seasar.karrta.jcr.node;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Bean;
@@ -27,8 +29,9 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
  * 
  */
 @Node(jcrType="nt:file")
-public class FileNode {
-
+public class FileNode implements Serializable{
+    private static final long serialVersionUID = 4586538591210730872L;
+    
     @Bean(jcrName = "jcr:content")
     private ResourceNode resource;
 
@@ -40,11 +43,34 @@ public class FileNode {
         this.resource = resource;
     }
 
-    /*
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((resource == null) ? 0 : resource.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final FileNode other = (FileNode) obj;
+        if (resource == null) {
+            if (other.resource != null)
+                return false;
+        } else if (!resource.equals(other.resource))
+            return false;
+        return true;
     }
 }

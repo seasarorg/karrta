@@ -50,6 +50,7 @@ public class JcrObservationComponentRegister extends JcrComponentRegister {
      *   java.lang.String, java.lang.String)
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void processClass(final String packageName, final String shortClassName) {
         if (isIgnore(packageName, shortClassName)) {
             return;

@@ -35,7 +35,7 @@ import org.seasar.karrta.jcr.session.JcrSessionManager;
  * 
  */
 public class JcrTransactionInterceptor extends AbstractInterceptor {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2373875783543921314L;
     private static final Log logger_ = LogFactory.getLog(JcrTransactionInterceptor.class);
 
     /** session manager */
